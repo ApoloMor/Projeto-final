@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/Eventos.css" />
     <title>Loja dos Games - Eventos</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
 
   <body>
@@ -29,26 +30,47 @@
     </div>
     <div class="main">
       <p>
-        <a href="Home.html">Inicío</a> >
-        <a href="eventos.html">Eventos/Torneios</a>
+        <a class="links" id="atual-link" href="Home.html">Inicío</a> >
+        <a class="links" href="eventos.html">Eventos/Torneios</a>
       </p>
       <div class="topo">
         <img src="#" alt="icon-trofeu" width="35px" height="35px" />
         <div class="titulo-subt">
-          <h3>Eventos/Torneios</h3>
+          <h1>Eventos/Torneios</h1>
           <p>Gerencie os eventos e torneios da loja.</p>
         </div>
         <div class="botoes-titulo">
-          <button class="new-event">Novo Evento</button>
+          <button class="new-event"><span>+</span> Novo Evento</button>
           <button class="export">Exportar</button>
         </div>
         <div class="data">
-          <h4>1 de Junho de 2026</h4>
-          <p>Segunda, 09:00</p>
+          <i data-lucide="clock-3"></i>
+          <div class="data-textos">
+            <h4>1 de Junho de 2026</h4>
+            <p>Segunda, 09:00</p>
+          </div>
         </div>
       </div>
-      <div class="eventos"></div>
-      <div class="outras"></div>
+      <div class="content">
+        <div class="tabs">
+          <button class="tab active">Todos</button>
+          <button class="tab">Próximos</button>
+          <button class="tab">Em andamento</button>
+          <button class="tab">Finalizados</button>
+          <button class="tab">Cancelados</button>
+          <input
+            id="busca-input"
+            type="text"
+            class="search"
+            placeholder="🔍 Buscar eventos..."
+          />
+        </div>
+        <div class="eventos"></div>
+        <div class="barra direita"><h3>Resumo de Eventos</h3></div>
+      </div>
     </div>
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>
