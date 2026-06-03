@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt">
+<!doctype html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/clientes.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <title>Loja dos Games</title>
+    <title>Clientes</title>
+
+    <link rel="stylesheet" href="../static/clientes.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
 
 <body>
-
-    <!-- SIDEBAR -->
 
     <div class="sidebar">
 
@@ -22,18 +21,248 @@
         </div>
 
         <div class="menu">
-            <a href="home.html" class="active">🏠 Início</a>
-            <a href="produtos.html">📦 Produtos</a>
-            <a href="clientes.html">👥 Clientes</a>
+            <a href="Home.html">🏠 Início</a>
+            <a href="#">📦 Produtos</a>
+            <a href="#" class="active">👥 Clientes</a>
             <a href="fornecedores.html">🚚 Fornecedores</a>
             <a href="eventos.html">🏆 Eventos / Torneios</a>
-            <a href="#">⚙️ Sair</a>
+            <a href="#">🛒 Vendas e Inscrições</a>
+            <a href="#">📊 Relatórios</a>
+            <a href="#">⚙️ Configurações</a>
         </div>
 
     </div>
+
     <div class="main">
+
+        <p>
+            <a class="links" id="atual-link" href="Home.html">Início</a>
+            >
+            <a class="links">Clientes</a>
+        </p>
+
+        <div class="topo">
+
+            <i data-lucide="users"></i>
+
+            <div class="titulo-subt">
+                <h1>Clientes</h1>
+                <p>Gerencie os clientes cadastrados na loja.</p>
+            </div>
+
+            <div class="botoes-titulo">
+
+                <button class="new-event">
+                    + Novo cliente
+                </button>
+
+                <button class="export">
+                    Exportar
+                </button>
+
+            </div>
+
+            <div class="data">
+
+                <i data-lucide="clock-3"></i>
+
+                <div class="texto-data">
+                    <h4>24 de Maio de 2025</h4>
+                    <p>Sábado, 10:15</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="conteudo-principal">
+
+                <div class="card-tabela">
+
+                    <div class="tabs">
+
+                        <button class="tab active">Todos</button>
+                        <button class="tab">Ativos</button>
+                        <button class="tab">Inativos</button>
+
+                        <input
+                            id="busca-input"
+                            type="text"
+                            placeholder="🔍 Buscar cliente..."
+                        >
+
+                    </div>
+
+                    <div class="fornecedores">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Telefone</th>
+                                    <th>E-mail</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>001</td>
+                                    <td>João da Silva</td>
+                                    <td>123.456.789-01</td>
+                                    <td>(11) 98765-4321</td>
+                                    <td>joao@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>002</td>
+                                    <td>Maria Oliveira</td>
+                                    <td>987.654.321-02</td>
+                                    <td>(11) 91234-5678</td>
+                                    <td>maria@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>003</td>
+                                    <td>Pedro Almeida</td>
+                                    <td>456.789.123-03</td>
+                                    <td>(11) 97654-3210</td>
+                                    <td>pedro@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>004</td>
+                                    <td>Carla Ferreira</td>
+                                    <td>321.654.987-04</td>
+                                    <td>(11) 93456-7890</td>
+                                    <td>carla@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>005</td>
+                                    <td>Lucas Martins</td>
+                                    <td>789.123.456-05</td>
+                                    <td>(11) 99876-5432</td>
+                                    <td>lucas@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>006</td>
+                                    <td>Ana Beatriz</td>
+                                    <td>159.753.456-06</td>
+                                    <td>(11) 98888-1111</td>
+                                    <td>ana@email.com</td>
+                                    <td><span class="status inativo">Inativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>007</td>
+                                    <td>Rafael Costa</td>
+                                    <td>753.159.456-07</td>
+                                    <td>(11) 96666-2222</td>
+                                    <td>rafael@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                                <tr>
+                                    <td>008</td>
+                                    <td>Juliana Santos</td>
+                                    <td>951.753.456-08</td>
+                                    <td>(11) 97777-3333</td>
+                                    <td>juliana@email.com</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td>✏️ 👁️ 🗑️</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="barra-direita">
+
+                <div class="card-lateral">
+
+                    <h3>Resumo de clientes</h3>
+
+                    <div class="item-resumo">
+                        <span>Total de clientes</span>
+                        <strong>87</strong>
+                    </div>
+
+                    <div class="item-resumo">
+                        <span>Clientes ativos</span>
+                        <strong class="verde">79</strong>
+                    </div>
+
+                    <div class="item-resumo">
+                        <span>Clientes inativos</span>
+                        <strong class="vermelho">8</strong>
+                    </div>
+
+                    <div class="item-resumo">
+                        <span>Novos este mês</span>
+                        <strong>5</strong>
+                    </div>
+
+                </div>
+
+                <div class="card-lateral">
+
+                    <h3>Filtros</h3>
+
+                    <select>
+                        <option>Todos os status</option>
+                    </select>
+
+                    <select>
+                        <option>Todas as cidades</option>
+                    </select>
+
+                    <input type="date">
+                    <input type="date">
+
+                    <button class="btn-filtro">
+                        Aplicar filtros
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-</body>
+    <script>
+        lucide.createIcons();
+    </script>
 
+</body>
 </html>
