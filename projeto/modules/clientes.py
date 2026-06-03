@@ -24,7 +24,8 @@ def salvar(lista):
     with open(ARQUIVO, "wb") as f:
         pickle.dump(lista, f) #dump grava dentro do arquivo
 
-#inputs
+"""
+- inputs ver oq fazer com isso dps e aprimorar
 lista = carregar()
 novoCliente = {}
 novoCliente["id"] = len(lista) + 1 # +1 pq esse cliente eh o proximo, entt +1
@@ -34,6 +35,7 @@ novoCliente["telefone"] = input("Telefone: " )
 novoCliente["email"] = input("Insira o email: ")
 lista.append(novoCliente)
 salvar(lista)
+"""
 
 # id, nome, cpf, telefone, email
 #lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes
