@@ -34,3 +34,6 @@ def cadastrar():
     novoCliente["cpf"] = input("CPF: ")
     novoCliente["telefone"] = input("Telefone: " )
     novoCliente["email"] = input("Insira o email: ")
+    lista.append(novoCliente)
+    #salvar antes
+    return lista
