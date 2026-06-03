@@ -1,3 +1,5 @@
+#mudar de pickle pra SQL
+
 """
 modulo de clientes: cadastrar, listar, editar e remover os clientes da loja
 id, nome, cpf, telefone, email
