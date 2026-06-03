@@ -15,5 +15,4 @@ def start():
 def cadastrar_eventos():
     eventos = {}
 
-
 start()
