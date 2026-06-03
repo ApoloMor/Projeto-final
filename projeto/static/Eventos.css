@@ -1,61 +1,61 @@
-/* RESET */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
 }
 
-body {
-  display: flex;
-  background: #f4f5f7;
+body{
+    background:#f4f5f7;
+    display:flex;
 }
 
-/* =========================
-   SIDEBAR (NÃO ALTERADA)
-========================= */
+/* SIDEBAR */
 
-.sidebar {
-  width: 260px;
-  height: 100vh;
-  background: #081120;
-  color: white;
-  padding: 30px 20px;
-  position: fixed;
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:#081120;
+    color:white;
+    padding:30px 20px;
+    position:fixed;
 }
 
-.logo {
-  text-align: center;
-  margin-bottom: 40px;
+.logo{
+    text-align:center;
+    margin-bottom:40px;
 }
 
-.logo h1 {
-  font-size: 32px;
+.logo h1{
+    font-size:32px;
 }
 
-.logo p {
-  color: #facc15;
-  font-size: 12px;
+.logo p{
+    color:#facc15;
+    font-size:12px;
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
-.menu a {
-  text-decoration: none;
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  transition: 0.3s;
-  font-size: 15px;
+.menu a{
+    text-decoration:none;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    transition:.3s;
+    font-size:15px;
 }
 
-.menu a:hover {
-  background: #6d4aff;
+.menu a:hover{
+    background:#6d4aff;
+}
+
+.active{
+    background:#6d4aff;
 }
 
 .menu a.active {
