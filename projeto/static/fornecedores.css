@@ -1,0 +1,367 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f4f5f7;
+  display: flex;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #081120;
+  color: white;
+  padding: 25px 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo h1 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.logo p {
+  font-size: 12px;
+  color: #facc15;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  padding: 14px 16px;
+  border-radius: 12px;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.menu a:hover {
+  background: #6d4aff;
+}
+
+.menu a.active {
+  background: #6d4aff;
+}
+
+/* =========================
+   CONTEÚDO PRINCIPAL
+========================= */
+
+.main {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 25px 30px;
+}
+
+.links {
+  text-decoration: none;
+  color: #666;
+}
+
+#atual-link {
+  color: #6d4aff;
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.topo svg {
+  width: 42px;
+  height: 42px;
+  color: #6d4aff;
+}
+
+.titulo-subt {
+  flex: 1;
+}
+
+.titulo-subt h1 {
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.titulo-subt p {
+  color: #666;
+  margin-top: 4px;
+}
+
+.botoes-titulo {
+  display: flex;
+  gap: 12px;
+}
+
+.new-event {
+  height: 52px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 12px;
+  background: #6d4aff;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.new-event:hover {
+  background: #5a39e6;
+}
+
+.export {
+  height: 52px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  font-size: 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.data {
+  background: white;
+  border-radius: 16px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: 10px;
+}
+
+.data svg {
+  width: 40px;
+  height: 40px;
+  color: #6d4aff;
+}
+
+.texto-data h4 {
+  font-size: 18px;
+}
+
+.texto-data p {
+  color: #555;
+}
+
+/* =========================
+   LAYOUT CENTRAL
+========================= */
+
+.content {
+  display: flex;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.conteudo-principal {
+  flex: 1;
+}
+
+/* =========================
+   CARD TABELA
+========================= */
+
+.card-tabela {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.topo-tabela {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+#busca-input {
+  width: 280px;
+  padding: 12px 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* =========================
+   TABELA
+========================= */
+
+.fornecedores {
+  width: 100%;
+}
+
+.fornecedores table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fornecedores thead {
+  background: #f8fafc;
+}
+
+.fornecedores th {
+  text-align: left;
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fornecedores td {
+  padding: 16px;
+  border-top: 1px solid #eeeeee;
+  font-size: 14px;
+}
+
+.fornecedores tr:hover {
+  background: #fafafa;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.ativo {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status.inativo {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* =========================
+   BARRA DIREITA
+========================= */
+
+.barra-direita {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card-lateral {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.card-lateral h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+/* =========================
+   RESUMO
+========================= */
+
+.item-resumo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.verde {
+  color: #16a34a;
+}
+
+.vermelho {
+  color: #dc2626;
+}
+
+/* =========================
+   FILTROS
+========================= */
+
+.card-lateral select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+}
+
+.btn-filtro {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #6d4aff;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-filtro:hover {
+  background: #5a39e6;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 1200px) {
+  .barra-direita {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 80px;
+  }
+
+  .logo h1,
+  .logo p,
+  .menu a {
+    display: none;
+  }
+
+  .main {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+}
