@@ -1,3 +1,7 @@
+import pickle
+import os
+ARQUIVO = 'eventos.pkl'
+
 def start():
     while True:
         print('O que deseja fazer?')
@@ -13,6 +17,6 @@ def start():
             break
 
 def cadastrar_eventos():
-    eventos = {}
+    eventos = {'nomeDoEvento': ''}
 
 start()
