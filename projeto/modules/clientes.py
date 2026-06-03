@@ -37,16 +37,34 @@ lista.append(novoCliente)
 salvar(lista)
 """
 
-# id, nome, cpf, telefone, email
+
 #lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes
-def cadastrar(nome, cpf, telefone, email):
-    lista = carregar()
-    # validação: verifica se o CPF já existe
+#fazer o input
+
+def validarCPF(cpf): # validação: verifica se o CPF já existe
+    lista = carregar(lista)
     for cliente in lista:
-        if cliente[cpf] == cpf:
+        if cliente["cpf"] == cpf:
             print("CPF ja existe")
             return False
-    
-    # gera id, monta dicionário, append, salva
+        
+# id, nome, cpf, telefone, email
+def cadastrar(nome, cpf, telefone, email):
+    novoCliente = {}
+    lista = carregar()
+    validar = validarCPF(cpf)
+    if validar == False:
+        print("Este CPF ja existe")
+    #gerar id, adicionar as coisas no dicionario do cliente e colocar na lista e dps salvar
+    id = len(lista) 
+    novoCliente["id"] = id
+    novoCliente["nome"] = nome
+    novoCliente["cpf"] = cpf
+    novoCliente["telefone"] = telefone
+    novoCliente["email"] = email
+    lista.append(novoCliente)
+    salvar(lista)
+
+    #monta dicionário, append, salva
     
     return True   # se deu certo
