@@ -52,19 +52,21 @@ def validarCPF(cpf): # validação: verifica se o CPF já existe
 def cadastrar(nome, cpf, telefone, email):
     novoCliente = {}
     lista = carregar()
-    validar = validarCPF(cpf)
-    if validar == False:
-        print("Este CPF ja existe")
-    #gerar id, adicionar as coisas no dicionario do cliente e colocar na lista e dps salvar
+    #gerar id
     id = len(lista) 
+    #monta dicionário, append e dps salva
     novoCliente["id"] = id
     novoCliente["nome"] = nome
     novoCliente["cpf"] = cpf
     novoCliente["telefone"] = telefone
     novoCliente["email"] = email
+    validar = validarCPF(cpf)
+    if validar == False:
+        print("Este CPF ja existe")
+        return False
     lista.append(novoCliente)
     salvar(lista)
 
-    #monta dicionário, append, salva
+    
     
     return True   # se deu certo
