@@ -66,7 +66,4 @@ def cadastrar(nome, cpf, telefone, email):
         return False
     lista.append(novoCliente)
     salvar(lista)
-
-    
-    
-    return True   # se deu certo
+    return True   #se deu certo
