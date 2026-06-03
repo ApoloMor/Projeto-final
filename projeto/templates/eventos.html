@@ -1,76 +1,221 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/Eventos.css" />
-    <title>Loja dos Games - Eventos</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-  </head>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <body>
-    <!-- SIDEBAR -->
+  <title>Loja dos Games - Eventos</title>
 
-    <div class="sidebar">
-      <div class="logo">
-        <h1>GAME STORE</h1>
-        <p>BOARD GAMES & CARD GAMES</p>
-      </div>
+  <link rel="stylesheet" href="../static/Eventos.css" />
 
-      <div class="menu">
-        <a href="Home.html">🏠 Início</a>
-        <a href="#">📦 Produtos</a>
-        <a href="#">👥 Clientes</a>
-        <a href="#">🚚 Fornecedores</a>
-        <a href="eventos.html" class="active">🏆 Eventos / Torneios</a>
-        <a href="#">🛒 Vendas e Inscrições</a>
-        <a href="#">📊 Relatórios</a>
-        <a href="#">⚙️ Configurações</a>
-      </div>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+  <div class="sidebar">
+
+        <div class="logo">
+            <h1>GAME STORE</h1>
+            <p>BOARD GAMES & CARD GAMES</p>
+        </div>
+
+        <div class="menu">
+            <a href="#" class="active">🏠 Início</a>
+            <a href="#">📦 Produtos</a>
+            <a href="#">👥 Clientes</a>
+            <a href="#">🚚 Fornecedores</a>
+            <a href="#">🏆 Eventos / Torneios</a>
+            <a href="#">🛒 Vendas e Inscrições</a>
+            <a href="#">📊 Relatórios</a>
+            <a href="#">⚙️ Configurações</a>
+        </div>
     </div>
-    <div class="main">
-      <p>
-        <a class="links" id="atual-link" href="Home.html">Inicío</a> >
-        <a class="links" href="eventos.html">Eventos/Torneios</a>
-      </p>
-      <div class="topo">
-        <img src="#" alt="icon-trofeu" width="35px" height="35px" />
-        <div class="titulo-subt">
-          <h1>Eventos/Torneios</h1>
-          <p>Gerencie os eventos e torneios da loja.</p>
-        </div>
-        <div class="botoes-titulo">
-          <button class="new-event"><span>+</span> Novo Evento</button>
-          <button class="export">Exportar</button>
-        </div>
-        <div class="data">
-          <i data-lucide="clock-3"></i>
-          <div class="data-textos">
-            <h4>1 de Junho de 2026</h4>
-            <p>Segunda, 09:00</p>
-          </div>
+  <main class="main">
+
+    <div class="breadcrumb">
+      <a href="Home.html">Início</a>
+      <span>></span>
+      <a href="eventos.html">Eventos / Torneios</a>
+    </div>
+
+    <section class="topo">
+
+      <div class="titulo-subt">
+        <h1>🏆 Eventos / Torneios</h1>
+        <p>Gerencie os eventos e torneios da loja.</p>
+      </div>
+
+      <div class="botoes-titulo">
+        <button class="new-event">
+          + Novo Evento
+        </button>
+
+        <button class="export">
+          Exportar
+        </button>
+      </div>
+
+      <div class="data">
+        <i data-lucide="clock-3"></i>
+
+        <div class="data-textos">
+          <h4>24 de Maio de 2025</h4>
+          <p>Sábado, 10:15</p>
         </div>
       </div>
-      <div class="content">
+
+    </section>
+
+    <section class="content">
+
+      <div class="eventos">
+
         <div class="tabs">
+
           <button class="tab active">Todos</button>
           <button class="tab">Próximos</button>
           <button class="tab">Em andamento</button>
           <button class="tab">Finalizados</button>
           <button class="tab">Cancelados</button>
+
           <input
-            id="busca-input"
             type="text"
-            class="search"
-            placeholder="🔍 Buscar eventos..."
+            id="busca-input"
+            placeholder="🔍 Buscar evento..."
           />
+
         </div>
-        <div class="eventos"></div>
-        <div class="barra direita"><h3>Resumo de Eventos</h3></div>
+
+        <table class="tabela-eventos">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Evento</th>
+              <th>Jogo / Tipo</th>
+              <th>Data</th>
+              <th>Vagas</th>
+              <th>Inscritos</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td>001</td>
+              <td>Torneio Pokémon</td>
+              <td><span class="tag">Card Game</span></td>
+              <td>31/05/2025 14:00</td>
+              <td>32</td>
+              <td>24</td>
+              <td><span class="status aberto">Aberto</span></td>
+              <td>✏️ 👁️ 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>002</td>
+              <td>Magic Commander Night</td>
+              <td><span class="tag">Card Game</span></td>
+              <td>07/06/2025 18:00</td>
+              <td>20</td>
+              <td>15</td>
+              <td><span class="status aberto">Aberto</span></td>
+              <td>✏️ 👁️ 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>003</td>
+              <td>Yu-Gi-Oh Championship</td>
+              <td><span class="tag">Card Game</span></td>
+              <td>14/06/2025 14:00</td>
+              <td>32</td>
+              <td>32</td>
+              <td><span class="status lotado">Lotado</span></td>
+              <td>✏️ 👁️ 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>004</td>
+              <td>Board Game Day</td>
+              <td><span class="tag board">Board Game</span></td>
+              <td>21/06/2025 13:00</td>
+              <td>40</td>
+              <td>18</td>
+              <td><span class="status aberto">Aberto</span></td>
+              <td>✏️ 👁️ 🗑️</td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
       </div>
-    </div>
-    <script>
-      lucide.createIcons();
-    </script>
-  </body>
+
+      <aside class="barra-direita">
+
+        <div class="card">
+
+          <h3>🏆 Resumo de eventos</h3>
+
+          <div class="info">
+            <span>Total de eventos</span>
+            <strong>32</strong>
+          </div>
+
+          <div class="info">
+            <span>Próximos eventos</span>
+            <strong>18</strong>
+          </div>
+
+          <div class="info">
+            <span>Em andamento</span>
+            <strong>2</strong>
+          </div>
+
+          <div class="info">
+            <span>Finalizados</span>
+            <strong>10</strong>
+          </div>
+
+          <div class="info">
+            <span>Cancelados</span>
+            <strong>2</strong>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Filtros</h3>
+
+          <select>
+            <option>Todos os tipos</option>
+          </select>
+
+          <select>
+            <option>Todos os status</option>
+          </select>
+
+          <input type="date">
+          <input type="date">
+
+          <button class="btn-filtro">
+            Aplicar filtros
+          </button>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
 </html>
