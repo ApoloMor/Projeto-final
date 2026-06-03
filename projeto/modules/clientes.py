@@ -26,4 +26,4 @@ def salvar(lista):
 
 # id, nome, cpf, telefone, email
 def cadastrar():
-    
+    pass
