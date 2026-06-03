@@ -1,6 +1,8 @@
 """
 modulo de clientes: cadastrar, listar, editar e remover os clientes da loja
 id, nome, cpf, telefone, email
+
+#lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes 
 """
 
 import pickle
@@ -36,10 +38,6 @@ novoCliente["email"] = input("Insira o email: ")
 lista.append(novoCliente)
 salvar(lista)
 """
-
-
-#lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes
-#fazer o input
 
 def validarCPF(cpf): # validação: verifica se o CPF já existe
     lista = carregar(lista)
