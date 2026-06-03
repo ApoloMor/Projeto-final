@@ -41,9 +41,11 @@ salvar(lista)
 #lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes
 def cadastrar(nome, cpf, telefone, email):
     lista = carregar()
-    
     # validação: verifica se o CPF já existe
-    # (vou explicar como fazer abaixo)
+    for cliente in lista:
+        if cliente[cpf] == cpf:
+            print("CPF ja existe")
+            return False
     
     # gera id, monta dicionário, append, salva
     
