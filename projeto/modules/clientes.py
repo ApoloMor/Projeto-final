@@ -25,5 +25,15 @@ def salvar(lista):
         pickle.dump(lista, f) #dump grava dentro do arquivo
 
 # id, nome, cpf, telefone, email
+#lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes
 def cadastrar():
-    pass
+    lista = carregar()
+    novoCliente = {}
+    novoCliente["ID"] = len(lista) + 1 # +1 pq esse cliente eh o proximo, entt +1
+    novoCliente["nome"] = input("Nome completo do cliente: ")
+    novoCliente["cpf"] = input("CPF: ")
+    novoCliente["telefone"] = input("Telefone: " )
+    novoCliente["email"] = input("Insira o email: ")
+    lista.append(novoCliente)
+    #salvar antes
+    return lista
