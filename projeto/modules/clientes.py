@@ -24,6 +24,29 @@ def salvar(lista):
     with open(ARQUIVO, "wb") as f:
         pickle.dump(lista, f) #dump grava dentro do arquivo
 
+"""
+- inputs ver oq fazer com isso dps e aprimorar
+lista = carregar()
+novoCliente = {}
+novoCliente["id"] = len(lista) + 1 # +1 pq esse cliente eh o proximo, entt +1
+novoCliente["nome"] = input("Nome completo do cliente: ")
+novoCliente["cpf"] = input("CPF: ")
+novoCliente["telefone"] = input("Telefone: " )
+novoCliente["email"] = input("Insira o email: ")
+lista.append(novoCliente)
+salvar(lista)
+"""
+
 # id, nome, cpf, telefone, email
-def cadastrar():
-    pass
+#lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes
+def cadastrar(nome, cpf, telefone, email):
+    lista = carregar()
+    # validação: verifica se o CPF já existe
+    for cliente in lista:
+        if cliente[cpf] == cpf:
+            print("CPF ja existe")
+            return False
+    
+    # gera id, monta dicionário, append, salva
+    
+    return True   # se deu certo
