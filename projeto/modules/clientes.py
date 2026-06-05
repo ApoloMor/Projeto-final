@@ -11,9 +11,9 @@ import pickle
 import os
 ARQUIVO = "clientes.pkl"
 
-print("=-="*10, "Menu", "=-="*10)
+#print("=-="*10, "Menu", "=-="*10)
 
-print("1. Cadastrar\n2. Listar\n3. Editar\n4. Remover\n5. Sair")
+#print("1. Cadastrar\n2. Listar\n3. Editar\n4. Remover\n5. Sair")
 
 #ler os clientes salvos no arquivo
 def carregar():
