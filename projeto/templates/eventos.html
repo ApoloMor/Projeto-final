@@ -42,7 +42,9 @@
         </div>
 
         <div class="botoes-titulo">
-          <button class="new-event">+ Novo Evento</button>
+          <button class="new-event" onclick="mostrarFormulario()">
+            + Novo Evento
+          </button>
         </div>
 
         <div class="data">
@@ -55,26 +57,32 @@
         </div>
       </section>
 
-      <div class="card-form">
+      <div class="card-form" id="formEvento">
         <h3>Novo Evento</h3>
 
-        <form>
-          <input type="text" placeholder="Nome do evento" required />
+        <form action="/eventos/criar" method="POST">
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome do evento"
+            required
+          />
 
-          <select required>
-            <option value="">Selecione o jogo</option>
-            <option>Pokémon</option>
-            <option>Magic</option>
-            <option>Yu-Gi-Oh</option>
-            <option>Board Game</option>
+          <select name="jogo" required>
+            <option value="" disabled selected>Selecione o jogo / tipo</option>
+            <option value="pokemon">Pokémon TCG</option>
+            <option value="magic">Magic: The Gathering</option>
+            <option value="yugioh">Yu-Gi-Oh!</option>
+            <option value="board">Board Game</option>
           </select>
 
-          <input type="datetime-local" required />
+          <input type="datetime-local" name="data" required />
 
           <input
             type="number"
-            placeholder="Quantidade de vagas"
+            name="vagas"
             min="1"
+            placeholder="Quantidade de vagas"
             required
           />
 
@@ -86,7 +94,6 @@
         <div class="eventos">
           <table class="tabela-eventos">
             <thead>
-              <!-- Vai ser tudo removido ou alterado para o flask entrar-->
               <tr>
                 <th>ID</th>
                 <th>Evento</th>
@@ -98,57 +105,25 @@
             </thead>
 
             <tbody>
+              {% for evento in eventos %}
               <tr>
-                <td>001</td>
-                <td>Torneio Pokémon</td>
-                <td><span class="tag">Card Game</span></td>
-                <td>31/05/2025 14:00</td>
-                <td>32</td>
-                <td>
-                  <form method="POST">
-                    <button type="submit">🗑️</button>
-                  </form>
-                </td>
-              </tr>
+                <td>{{ evento[0] }}</td>
 
-              <tr>
-                <td>002</td>
-                <td>Magic Commander Night</td>
-                <td><span class="tag">Card Game</span></td>
-                <td>07/06/2025 18:00</td>
-                <td>20</td>
-                <td>
-                  <form method="POST">
-                    <button type="submit">🗑️</button>
-                  </form>
-                </td>
-              </tr>
+                <td>{{ evento[1] }}</td>
 
-              <tr>
-                <td>003</td>
-                <td>Yu-Gi-Oh Championship</td>
-                <td><span class="tag">Card Game</span></td>
-                <td>14/06/2025 14:00</td>
-                <td>32</td>
-                <td>
-                  <form method="POST">
-                    <button type="submit">🗑️</button>
-                  </form>
-                </td>
-              </tr>
+                <td>{{ evento[2] }}</td>
 
-              <tr>
-                <td>004</td>
-                <td>Board Game Day</td>
-                <td><span class="tag board">Board Game</span></td>
-                <td>21/06/2025 13:00</td>
-                <td>40</td>
+                <td>{{ evento[3] }}</td>
+
+                <td>{{ evento[4] }}</td>
+
                 <td>
-                  <form method="POST">
+                  <form action="/eventos/excluir/{{ evento[0] }}" method="POST">
                     <button type="submit">🗑️</button>
                   </form>
                 </td>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -158,14 +133,23 @@
             <h3>🏆 Resumo</h3>
             <div class="info">
               <span>Total de eventos</span>
-              <strong>4</strong>
+              <strong>{{ total_eventos }}</strong>
             </div>
           </div>
         </aside>
       </section>
     </main>
-
     <script>
+      function mostrarFormulario() {
+        let formulario = document.getElementById("formEvento");
+
+        if (formulario.style.display === "none") {
+          formulario.style.display = "block";
+        } else {
+          formulario.style.display = "none";
+        }
+      }
+
       lucide.createIcons();
     </script>
   </body>
