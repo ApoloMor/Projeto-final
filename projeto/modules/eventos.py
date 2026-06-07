@@ -43,13 +43,39 @@ def listar_eventos():
     cursor.execute("SELECT * FROM eventos") # seleciona tudo da tabela eventos
 
     eventos = cursor.fetchall()
-
-    print(eventos)# teste
     
     conn.close()
 
     return eventos # retorna tudo q selecionamos com o fetchall
 
+
+def buscar_evento(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = ? ↓ fetchone()↓ return evento
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM eventos
+                      WHERE id = ?""",(id,))
+    
+    evento = cursor.fetchone()
+
+    conn.close()
+
+    return evento
+
+def editar_evento(id, nome, jogo, data, vagas):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""UPDATE eventos
+                      SET nome = ?, jogo = ?, data = ?, vagas = ?
+                      WHERE id = ?""",
+                      (nome, jogo, data, vagas, id)
+                   )
+    conn.commit()
+    conn.close()
+    
 
 def excluir_evento(id):
 

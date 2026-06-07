@@ -1,156 +1,175 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loja dos Games - Eventos</title>
-    <link rel="stylesheet" href="../static/eventos.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/lucide@latest"></script>
-  </head>
 
-  <body>
-    <div class="sidebar">
-      <div class="logo">
-        <h1>GAME STORE</h1>
-        <p>BOARD GAMES & CARD GAMES</p>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja dos Games - Eventos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='eventos.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
 
-      <div class="menu">
-        <a href="/">🏠 Início</a>
-        <a href="/produtos">📦 Produtos</a>
-        <a href="/clientes">👥 Clientes</a>
-        <a href="/fornecedores">🚚 Fornecedores</a>
-        <a href="/eventos" class="active">🏆 Eventos / Torneios</a>
-        <a href="#">⚙️ Sair</a>
-      </div>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <h1>GAME STORE</h1>
+      <p>BOARD GAMES & CARD GAMES</p>
     </div>
-    <main class="main">
-      <div class="breadcrumb">
-        <a href="/home">Início</a>
-        <span>></span>
-        <a href="/eventos">Eventos / Torneios</a>
+
+    <div class="menu">
+      <a href="/">🏠 Início</a>
+      <a href="/produtos">📦 Produtos</a>
+      <a href="/clientes">👥 Clientes</a>
+      <a href="/fornecedores">🚚 Fornecedores</a>
+      <a href="/eventos" class="active">🏆 Eventos / Torneios</a>
+      <a href="#">⚙️ Sair</a>
+    </div>
+  </div>
+  <main class="main">
+    <div class="breadcrumb">
+      <a href="/home">Início</a>
+      <span>></span>
+      <a href="/eventos">Eventos / Torneios</a>
+    </div>
+
+    <section class="topo">
+      <div class="titulo-subt">
+        <h1>🏆 Eventos / Torneios</h1>
+        <p>Gerencie os eventos e torneios da loja.</p>
       </div>
 
-      <section class="topo">
-        <div class="titulo-subt">
-          <h1>🏆 Eventos / Torneios</h1>
-          <p>Gerencie os eventos e torneios da loja.</p>
-        </div>
-
-        <div class="botoes-titulo">
-          <button class="new-event" onclick="mostrarFormulario()">
-            + Novo Evento
-          </button>
-        </div>
-
-        <div class="data">
-          <i data-lucide="clock-3"></i>
-
-          <div class="data-textos">
-            <h4>24 de Maio de 2025</h4>
-            <p>Sábado, 10:15</p>
-          </div>
-        </div>
-      </section>
-
-      <div class="card-form" id="formEvento">
-        <h3>Novo Evento</h3>
-
-        <form action="/eventos/criar" method="POST">
-          <input
-            type="text"
-            name="nome"
-            placeholder="Nome do evento"
-            required
-          />
-
-          <select name="jogo" required>
-            <option value="" disabled selected>Selecione o jogo / tipo</option>
-            <option value="pokemon">Pokémon TCG</option>
-            <option value="magic">Magic: The Gathering</option>
-            <option value="yugioh">Yu-Gi-Oh!</option>
-            <option value="board">Board Game</option>
-          </select>
-
-          <input type="datetime-local" name="data" required />
-
-          <input
-            type="number"
-            name="vagas"
-            min="1"
-            placeholder="Quantidade de vagas"
-            required
-          />
-
-          <button type="submit">Cadastrar</button>
-        </form>
+      <div class="botoes-titulo">
+        <button class="new-event" onclick="mostrarFormulario()">
+          + Novo Evento
+        </button>
       </div>
 
-      <section class="content">
-        <div class="eventos">
-          <table class="tabela-eventos">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Evento</th>
-                <th>Jogo / Tipo</th>
-                <th>Data</th>
-                <th>Vagas</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
+      <div class="data">
+        <i data-lucide="clock-3"></i>
 
-            <tbody>
-              {% for evento in eventos %}
-              <tr>
-                <td>{{ evento[0] }}</td>
-
-                <td>{{ evento[1] }}</td>
-
-                <td>{{ evento[2] }}</td>
-
-                <td>{{ evento[3] }}</td>
-
-                <td>{{ evento[4] }}</td>
-
-                <td>
-                  <form action="/eventos/excluir/{{ evento[0] }}" method="POST">
-                    <button type="submit">🗑️</button>
-                  </form>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        <div class="data-textos">
+          <h4>24 de Maio de 2025</h4>
+          <p>Sábado, 10:15</p>
         </div>
+      </div>
+    </section>
 
-        <aside class="barra-direita">
-          <div class="card">
-            <h3>🏆 Resumo</h3>
-            <div class="info">
-              <span>Total de eventos</span>
-              <strong>{{ total_eventos }}</strong>
-            </div>
+    <div class="card-form" id="formEvento" {% if modo=="criar" %} style="display:none;" {% endif %}>
+      {%if modo == "criar"%}
+      <h1>{{ modo }}</h1>
+      <h3>Novo Evento</h3>
+      <form action="/eventos/criar" method="POST">
+        <input type="text" name="nome" placeholder="Nome do evento" required />
+
+        <select name="jogo" required>
+          <option value="" disabled selected>Selecione o jogo / tipo</option>
+          <option value="pokemon">Pokémon TCG</option>
+          <option value="magic">Magic: The Gathering</option>
+          <option value="yugioh">Yu-Gi-Oh!</option>
+          <option value="board">Board Game</option>
+        </select>
+
+        <input type="datetime-local" name="data" required />
+
+        <input type="number" name="vagas" min="1" placeholder="Quantidade de vagas" required />
+
+        <button type="submit">Cadastrar</button>
+      </form>
+      {% elif modo == "editar" %}
+      <h1>{{ modo }}</h1>
+      <h3>Editar Evento</h3>
+      <form action="/eventos/atualizar/{{ evento_edicao[0] }}" method="POST">
+        <input type="text" name="nome" placeholder="Nome do evento" value="{{ evento_edicao[1] }}" required />
+
+        <select name="jogo" required>
+          <option value="" disabled>Selecione o jogo / tipo</option>
+          <option value="pokemon" {% if evento_edicao[2]=="pokemon" %}selected{% endif %}>
+            Pokémon TCG
+          </option>
+          <option value="magic" {% if evento_edicao[2]=="magic" %}selected{% endif %}>
+            Magic: The Gathering
+          </option>
+          <option value="yugioh" {% if evento_edicao[2]=="yugioh" %}selected{% endif %}>
+            Yu-Gi-Oh!
+          </option>
+          <option value="board" {% if evento_edicao[2]=="board" %}selected{% endif %}>
+            Board Game
+          </option>
+        </select>
+
+        <input type="datetime-local" name="data" value="{{ evento_edicao[3] }}" required />
+
+        <input type="number" name="vagas" min="1" placeholder="Quantidade de vagas" value="{{ evento_edicao[4] }}"
+          required />
+
+        <button type="submit">Salvar Alterações</button>
+      </form>
+      {% endif %}
+    </div>
+
+    <section class="content">
+      <div class="eventos">
+        <table class="tabela-eventos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Evento</th>
+              <th>Jogo / Tipo</th>
+              <th>Data</th>
+              <th>Vagas</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for evento in eventos %}
+            <tr>
+              <td>{{ evento[0] }}</td>
+
+              <td>{{ evento[1] }}</td>
+
+              <td>{{ evento[2] }}</td>
+
+              <td>{{ evento[3] }}</td>
+
+              <td>{{ evento[4] }}</td>
+
+              <td>
+                <form action="/eventos/excluir/{{ evento[0] }}" method="POST">
+                  <button type="submit">🗑️</button>
+                </form>
+              </td>
+              <td>
+                <form action="/eventos/editar/{{ evento[0] }}" method="GET">
+                  <button type="submit">✏️</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="barra-direita">
+        <div class="card">
+          <h3>🏆 Resumo</h3>
+          <div class="info">
+            <span>Total de eventos</span>
+            <strong>{{ total_eventos }}</strong>
           </div>
-        </aside>
-      </section>
-    </main>
-    <script>
-      function mostrarFormulario() {
-        let formulario = document.getElementById("formEvento");
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script>
+    function mostrarFormulario() {
+      document.getElementById("formEvento").style.display = "block";
+    }
 
-        if (formulario.style.display === "none") {
-          formulario.style.display = "block";
-        } else {
-          formulario.style.display = "none";
-        }
-      }
+    lucide.createIcons();
+  </script>
+</body>
 
-      lucide.createIcons();
-    </script>
-  </body>
 </html>

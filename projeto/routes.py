@@ -4,7 +4,9 @@ from modules.eventos import (
     criar_tabela_eventos,
     cadastrar_evento,
     listar_eventos,
-    excluir_evento
+    excluir_evento,
+    buscar_evento,
+    editar_evento
 )
 import os
 
@@ -27,7 +29,8 @@ def eventos():
     return render_template(
     "eventos.html",
     eventos=lista,
-    total_eventos=len(lista)
+    total_eventos=len(lista),
+    modo = "criar"
 )
 
 @app.route("/eventos/criar", methods=["POST"])
@@ -46,6 +49,34 @@ def criar_evento():
     )
 
     return redirect("/eventos")
+
+
+@app.route("/eventos/editar/<int:id>", methods=["GET"])
+def mostrar_edicao(id):
+
+    evento = buscar_evento(id)
+    lista = listar_eventos()
+
+    return render_template("eventos.html", eventos=lista, total_eventos=len(lista), evento_edicao=evento, modo="editar")
+
+
+@app.route("/eventos/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
+def atualizar_eventos(id):
+    
+    nome = request.form["nome"]
+    jogo = request.form["jogo"]
+    data = request.form["data"]
+    vagas = request.form["vagas"] 
+
+    editar_evento(
+        id,
+        nome,
+        jogo,
+        data,
+        vagas
+    )
+    return redirect("/eventos")
+
 
 @app.route("/eventos/excluir/<int:id>", methods=["POST"])
 def remover_evento(id):
