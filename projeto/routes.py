@@ -109,7 +109,9 @@ def clientes():
 
     return render_template(
         "clientes.html", 
-        cliente
+        clientes = lista, 
+        total_clientes = len(lista), 
+        modo="criar"
     )
 
 @app.route("/produtos")
