@@ -41,9 +41,11 @@ def listar_clientes():
     cursor.execute("""SELECT * FROM clientes""")
     return cursor.fetchall()
 
-def editar_clientes(id, nome, cpf, telefone, email):
+def editar_cliente(id, nome, cpf, telefone, email):
     try:
         cursor.execute("""UPDATE clientes SET nome = ?, cpf = ?, telefone = ?, email = ? WHERE id = ?""", (nome, cpf, telefone, email, id))
+        if cursor.rowcount == 0:
+            return False
         conexao.commit()
         return True
     except sqlite3.IntegrityError:
