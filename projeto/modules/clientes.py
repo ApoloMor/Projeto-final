@@ -52,12 +52,12 @@ def editar_cliente(id, nome, cpf, telefone, email):
         return False
 
 def buscar_cliente(cpf):
-    cursor.execute("""SELECT FROM * WHERE cpf = ?""", (cpf,))
+    cursor.execute("""SELECT * FROM clientes WHERE cpf = ?""", (cpf,))
     return cursor.fetchone()
 
 def buscar_cliente_nome(nome):
-    cursor.execute("""SELECT * FROM clientes WHERE nome LIKE = ?""", (f"%{nome}%",))
-    return cursor.fetchall
+    cursor.execute("""SELECT * FROM clientes WHERE nome LIKE ?""", (f"%{nome}%",))
+    return cursor.fetchall()
 
 def remover_cliente(id):
     cursor.execute("""DELETE FROM clientes WHERE id = ? """, (id,))
