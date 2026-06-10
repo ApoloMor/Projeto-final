@@ -14,7 +14,8 @@ from modules.clientes import (
     cadastrar_cliente,
     listar_clientes,
     excluir_cliente, 
-    editar_cliente
+    editar_cliente, 
+    buscar_cliente_por_id
 )
 
 from modules.produtos import(
