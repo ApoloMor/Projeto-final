@@ -1,15 +1,10 @@
-import os
 import sqlite3
-
-PASTA_ATUAL = os.path.dirname(os.path.abspath(__file__))
-CAMINHO_BANCO = os.path.join(PASTA_ATUAL, "..", "database", "gamestore.db")
-
-conexao = sqlite3.connect(CAMINHO_BANCO)
-
-cursor = conexao.cursor()
+from database import conectar
 
 #mandar comandos para o banco
-def criar_tabela():
+def criar_tabela_clientes():
+    conexao = conectar()          
+    cursor = conexao.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS clientes(
             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -19,10 +14,13 @@ def criar_tabela():
             email TEXT NOT NULL UNIQUE
         )""")
     conexao.commit() #salvar as alteracoes
+    conexao.close()
 
 #cursor.execute("""sql""", valores) -> 1. pega os sql com ? ->entrega pro banco; 2. pega os valores -> entrega pro banco separadamente
 #o banco que junta as duas coisas, python vai so entregar
-def inserir_cliente(nome, cpf, telefone, email):
+def cadastrar_cliente(nome, cpf, telefone, email):
+    conexao = conectar()         
+    cursor = conexao.cursor()
     try:    
         cursor.execute("""
                        INSERT INTO clientes
@@ -34,34 +32,51 @@ def inserir_cliente(nome, cpf, telefone, email):
         return True
     except sqlite3.IntegrityError:
         return False
+    finally:
+        conexao.close()
 
 #get data -> usa-se select
 
 def listar_clientes():
+    conexao = conectar()         
+    cursor = conexao.cursor()
     cursor.execute("""SELECT * FROM clientes""")
+    conexao.close()
     return cursor.fetchall()
 
 def editar_cliente(id, nome, cpf, telefone, email):
+    conexao = conectar()        
+    cursor = conexao.cursor()
     try:
         cursor.execute("""UPDATE clientes SET nome = ?, cpf = ?, telefone = ?, email = ? WHERE id = ?""", (nome, cpf, telefone, email, id))
         if cursor.rowcount == 0:
             return False
         conexao.commit()
+        conexao.close()
         return True
     except sqlite3.IntegrityError:
         return False
 
 def buscar_cliente(cpf):
+    conexao = conectar()         
+    cursor = conexao.cursor()
     cursor.execute("""SELECT * FROM clientes WHERE cpf = ?""", (cpf,))
+    conexao.close()
     return cursor.fetchone()
 
 def buscar_cliente_nome(nome):
+    conexao = conectar()        
+    cursor = conexao.cursor()
     cursor.execute("""SELECT * FROM clientes WHERE nome LIKE ?""", (f"%{nome}%",))
+    conexao.close()
     return cursor.fetchall()
 
-def remover_cliente(id):
+def excluir_cliente(id):
+    conexao = conectar()       
+    cursor = conexao.cursor()
     cursor.execute("""DELETE FROM clientes WHERE id = ? """, (id,))
     if cursor.rowcount == 0:
         return False
     conexao.commit()
+    conexao.close()
     return True
