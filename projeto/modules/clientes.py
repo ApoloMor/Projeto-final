@@ -59,6 +59,14 @@ def editar_cliente(id, nome, cpf, telefone, email):
     finally:
         conexao.close()
 
+def buscar_cliente_por_id(id):
+    conexao = conectar()
+    cursor = conexao.cursor()
+    cursor.execute("""SELECT * FROM clientes WHERE id = ?""", (id,))
+    resultado = cursor.fetchone()
+    conexao.close()
+    return resultado
+
 def buscar_cliente(cpf):
     conexao = conectar()         
     cursor = conexao.cursor()
