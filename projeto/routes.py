@@ -103,7 +103,14 @@ def remover_evento(id):
 
 @app.route("/clientes")
 def clientes():
-    return render_template("clientes.html")
+    criar_tabela_clientes()
+
+    lista = listar_clientes()
+
+    return render_template(
+        "clientes.html", 
+        cliente
+    )
 
 @app.route("/produtos")
 def produtos():
