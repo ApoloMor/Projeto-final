@@ -6,8 +6,14 @@ from modules.eventos import (
     listar_eventos,
     excluir_evento,
     buscar_evento,
-    editar_evento
+    editar_evento,
 )
+from modules.produtos import(
+    criar_tabela_produtos,
+    cadastrar_produtos,
+    excluir_produtos
+)
+
 import os
 
 print(os.getcwd())
@@ -91,6 +97,9 @@ def clientes():
 
 @app.route("/produtos")
 def produtos():
+
+
+
     return render_template("produtos.html")
 
 @app.route("/fornecedores")
