@@ -8,6 +8,15 @@ from modules.eventos import (
     buscar_evento,
     editar_evento,
 )
+
+from modules.clientes import (
+    criar_tabela_clientes, 
+    cadastrar_cliente,
+    listar_clientes,
+    excluir_cliente, 
+    editar_cliente
+)
+
 from modules.produtos import(
     criar_tabela_produtos,
     cadastrar_produtos,
