@@ -8,6 +8,16 @@ from modules.eventos import (
     buscar_evento,
     editar_evento,
 )
+
+from modules.clientes import (
+    criar_tabela_clientes, 
+    cadastrar_cliente,
+    listar_clientes,
+    excluir_cliente, 
+    editar_cliente, 
+    buscar_cliente_por_id
+)
+
 from modules.produtos import(
     criar_tabela_produtos,
     cadastrar_produtos,
@@ -96,7 +106,14 @@ def remover_evento(id):
 
 @app.route("/clientes")
 def clientes():
-    return render_template("clientes.html")
+    criar_tabela_clientes()
+
+    lista = listar_clientes()
+
+    return render_template(
+        "clientes.html", 
+        cliente
+    )
 
 
 

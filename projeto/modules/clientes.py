@@ -41,8 +41,9 @@ def listar_clientes():
     conexao = conectar()         
     cursor = conexao.cursor()
     cursor.execute("""SELECT * FROM clientes""")
+    resultado = cursor.fetchall()
     conexao.close()
-    return cursor.fetchall()
+    return resultado
 
 def editar_cliente(id, nome, cpf, telefone, email):
     conexao = conectar()        
@@ -52,31 +53,44 @@ def editar_cliente(id, nome, cpf, telefone, email):
         if cursor.rowcount == 0:
             return False
         conexao.commit()
-        conexao.close()
         return True
     except sqlite3.IntegrityError:
         return False
+    finally:
+        conexao.close()
+
+def buscar_cliente_por_id(id):
+    conexao = conectar()
+    cursor = conexao.cursor()
+    cursor.execute("""SELECT * FROM clientes WHERE id = ?""", (id,))
+    resultado = cursor.fetchone()
+    conexao.close()
+    return resultado
 
 def buscar_cliente(cpf):
     conexao = conectar()         
     cursor = conexao.cursor()
     cursor.execute("""SELECT * FROM clientes WHERE cpf = ?""", (cpf,))
+    resultado = cursor.fetchone()
     conexao.close()
-    return cursor.fetchone()
+    return resultado
 
 def buscar_cliente_nome(nome):
     conexao = conectar()        
     cursor = conexao.cursor()
     cursor.execute("""SELECT * FROM clientes WHERE nome LIKE ?""", (f"%{nome}%",))
+    resultado = cursor.fetchall()
     conexao.close()
-    return cursor.fetchall()
+    return resultado
 
 def excluir_cliente(id):
     conexao = conectar()       
     cursor = conexao.cursor()
-    cursor.execute("""DELETE FROM clientes WHERE id = ? """, (id,))
-    if cursor.rowcount == 0:
-        return False
-    conexao.commit()
-    conexao.close()
-    return True
+    try:    
+        cursor.execute("""DELETE FROM clientes WHERE id = ? """, (id,))
+        if cursor.rowcount == 0:
+            return False
+        conexao.commit()
+        return True
+    finally:
+        conexao.close()
