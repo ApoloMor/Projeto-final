@@ -35,162 +35,116 @@
       <a class="links" href="/fornecedores">Fornecedores</a>
     </p>
 
-    <div class="topo">
+      <div class="topo">
 
-      <i data-lucide="truck"></i>
+        <i data-lucide="truck"></i>
 
-        <div class="titulo-subt">
-          <h1>Fornecedores</h1>
-          <p>Gerencie os fornecedores da loja.</p>
+          <div class="titulo-subt">
+            <h1>Fornecedores</h1>
+            <p>Gerencie os fornecedores da loja.</p>
+          </div>
+
+        <div class="botoes-titulo">
+          <button class="new-event">
+            <span>+</span> Novo Fornecedor
+          </button>
         </div>
 
-      <div class="botoes-titulo">
-        <button class="new-event">
-          <span>+</span> Novo Fornecedor
-        </button>
+        <div class="data">
+          <i data-lucide="clock-3"></i>
 
-        <button class="export">
-          Exportar
-        </button>
-      </div>
-
-      <div class="data">
-        <i data-lucide="clock-3"></i>
-
-        <div class="texto-data">
-          <h4>1 de Junho de 2026</h4>
-          <p>Segunda, 09:00</p>
+          <div class="texto-data">
+            <h4>1 de Junho de 2026</h4>
+            <p>Segunda, 09:00</p>
+          </div>
         </div>
       </div>
-
-    </div>
 
     <div class="content">
 
-      <div class="conteudo-principal">
+        <div class="conteudo-principal">
 
-        <div class="card-tabela">
+          <div class="card-tabela">
 
-          <div class="topo-tabela">
-            <input id="busca-input" type="text" placeholder="🔍 Buscar fornecedor..." />
-          </div>
+            <div class="fornecedores">
 
-          <div class="fornecedores">
+              <table>
 
-            <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Fornecedor</th>
+                    <th>CNPJ</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
 
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Fornecedor</th>
-                  <th>CNPJ</th>
-                  <th>Telefone</th>
-                  <th>E-mail</th>
-                  <th>Status</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
+                <tbody>
 
-              <tbody>
+              <tr>
+                <td>001</td>
+                <td>Galápagos Jogos</td>
+                <td>15.234.657/0001-95</td>
+                <td>(11) 3052-3600</td>
+                <td>contato@galapagosjogos.com.br</td>
+                <td>
+                  <span class="status ativo">Ativo</span>
+                </td>
+                <td>✏️  🗑️</td>
+              </tr>
 
-            <tr>
-              <td>001</td>
-              <td>Galápagos Jogos</td>
-              <td>15.234.657/0001-95</td>
-              <td>(11) 3052-3600</td>
-              <td>contato@galapagosjogos.com.br</td>
-              <td>
-                <span class="status ativo">Ativo</span>
-              </td>
-              <td>✏️ 👁️ 🗑️</td>
-            </tr>
+              <tr>
+                <td>002</td>
+                <td>Copag</td>
+                <td>61.082.426/0001-07</td>
+                <td>(11) 3672-4200</td>
+                <td>comercial@copag.com.br</td>
+                <td>
+                  <span class="status ativo">Ativo</span>
+                </td>
+                <td>✏️  🗑️</td>
+              </tr>
 
-            <tr>
-              <td>002</td>
-              <td>Copag</td>
-              <td>61.082.426/0001-07</td>
-              <td>(11) 3672-4200</td>
-              <td>comercial@copag.com.br</td>
-              <td>
-                <span class="status ativo">Ativo</span>
-              </td>
-              <td>✏️ 👁️ 🗑️</td>
-            </tr>
+                  <tr>
+                    <td>003</td>
+                    <td>Devir Livraria</td>
+                    <td>08.704.131/0001-56</td>
+                    <td>(11) 5087-5180</td>
+                    <td>vendas@devir.com.br</td>
+                    <td>
+                      <span class="status ativo">Ativo</span>
+                    </td>
+                    <td>✏️  🗑️</td>
+                  </tr>
 
-                <tr>
-                  <td>003</td>
-                  <td>Devir Livraria</td>
-                  <td>08.704.131/0001-56</td>
-                  <td>(11) 5087-5180</td>
-                  <td>vendas@devir.com.br</td>
-                  <td>
-                    <span class="status ativo">Ativo</span>
-                  </td>
-                  <td>✏️ 👁️ 🗑️</td>
-                </tr>
+                </tbody>
 
-              </tbody>
+              </table>
 
-            </table>
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+        <div class="barra-direita">
 
-      <div class="barra-direita">
+          <div class="card-lateral">
+            <h3>Resumo de fornecedores</h3>
 
-        <div class="card-lateral">
-          <h3>Resumo de fornecedores</h3>
+            <div class="item-resumo">
+              <span>Total de fornecedores</span>
+              <strong>24</strong>
+            </div>
 
-          <div class="item-resumo">
-            <span>Total de fornecedores</span>
-            <strong>24</strong>
           </div>
 
-          <div class="item-resumo">
-            <span>Fornecedores ativos</span>
-            <strong class="verde">21</strong>
-          </div>
+        </div>  
 
-          <div class="item-resumo">
-            <span>Fornecedores inativos</span>
-            <strong class="vermelho">3</strong>
-          </div>
-
-          <div class="item-resumo">
-            <span>Novos este mês</span>
-            <strong>2</strong>
-          </div>
-
-        </div>
-
-        <div class="card-lateral">
-
-          <h3>Filtros</h3>
-
-          <select>
-            <option>Todos os status</option>
-          </select>
-
-          <select>
-            <option>Todos os tipos</option>
-          </select>
-
-          <select>
-            <option>Todas as cidades</option>
-          </select>
-
-          <button class="btn-filtro">
-            Aplicar filtros
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
+  </div>
 
     <script>
       lucide.createIcons();
