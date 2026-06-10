@@ -4,27 +4,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet">
   <title>Loja dos Games - Produtos</title>
-  <link rel="stylesheet" href="../static/produtos.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='produtos.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
   <div class="sidebar">
-
     <div class="logo">
       <h1>GAME STORE</h1>
       <p>BOARD GAMES & CARD GAMES</p>
     </div>
 
-      <div class="menu">
-        <a href="/">🏠 Início</a>
-        <a href="/produtos" class="active">📦 Produtos</a>
-        <a href="/clientes">👥 Clientes</a>
-        <a href="/fornecedores">🚚 Fornecedores</a>
-        <a href="/eventos">🏆 Eventos / Torneios</a>
-        <a href="#">⚙️ Sair</a>
+    <div class="menu">
+      <a href="/">🏠 Início</a>
+      <a href="/produtos" class="active">📦 Produtos</a>
+      <a href="/clientes">👥 Clientes</a>
+      <a href="/fornecedores">🚚 Fornecedores</a>
+      <a href="/produtos">📦 Produtos</a>
+      <a href="#">⚙️ Sair</a>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="breadcrumb">
+      <a href="/home">Início</a>
+      <span>></span>
+      <a href="/produtos">Produtos</a>
+    </div>
+
+    <section class="topo">
+      <div class="titulo-subt">
+        <h1>📦 Produtos</h1>
+        <p>Gerencie os produtos da loja.</p>
       </div>
+
+      <div class="botoes-titulo">
+        <button class="new-product" onclick="mostrarFormulario()">
+          + Novo Produto
+        </button>
+      </div>
+
+      <div class="data">
+        <i data-lucide="clock-3"></i>
+
+        <div class="data-textos">
+          <h4>24 de Maio de 2025</h4>
+          <p>Sábado, 10:15</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="card-form" id="formProduto" {% if modo=="criar" %} style="display:none;" {% endif %}>
+      {% if modo == "criar" %}
+      <h1>{{ modo }}</h1>
+      <h3>Novo Produto</h3>
+
+      <form action="/produtos/criar" method="POST">
+        <input type="text" name="nome" placeholder="Nome do produto" required />
+
+        <select name="jogo" required>
+          <option value="" disabled selected>Selecione a categoria</option>
+          <option value="pokemon">Pokémon TCG</option>
+          <option value="magic">Magic: The Gathering</option>
+          <option value="yugioh">Yu-Gi-Oh!</option>
+          <option value="board">Board Game</option>
+        </select>
+
+        <input type="datetime-local" name="data" required />
+
+        <input type="number" name="vagas" min="1" placeholder="Quantidade em estoque" required />
+
+        <button type="submit">Cadastrar</button>
+      </form>
+
+      {% elif modo == "editar" %}
+
+      <h1>{{ modo }}</h1>
+      <h3>Editar Produto</h3>
+
+      <form action="/produtos/atualizar/{{ produto_edicao[0] }}" method="POST">
+        <input type="text" name="nome" placeholder="Nome do produto" value="{{ produto_edicao[1] }}" required />
+
+        <select name="jogo" required>
+          <option value="" disabled>Selecione a categoria</option>
+
+          <option value="pokemon" {% if produto_edicao[2]=="pokemon" %}selected{% endif %}>
+            Pokémon TCG
+          </option>
+
+          <option value="magic" {% if produto_edicao[2]=="magic" %}selected{% endif %}>
+            Magic: The Gathering
+          </option>
+
+          <option value="yugioh" {% if produto_edicao[2]=="yugioh" %}selected{% endif %}>
+            Yu-Gi-Oh!
+          </option>
+
+          <option value="board" {% if produto_edicao[2]=="board" %}selected{% endif %}>
+            Board Game
+          </option>
+        </select>
+
+        <input type="datetime-local" name="data" value="{{ produto_edicao[3] }}" required />
+
+        <input type="number" name="vagas" min="1" placeholder="Quantidade em estoque"
+          value="{{ produto_edicao[4] }}" required />
+
+        <button type="submit">Salvar Alterações</button>
+      </form>
+
+      {% endif %}
+    </div>
+
+    <section class="content">
+      <div class="produtos">
+        <table class="tabela-produtos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Data</th>
+              <th>Estoque</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for produto in produtos %}
+            <tr>
+              <td>{{ produto[0] }}</td>
+
+              <td>{{ produto[1] }}</td>
+
+              <td>{{ produto[2] }}</td>
+
+              <td>{{ produto[3] }}</td>
+
+              <td>{{ produto[4] }}</td>
+
+              <td>
+                <form action="/produtos/excluir/{{ produto[0] }}" method="POST">
+                  <button type="submit">🗑️</button>
+                </form>
+              </td>
+
+              <td>
+                <form action="/produtos/editar/{{ produto[0] }}" method="GET">
+                  <button type="submit">✏️</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="barra-direita">
+        <div class="card">
+          <h3>📦 Resumo</h3>
+
+          <div class="info">
+            <span>Total de produtos</span>
+            <strong>{{ total_produtos }}</strong>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    function mostrarFormulario() {
+      document.getElementById("formProduto").style.display = "block";
+    }
+
+    lucide.createIcons();
+  </script>
 </body>
 
 </html>
