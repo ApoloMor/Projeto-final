@@ -1,69 +1,34 @@
 #mudar de pickle pra SQL
+import sqlite3
 
-"""
-modulo de clientes: cadastrar, listar, editar e remover os clientes da loja
-id, nome, cpf, telefone, email
+conexao = sqlite3.connect("gamestore.db")
+cursor = conexao.cursor()
 
-#lista com varios dicionarios, cada dicionarios tem o cliente com suas informacoes 
-"""
+#mandar comandos para o banco
+def criar_tabela():
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS clientes(
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL, 
+            cpf TEXT NOT NULL UNIQUE,
+            telefone TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE
+        )""")
+    conexao.commit() #salvar as alteracoes
 
-import pickle
-import os
-ARQUIVO = "clientes.pkl"
+#cursor.execute("""sql""", valores) -> 1. pega os sql com ? ->entrega pro banco; 2. pega os valores -> entrega pro banco separadamente
+#o banco que junta as duas coisas, python vai so entregar
+def inserir_cliente(nome, cpf, telefone, email):
+    cursor.execute("""
+                   INSERT INTO clientes
+                    (nome, cpf, telefone, email) 
+                   VALUES
+                    (?, ?, ?, ?)
+                   """, (nome, cpf, telefone, email))
+    conexao.commit()
 
-#print("=-="*10, "Menu", "=-="*10)
+#get data -> usa-se select
 
-#print("1. Cadastrar\n2. Listar\n3. Editar\n4. Remover\n5. Sair")
-
-#ler os clientes salvos no arquivo
-def carregar():
-    if not os.path.exists(ARQUIVO): #se nn existe eh pra devolver a lista vazia
-        return []
-    else:
-        with open(ARQUIVO, "rb") as f: #with open eh uma forma boa pra abrir arquivos
-            return pickle.load(f)
-
-#gravar a lista no arquivo clientes.pkl        
-def salvar(lista):
-    with open(ARQUIVO, "wb") as f:
-        pickle.dump(lista, f) #dump grava dentro do arquivo
-
-"""
-- inputs ver oq fazer com isso dps e aprimorar
-lista = carregar()
-novoCliente = {}
-novoCliente["id"] = len(lista) + 1 # +1 pq esse cliente eh o proximo, entt +1
-novoCliente["nome"] = input("Nome completo do cliente: ")
-novoCliente["cpf"] = input("CPF: ")
-novoCliente["telefone"] = input("Telefone: " )
-novoCliente["email"] = input("Insira o email: ")
-lista.append(novoCliente)
-salvar(lista)
-"""
-
-def validarCPF(cpf): # validação: verifica se o CPF já existe
-    lista = carregar(lista)
-    for cliente in lista:
-        if cliente["cpf"] == cpf:
-            print("CPF ja existe")
-            return False
-        
-# id, nome, cpf, telefone, email
-def cadastrar(nome, cpf, telefone, email):
-    novoCliente = {}
-    lista = carregar()
-    #gerar id
-    id = len(lista) 
-    #monta dicionário, append e dps salva
-    novoCliente["id"] = id
-    novoCliente["nome"] = nome
-    novoCliente["cpf"] = cpf
-    novoCliente["telefone"] = telefone
-    novoCliente["email"] = email
-    validar = validarCPF(cpf)
-    if validar == False:
-        print("Este CPF ja existe")
-        return False
-    lista.append(novoCliente)
-    salvar(lista)
-    return True   #se deu certo
+def listar_clientes():
+    cursor.execute("""SELECT * FROM clientes""")
+    return cursor.fetchall()
