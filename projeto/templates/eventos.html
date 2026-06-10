@@ -58,7 +58,6 @@
 
     <div class="card-form" id="formEvento" {% if modo=="criar" %} style="display:none;" {% endif %}>
       {%if modo == "criar"%}
-      <h1>{{ modo }}</h1>
       <h3>Novo Evento</h3>
       <form action="/eventos/criar" method="POST">
         <input type="text" name="nome" placeholder="Nome do evento" required />
@@ -78,7 +77,6 @@
         <button type="submit">Cadastrar</button>
       </form>
       {% elif modo == "editar" %}
-      <h1>{{ modo }}</h1>
       <h3>Editar Evento</h3>
       <form action="/eventos/atualizar/{{ evento_edicao[0] }}" method="POST">
         <input type="text" name="nome" placeholder="Nome do evento" value="{{ evento_edicao[1] }}" required />
