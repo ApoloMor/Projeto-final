@@ -11,7 +11,10 @@ from modules.eventos import (
 from modules.produtos import(
     criar_tabela_produtos,
     cadastrar_produtos,
-    excluir_produtos
+    excluir_produtos,
+    listar_produtos,
+    buscar_produtos,
+    editar_produtos
 )
 
 import os
@@ -95,12 +98,74 @@ def remover_evento(id):
 def clientes():
     return render_template("clientes.html")
 
+
+
+#ROTA DE PRODUTOS E SUAS FUNÇÕES
+
 @app.route("/produtos")
 def produtos():
 
+    criar_tabela_produtos()
+
+    lista = listar_produtos()
+
+    return render_template(
+    "produtos.html",
+    produtos=lista,
+    total_produtos=len(lista),
+    modo = "criar"
+    )
+
+@app.route("/produtos/criar", methods=["POST"])
+def criar_produtos():
+
+    produto = request.form["produto"]
+    tipo = request.form["tipo"]
+    preco = request.form["preco"]
+    estoque = request.form["estoque"]
+
+    cadastrar_evento(
+        produto,
+        tipo,
+        preco,
+        estoque
+    )
+
+    return redirect("/produtos")
+
+@app.route("/produtos/editar/<int:id>", methods=["GET"])
+def edicao(id):
+
+    produtos = buscar_produtos(id)
+    lista = listar_produtos()
+
+    return render_template("produtos.html", produtos=lista, total_produtos=len(lista), evento_edicao=produtos, modo="editar")
 
 
-    return render_template("produtos.html")
+@app.route("/produtos/atualizar/<int:id>", methods=["POST"]) 
+def atualizar_produtos(id):
+    
+    produto = request.form["produto"]
+    tipo = request.form["tipo"]
+    preco = request.form["preco"]
+    estoque = request.form["estoque"] 
+
+    editar_evento(
+        id,
+        produto,
+        tipo,
+        preco,
+        estoque
+    )
+    return redirect("/produtos")
+
+
+@app.route("/produtos/excluir/<int:id>", methods=["POST"])
+def remover_produtos(id):
+
+    excluir_produtos(id)
+
+    return redirect("/produtos")
 
 @app.route("/fornecedores")
 def fornecedores():
