@@ -57,3 +57,9 @@ body{
 .active{
     background:#6d4aff;
 }
+
+.main {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 30px;
+}
