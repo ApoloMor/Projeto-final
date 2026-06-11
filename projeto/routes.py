@@ -143,6 +143,28 @@ def mostrar_edicao_cliente(id):
         modo="editar"
     )
 
+@app.route("/clientes/atualizar/<int:id>", methods=["POST"])
+def atualizar_cliente(id):
+
+    nome = request.form["nome"]
+    cpf = request.form["cpf"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+
+    editar_cliente(
+        id, 
+        nome, 
+        cpf, 
+        telefone, 
+        email
+    )
+    return redirect("/clientes")
+
+@app.route("/clientes/excluir/<int:id>", methods=["POST"])
+def remover_cliente(id):
+    excluir_cliente(id)
+    return redirect("/clientes")
+
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 
 @app.route("/produtos")
