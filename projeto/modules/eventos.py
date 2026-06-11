@@ -1,6 +1,7 @@
 import sqlite3
 from database import conectar
 
+# ----- CRUD eventos -----
 
 def criar_tabela_eventos():
 
@@ -84,8 +85,32 @@ def excluir_evento(id):
 
     cursor.execute(
         "DELETE FROM eventos WHERE id = ?",
-        (id,) #isso vai baseado na linha em que o botão foi pressionado marcado vom seu respectivo id
+        (id,) 
     )
 
     conn.commit()
     conn.close()
+
+# ----- FIM CRUD EVENTOS -----
+
+# ----- Filtros  -----
+
+def filtrar_id_eventos(id_busca):
+    
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM eventos
+                      WHERE id = ?""",(id_busca,))
+    
+    evento = cursor.fetchall()
+
+    conn.close()
+
+    return evento
+
+def filtar_jogo_eventos():
+    pass
+
+def filtrar_nome_eventos():
+    pass

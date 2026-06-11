@@ -7,6 +7,8 @@ from modules.eventos import (
     excluir_evento,
     buscar_evento,
     editar_evento,
+    filtrar_id_eventos,
+
 )
 
 from modules.clientes import (
@@ -104,6 +106,21 @@ def remover_evento(id):
 
     return redirect("/eventos")
 
+@app.route("/eventos/busca-id/<int:id>", methods = ["GET"])
+def buscar_evento_id(id_busca):
+
+    id_busca = request.form["id_busca"]
+
+    evento = filtrar_id_eventos(id_busca)
+
+    return render_template(
+        "eventos.html",
+        evento=evento
+    )
+    
+
+#ROTA DE CLIENTES E SUAS FUNÇÕES
+
 @app.route("/clientes")
 def clientes():
     criar_tabela_clientes()
@@ -185,6 +202,8 @@ def remover_produtos(id):
     excluir_produtos(id)
 
     return redirect("/produtos")
+
+#ROTA DE FORNECEDORES E SUAS FUNÇÕES
 
 @app.route("/fornecedores")
 def fornecedores():
