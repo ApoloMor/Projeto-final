@@ -104,6 +104,8 @@ def remover_evento(id):
 
     return redirect("/eventos")
 
+#CLIENTES - ALISSON
+
 @app.route("/clientes")
 def clientes():
     criar_tabela_clientes()
@@ -125,6 +127,21 @@ def criar_cliente(): #request.form eh pra preencher auto com os dados que vieram
     email = request.form["email"]
 
     cadastrar_cliente(nome, cpf, telefone, email)
+
+    return redirect("/clientes")
+
+@app.route("/clientes/editar/<int:id>", methods=["GET"])
+def mostrar_edicao_cliente(id):
+    cliente = buscar_cliente_por_id(id)
+    lista = listar_clientes()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista, 
+        total_clientes=len(lista),
+        cliente_edicao=cliente,
+        modo="editar"
+    )
 
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 
