@@ -117,7 +117,14 @@ def clientes():
         modo="criar"
     )
 
+@app.route("/clientes/criar", methods=["POST"])
+def criar_cliente(): #request.form eh pra preencher auto com os dados que vieram do html
+    nome = request.form["nome"]
+    cpf = request.form["cpf"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
 
+    cadastrar_cliente(nome, cpf, telefone, email)
 
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 
