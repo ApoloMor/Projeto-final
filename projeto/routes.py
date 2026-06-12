@@ -8,10 +8,23 @@ from modules.eventos import (
     buscar_evento,
     editar_evento,
 )
+
+from modules.clientes import (
+    criar_tabela_clientes, 
+    cadastrar_cliente,
+    listar_clientes,
+    excluir_cliente, 
+    editar_cliente, 
+    buscar_cliente_por_id
+)
+
 from modules.produtos import(
     criar_tabela_produtos,
     cadastrar_produtos,
-    excluir_produtos
+    excluir_produtos,
+    listar_produtos,
+    buscar_produtos,
+    editar_produtos
 )
 
 import os
@@ -91,16 +104,133 @@ def remover_evento(id):
 
     return redirect("/eventos")
 
+#CLIENTES - ALISSON
+
 @app.route("/clientes")
 def clientes():
-    return render_template("clientes.html")
+    criar_tabela_clientes()
+
+    lista = listar_clientes()
+
+    return render_template(
+        "clientes.html", 
+        clientes = lista, 
+        total_clientes = len(lista), 
+        modo="criar"
+    )
+
+@app.route("/clientes/criar", methods=["POST"])
+def criar_cliente(): #request.form eh pra preencher auto com os dados que vieram do html
+    nome = request.form["nome"]
+    cpf = request.form["cpf"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+
+    cadastrar_cliente(nome, cpf, telefone, email)
+
+    return redirect("/clientes")
+
+@app.route("/clientes/editar/<int:id>", methods=["GET"])
+def mostrar_edicao_cliente(id):
+    cliente = buscar_cliente_por_id(id)
+    lista = listar_clientes()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista, 
+        total_clientes=len(lista),
+        cliente_edicao=cliente,
+        modo="editar"
+    )
+
+@app.route("/clientes/atualizar/<int:id>", methods=["POST"])
+def atualizar_cliente(id):
+
+    nome = request.form["nome"]
+    cpf = request.form["cpf"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+
+    editar_cliente(
+        id, 
+        nome, 
+        cpf, 
+        telefone, 
+        email
+    )
+    return redirect("/clientes")
+
+@app.route("/clientes/excluir/<int:id>", methods=["POST"])
+def remover_cliente(id):
+    excluir_cliente(id)
+    return redirect("/clientes")
+
+#ROTA DE PRODUTOS E SUAS FUNÇÕES
 
 @app.route("/produtos")
 def produtos():
 
+    criar_tabela_produtos()
+
+    lista = listar_produtos()
+
+    return render_template(
+    "produtos.html",
+    produtos=lista,
+    total_produtos=len(lista),
+    modo = "criar"
+    )
+
+@app.route("/produtos/criar", methods=["POST"])
+def criar_produtos():
+
+    produto = request.form["produto"]
+    tipo = request.form["tipo"]
+    preco = request.form["preco"]
+    estoque = request.form["estoque"]
+
+    cadastrar_evento(
+        produto,
+        tipo,
+        preco,
+        estoque
+    )
+
+    return redirect("/produtos")
+
+@app.route("/produtos/editar/<int:id>", methods=["GET"])
+def edicao(id):
+
+    produtos = buscar_produtos(id)
+    lista = listar_produtos()
+
+    return render_template("produtos.html", produtos=lista, total_produtos=len(lista), evento_edicao=produtos, modo="editar")
 
 
-    return render_template("produtos.html")
+@app.route("/produtos/atualizar/<int:id>", methods=["POST"]) 
+def atualizar_produtos(id):
+    
+    produto = request.form["produto"]
+    tipo = request.form["tipo"]
+    preco = request.form["preco"]
+    estoque = request.form["estoque"] 
+
+    editar_evento(
+        id,
+        produto,
+        tipo,
+        preco,
+        estoque
+    )
+    return redirect("/produtos")
+
+
+@app.route("/produtos/excluir/<int:id>", methods=["POST"])
+def remover_produtos(id):
+
+    excluir_produtos(id)
+
+    return redirect("/produtos")
 
 @app.route("/fornecedores")
 def fornecedores():
