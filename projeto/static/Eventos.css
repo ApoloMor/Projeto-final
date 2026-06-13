@@ -190,7 +190,6 @@ body {
   background: #5b3ae6;
 }
 
-
 /* =========================
    CONTEÚDO
 ========================= */
@@ -249,6 +248,73 @@ body {
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+
+.filtros {
+  display: flex;
+}
+
+.form-busca {
+  display: flex;
+  gap: 10px;
+}
+
+.form-busca input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.lucide-glass {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #6d4aff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form-filtros {
+  display: flex;
+  gap: 10px;
+}
+
+.form-filtros input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.lucide-trash {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-clear {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #6d4aff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-left: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 /* =========================

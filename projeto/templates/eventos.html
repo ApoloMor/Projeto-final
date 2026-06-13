@@ -105,10 +105,16 @@
 
     <section class="content">
       <div class="eventos">
-        <form action="/eventos/busca-id" method="GET">
-        <input type="number" name = "id_busca" placeholder="Buscar evento por id">
-        <button type="submit">🔍 Buscar</button>
-        </form>
+        <div class="filtros">
+          <form action="/eventos/busca-id" method="POST" class="form-busca">
+            <input type="number" name="id_busca" placeholder="Buscar evento por id" required>
+            <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-glass"></i> Buscar</button>
+          </form>
+          <form class="form-filtros" action="/eventos">
+            <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-trash"></i> Limpar
+              filtros</button>
+          </form>
+        </div>
         <table class="tabela-eventos">
           <thead>
             <tr>
@@ -165,24 +171,24 @@
     function mostrarFormulario() {
       document.getElementById("formEvento").style.display = "block";
     }
-        function atualizarDataHora() {
-            const agora = new Date();
-            
-            // Formata a data e hora para o padrão brasileiro (PT-BR)
-            const opcoes = { 
-                dateStyle: 'short', 
-                timeStyle: 'medium' 
-            };
-            
-            // Atualiza o texto dentro da tag time
-            document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
-        }
+    function atualizarDataHora() {
+      const agora = new Date();
 
-        // Atualiza a cada 1 segundo (tempo real)
-        setInterval(atualizarDataHora, 1000);
-        
-        // Executa uma vez logo ao carregar a página
-        atualizarDataHora();
+      // Formata a data e hora para o padrão brasileiro (PT-BR)
+      const opcoes = {
+        dateStyle: 'short',
+        timeStyle: 'medium'
+      };
+
+      // Atualiza o texto dentro da tag time
+      document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+    }
+
+    // Atualiza a cada 1 segundo (tempo real)
+    setInterval(atualizarDataHora, 1000);
+
+    // Executa uma vez logo ao carregar a página
+    atualizarDataHora();
 
     lucide.createIcons();
   </script>

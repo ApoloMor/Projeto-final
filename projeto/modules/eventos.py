@@ -101,9 +101,9 @@ def filtrar_id_eventos(id_busca):
     cursor = conn.cursor()
 
     cursor.execute("""SELECT * FROM eventos
-                      WHERE id = ?""",(id_busca,))
+                      WHERE id = ?""", (id_busca,))
     
-    evento = cursor.fetchall()
+    evento = cursor.fetchone()
 
     conn.close()
 

@@ -106,16 +106,25 @@ def remover_evento(id):
 
     return redirect("/eventos")
 
-@app.route("/eventos/busca-id/<int:id>", methods = ["GET"])
-def buscar_evento_id(id_busca):
 
-    id_busca = request.form["id_busca"]
+@app.route("/eventos/busca-id", methods=["POST"])
+def buscar_evento_id():
+
+    id_busca = request.form.get("id_busca", "").strip()
+    try:
+        id_busca = int(id_busca)
+    except ValueError:
+        return redirect("/eventos")
 
     evento = filtrar_id_eventos(id_busca)
+    eventos = [evento] if evento else []
+    total_eventos = len(eventos)
 
     return render_template(
         "eventos.html",
-        evento=evento
+        eventos=eventos,
+        total_eventos=total_eventos,
+        modo="criar"
     )
     
 
@@ -133,8 +142,6 @@ def clientes():
         total_clientes = len(lista), 
         modo="criar"
     )
-
-
 
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 
