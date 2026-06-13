@@ -7,7 +7,8 @@ from modules.eventos import (
     excluir_evento,
     buscar_evento,
     editar_evento,
-    filtrar_id_eventos,
+    filtrar_eventos_id,
+    filtrar_eventos_nome,
 
 )
 
@@ -116,7 +117,7 @@ def buscar_evento_id():
     except ValueError:
         return redirect("/eventos")
 
-    evento = filtrar_id_eventos(id_busca)
+    evento = filtrar_eventos_id(id_busca)
     eventos = [evento] if evento else []
     total_eventos = len(eventos)
 
@@ -127,6 +128,21 @@ def buscar_evento_id():
         modo="criar"
     )
     
+@app.route("/eventos/busca-nome", methods=["POST"])
+def buscar_eventos_nome():
+
+    nome_busca = request.form.get("nome_busca", "").strip()
+
+    eventos = filtrar_eventos_nome(nome_busca)
+
+    total_eventos = len(eventos)
+
+    return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos=total_eventos,
+        modo="criar"
+    )
 
 #ROTA DE CLIENTES E SUAS FUNÇÕES
 

@@ -259,6 +259,10 @@ body {
   gap: 10px;
 }
 
+#form-busca_nome {
+  margin-left: 20px;
+}
+
 .form-busca input {
   padding: 10px;
   border: 1px solid #ddd;

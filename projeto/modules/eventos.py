@@ -95,7 +95,7 @@ def excluir_evento(id):
 
 # ----- Filtros  -----
 
-def filtrar_id_eventos(id_busca):
+def filtrar_eventos_id(id_busca):
     
     conn = conectar()
     cursor = conn.cursor()
@@ -109,8 +109,20 @@ def filtrar_id_eventos(id_busca):
 
     return evento
 
-def filtar_jogo_eventos():
-    pass
+def filtrar_eventos_nome(nome_busca):
+    
+        conn = conectar()
+        cursor = conn.cursor()
 
-def filtrar_nome_eventos():
-    pass
+        cursor.execute("""SELECT * FROM eventos
+                      WHERE nome LIKE ?""", (f"%{nome_busca}%",))
+        
+        evento = cursor.fetchall()
+
+        conn.close()
+
+        return evento
+
+
+def filtar_eventos_jogo():
+     pass
