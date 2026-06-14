@@ -124,7 +124,7 @@ def filtrar_eventos_nome(busca):
         return evento
 
 
-def filtar_eventos_jogo(tipo):
+def filtrar_eventos_jogo(tipo):
          
     conn = conectar()
     cursor = conn.cursor()
@@ -132,7 +132,7 @@ def filtar_eventos_jogo(tipo):
     cursor.execute("""SELECT * FROM eventos
                       WHERE jogo = ?""", (tipo,))
     
-    evento = cursor.fetchone()
+    evento = cursor.fetchall()
 
     conn.close()
 
