@@ -107,13 +107,8 @@
       <div class="eventos">
         <div class="filtros">
 
-          <form action="/eventos/busca-id" method="POST" class="form-busca">
-            <input type="number" name="id_busca" placeholder="Buscar evento por id" required>
-            <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-glass"></i> Buscar</button>
-          </form>
-
-          <form action="/eventos/busca-nome" method="POST" class="form-busca" id="form-busca_nome">
-            <input type="text" name="nome_busca" placeholder="Buscar evento por nome" required>
+          <form action="/eventos/busca" method="POST" class="form-busca">
+            <input type="text" name="busca" placeholder="Buscar evento por id ou nome" required>
             <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-glass"></i> Buscar</button>
           </form>
 

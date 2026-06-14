@@ -95,13 +95,13 @@ def excluir_evento(id):
 
 # ----- Filtros  -----
 
-def filtrar_eventos_id(id_busca):
+def filtrar_eventos_id(busca):
     
     conn = conectar()
     cursor = conn.cursor()
 
     cursor.execute("""SELECT * FROM eventos
-                      WHERE id = ?""", (id_busca,))
+                      WHERE id = ?""", (busca,))
     
     evento = cursor.fetchone()
 
@@ -109,13 +109,13 @@ def filtrar_eventos_id(id_busca):
 
     return evento
 
-def filtrar_eventos_nome(nome_busca):
+def filtrar_eventos_nome(busca):
     
         conn = conectar()
         cursor = conn.cursor()
 
         cursor.execute("""SELECT * FROM eventos
-                      WHERE nome LIKE ?""", (f"%{nome_busca}%",))
+                      WHERE nome LIKE ?""", (f"%{busca}%",))
         
         evento = cursor.fetchall()
 

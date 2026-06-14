@@ -107,43 +107,26 @@ def remover_evento(id):
 
     return redirect("/eventos")
 
-
-@app.route("/eventos/busca-id", methods=["POST"])
-def buscar_evento_id():
-
-    id_busca = request.form.get("id_busca", "").strip()
-    try:
-        id_busca = int(id_busca)
-    except ValueError:
-        return redirect("/eventos")
-
-    evento = filtrar_eventos_id(id_busca)
-    eventos = [evento] if evento else []
-    total_eventos = len(eventos)
-
-    return render_template(
-        "eventos.html",
-        eventos=eventos,
-        total_eventos=total_eventos,
-        modo="criar"
-    )
+@app.route("/eventos/busca", methods=["POST"])
+def buscar_eventos():
+  busca = request.form["busca"]
+  
+  if busca.isdigit():
     
-@app.route("/eventos/busca-nome", methods=["POST"])
-def buscar_eventos_nome():
-
-    nome_busca = request.form.get("nome_busca", "").strip()
-
-    eventos = filtrar_eventos_nome(nome_busca)
-
-    total_eventos = len(eventos)
-
-    return render_template(
-        "eventos.html",
-        eventos=eventos,
-        total_eventos=total_eventos,
-        modo="criar"
-    )
-
+        evento = filtrar_eventos_id(busca)
+        eventos = [evento] if evento else []
+    
+  else:
+        eventos = filtrar_eventos_nome(busca)
+  total_eventos = len(eventos)
+  
+  return render_template(
+      "eventos.html",
+      eventos=eventos,
+      total_eventos=total_eventos,
+      modo="criar"
+  )
+  
 #ROTA DE CLIENTES E SUAS FUNÇÕES
 
 @app.route("/clientes")
