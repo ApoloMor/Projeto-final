@@ -36,7 +36,7 @@ print(os.getcwd())
 
 @app.route("/")
 def home():
-    return render_template("Home.html")
+    return render_template("home.html")
 
 
 #ROTA DE EVENTOS E SUAS FUNÇÕES
