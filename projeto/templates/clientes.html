@@ -8,7 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../static/clientes.css" />
+    <link rel="stylesheet" href="{{url_for('static', filename='clientes.css')}}" />
 
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
@@ -85,92 +85,31 @@
                     <th>CPF</th>
                     <th>Telefone</th>
                     <th>E-mail</th>
-                    <th>Status</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
 
                 <tbody>
+                  {% for cliente in clientes %}
                   <tr>
-                    <td>001</td>
-                    <td>João da Silva</td>
-                    <td>123.456.789-01</td>
-                    <td>(11) 98765-4321</td>
-                    <td>joao@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
+                  <td>{{ cliente[0] }}</td>
+                  <td>{{ cliente[1] }}</td>
+                  <td>{{ cliente[2] }}</td>
+                  <td>{{ cliente[3] }}</td>
+                  <td>{{ cliente[4] }}</td>
 
-                  <tr>
-                    <td>002</td>
-                    <td>Maria Oliveira</td>
-                    <td>987.654.321-02</td>
-                    <td>(11) 91234-5678</td>
-                    <td>maria@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
+                  <td>
+                    <form action="/clientes/editar/{{ cliente[0] }}" method="GET" style="display:inline;">
+                      <button type="submit" class="btn-editar">Editar</button>
+                    </form>
 
-                  <tr>
-                    <td>003</td>
-                    <td>Pedro Almeida</td>
-                    <td>456.789.123-03</td>
-                    <td>(11) 97654-3210</td>
-                    <td>pedro@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
-
-                  <tr>
-                    <td>004</td>
-                    <td>Carla Ferreira</td>
-                    <td>321.654.987-04</td>
-                    <td>(11) 93456-7890</td>
-                    <td>carla@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
-
-                  <tr>
-                    <td>005</td>
-                    <td>Lucas Martins</td>
-                    <td>789.123.456-05</td>
-                    <td>(11) 99876-5432</td>
-                    <td>lucas@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
-
-                  <tr>
-                    <td>006</td>
-                    <td>Ana Beatriz</td>
-                    <td>159.753.456-06</td>
-                    <td>(11) 98888-1111</td>
-                    <td>ana@email.com</td>
-                    <td><span class="status inativo">Inativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
-
-                  <tr>
-                    <td>007</td>
-                    <td>Rafael Costa</td>
-                    <td>753.159.456-07</td>
-                    <td>(11) 96666-2222</td>
-                    <td>rafael@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
-
-                  <tr>
-                    <td>008</td>
-                    <td>Juliana Santos</td>
-                    <td>951.753.456-08</td>
-                    <td>(11) 97777-3333</td>
-                    <td>juliana@email.com</td>
-                    <td><span class="status ativo">Ativo</span></td>
-                    <td>✏️ 👁️ 🗑️</td>
-                  </tr>
-                </tbody>
+                    <form action="/clientes/excluir/{{ cliente[0] }}" method="POST" style="display:inline;">
+                      <button type="submit" class="btn-excluir">Excluir</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
               </table>
             </div>
           </div>
