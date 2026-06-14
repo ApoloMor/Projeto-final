@@ -259,11 +259,7 @@ body {
   gap: 10px;
 }
 
-#form-busca_nome {
-  margin-left: 20px;
-}
-
-.form-busca input {
+.form-busca input, select {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 12px;
@@ -271,7 +267,11 @@ body {
   margin-right: 20px;
 }
 
-.lucide-glass {
+.tipos-select{
+  margin-left: 30px;
+}
+
+.lucide-btn {
   width: 16px;
   height: 16px;
 }
@@ -289,22 +289,9 @@ body {
   transition: 0.3s;
 }
 
-.form-filtros {
+.form-nofiltros {
   display: flex;
   gap: 10px;
-}
-
-.form-filtros input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 14px;
-  margin-right: 20px;
-}
-
-.lucide-trash {
-  width: 16px;
-  height: 16px;
 }
 
 .btn-clear {

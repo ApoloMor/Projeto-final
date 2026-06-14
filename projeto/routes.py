@@ -9,6 +9,7 @@ from modules.eventos import (
     editar_evento,
     filtrar_eventos_id,
     filtrar_eventos_nome,
+    filtar_eventos_jogo,
 
 )
 
@@ -120,6 +121,19 @@ def buscar_eventos():
         eventos = filtrar_eventos_nome(busca)
   total_eventos = len(eventos)
   
+  return render_template(
+      "eventos.html",
+      eventos=eventos,
+      total_eventos=total_eventos,
+      modo="criar"
+  )
+
+@app.route("/eventos/busca-tipo", methods=["POST"])
+def buscar_eventos_tipo():
+  tipo = request.form["tipo"]
+  eventos = filtar_eventos_jogo(tipo)
+  total_eventos=len(eventos)
+
   return render_template(
       "eventos.html",
       eventos=eventos,

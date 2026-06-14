@@ -109,11 +109,20 @@
 
           <form action="/eventos/busca" method="POST" class="form-busca">
             <input type="text" name="busca" placeholder="Buscar evento por id ou nome" required>
-            <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-glass"></i> Buscar</button>
+            <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
           </form>
-
-          <form class="form-filtros" action="/eventos">
-            <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-trash"></i> Limpar
+          
+          <form action="/eventos/busca-tipo" method="POST" class="form-busca"></form>
+            <select name="tipo" class="tipos-select">
+              <option value="" disabled selected>Selecione o jogo / tipo</option>
+              <option value="pokemon">Pokémon TCG</option>
+              <option value="magic">Magic: The Gathering</option>
+              <option value="yugioh">Yu-Gi-Oh!</option>
+              <option value="board">Board Game</option>
+            </select>
+          
+          <form class="form-nofiltros" action="/eventos">
+            <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-btn"></i> Limpar
               filtros</button>
           </form>
 

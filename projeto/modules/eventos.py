@@ -124,5 +124,16 @@ def filtrar_eventos_nome(busca):
         return evento
 
 
-def filtar_eventos_jogo():
-     pass
+def filtar_eventos_jogo(tipo):
+         
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM eventos
+                      WHERE jogo = ?""", (tipo,))
+    
+    evento = cursor.fetchone()
+
+    conn.close()
+
+    return evento
