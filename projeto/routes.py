@@ -18,7 +18,9 @@ from modules.clientes import (
     listar_clientes,
     excluir_cliente, 
     editar_cliente, 
-    buscar_cliente_por_id
+    buscar_cliente_por_id,
+    buscar_cliente,
+    buscar_cliente_nome
 )
 
 from modules.produtos import(
@@ -155,6 +157,76 @@ def clientes():
         total_clientes = len(lista), 
         modo="criar"
     )
+
+@app.route("/clientes/criar", methods=["POST"])
+def criar_cliente(): #request.form eh pra preencher auto com os dados que vieram do html
+    nome = request.form["nome"]
+    cpf = request.form["cpf"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+
+    cadastrar_cliente(nome, cpf, telefone, email)
+
+    return redirect("/clientes")
+
+@app.route("/clientes/editar/<int:id>", methods=["GET"])
+def mostrar_edicao_cliente(id):
+    cliente = buscar_cliente_por_id(id)
+    lista = listar_clientes()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista, 
+        total_clientes=len(lista),
+        cliente_edicao=cliente,
+        modo="editar"
+    )
+
+@app.route("/clientes/atualizar/<int:id>", methods=["POST"])
+def atualizar_cliente(id):
+
+    nome = request.form["nome"]
+    cpf = request.form["cpf"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+
+    editar_cliente(
+        id, 
+        nome, 
+        cpf, 
+        telefone, 
+        email
+    )
+    return redirect("/clientes")
+
+@app.route("/clientes/excluir/<int:id>", methods=["POST"])
+def remover_cliente(id):
+    excluir_cliente(id)
+    return redirect("/clientes")
+
+@app.route("/clientes/buscar", methods=["POST"])
+def buscar_cliente_route():
+    tipo = request.form["tipo_busca"]
+    termo = request.form["termo"]
+
+    if tipo == "nome":
+        lista = buscar_cliente_nome(termo)
+    elif tipo == "cpf":
+        resultado = buscar_cliente(termo)
+        lista = [resultado] if resultado else []
+    elif tipo == "id":
+        resultado = buscar_cliente_por_id(int(termo))
+        lista = [resultado] if resultado else []
+    else:
+        lista = listar_clientes()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista,
+        total_clientes=len(lista),
+        modo="criar"
+    )
+    
 
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 
