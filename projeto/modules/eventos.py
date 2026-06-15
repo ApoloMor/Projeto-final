@@ -160,3 +160,54 @@ def obter_status_evento(data_evento, vagas):
 
     else:
         return "Aberto"
+    
+# ----- Fim Vagas e EVENTOS  -----
+
+# ----- INSCRIÇÕES  -----
+
+def criar_tabela_inscricoes():
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS inscricoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_cliente INTEGER NOT NULL,
+            id_evento INTEGER NOT NULL
+        )
+""")
+
+    conn.commit()
+    conn.close()
+
+def inscrever_cliente_evento(id_cliente, id_evento):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO inscricoes(id_cliente, id_evento)
+        VALUES (?, ?, ?, ?)
+    """, (id_cliente, id_evento))
+ 
+
+    conn.commit()
+    conn.close()
+
+def contar_participantes(id_evento):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM incricoes
+        WHERE  id_evento = ?""", (id_evento))
+ 
+
+    conn.commit()
+    conn.close()
+
+
+    

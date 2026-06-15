@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href={{ url_for('static', filename='home.css') }} />
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <title>Loja dos Games</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
 <body>
 
     <!-- SIDEBAR -->
@@ -19,21 +23,72 @@
             <p>BOARD GAMES & CARD GAMES</p>
         </div>
 
-      <div class="menu">
-        <a href="/" class="active">🏠 Início</a>
-        <a href="/produtos">📦 Produtos</a>
-        <a href="/clientes">👥 Clientes</a>
-        <a href="/fornecedores">🚚 Fornecedores</a>
-        <a href="/eventos">🏆 Eventos / Torneios</a>
-        <a href="#">⚙️ Sair</a>
-      </div>
+        <div class="menu">
+            <a href="/" class="active">🏠 Início</a>
+            <a href="/produtos">📦 Produtos</a>
+            <a href="/clientes">👥 Clientes</a>
+            <a href="/fornecedores">🚚 Fornecedores</a>
+            <a href="/eventos">🏆 Eventos / Torneios</a>
+            <a href="#">⚙️ Sair</a>
+        </div>
 
     </div>
     <div class="main">
-        <button>Registrar Venda:</button>
-        <button>Inscrever cliente em torneio</button>
+        <div class="breadcrumb">
+            <a href="/home">Início</a>
+        </div>
+
+        <section class="topo">
+            <div class="titulo-subt">
+                <h1><i data-lucide="house" class="lucide-house"></i>Pagina inicial</h1>
+                <p>Gerencie as vendas da loja e inscreva clientes em eventos organizados por nós!</p>
+            </div>
+
+            <div class="data">
+                <i data-lucide="clock-3"></i>
+                <time id="data-hora" class="data-textos"></time>
+            </div>
+        </section>
+
+        <div class="form-venda">
+            <form action="/venda" method="POST">
+                <h2>Registrar venda</h2>
+                <input type="text" name="cliente_id" placeholder="ID do cliente" required />
+                <input type="text" name="produto_id" placeholder="ID do produto" required />
+                <button>Registrar Venda:</button>
+            </form>
+        </div>
+        <div class="form-inscricoes">
+            <form action="/inscricao" method="POST">
+                <h2>Inscrever cliente em torneio</h2>
+                <input type="text" name="cliente_id" placeholder="ID do cliente" required />
+                <input type="text" name="evento_id" placeholder="ID do evento" required />
+                <button type="submit">Inscrever cliente em torneio</button>
+            </form>
+        </div>
     </div>
 
+    <script>
+        function atualizarDataHora() {
+            const agora = new Date();
+
+            // Formata a data e hora para o padrão brasileiro (PT-BR)
+            const opcoes = {
+                dateStyle: 'short',
+                timeStyle: 'medium'
+            };
+
+            // Atualiza o texto dentro da tag time
+            document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+        }
+
+        // Atualiza a cada 1 segundo (tempo real)
+        setInterval(atualizarDataHora, 1000);
+
+        // Executa uma vez logo ao carregar a página
+        atualizarDataHora();
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>
