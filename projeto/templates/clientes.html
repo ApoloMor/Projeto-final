@@ -66,7 +66,42 @@
         <button type="submit" class="btn-cadastrar">Salvar Alterações</button>
       </form>
       {% endif %}
-      
+    </div>
+
+    <div class="card-tabela">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for cliente in clinetes %}
+          <tr>
+            <td>{{ cliente[0] }}</td>
+            <td>{{ cliente[1] }}</td>
+            <td>{{ cliente[2] }}</td>
+            <td>{{ cliente[3] }}</td>
+            <td>{{ cliente[4] }}</td>
+            <td>
+              <form action="/clientes/editar/{{ cliente[0] }}" method="GET" style="display:inline;">
+                <button type="submit" class="btn-editar">Editar</button>
+              </form>
+              <form action="/clientes/excluir/{{ cliente[0] }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn-excluir">Excluir</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
     </div>
   </div>
 
