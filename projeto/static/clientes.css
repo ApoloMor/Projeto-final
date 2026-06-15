@@ -105,6 +105,10 @@ body {
   color: #666;
 }
 
+.lucide-customer {
+  color: #6d4aff;
+}
+
 .btn-novo {
   height: 52px;
   padding: 0 24px;

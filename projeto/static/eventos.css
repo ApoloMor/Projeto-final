@@ -113,6 +113,10 @@ body {
   color: #666;
 }
 
+.lucide-trophy {
+  color: #6d4aff;
+}
+
 .botoes-titulo {
   display: flex;
   gap: 10px;

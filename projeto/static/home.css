@@ -98,12 +98,12 @@ body {
   margin-bottom: 5px;
 }
 
-.lucide-house {
-  margin-right: 5px;
-}
-
 .titulo-subt p {
   color: #666;
+}
+
+.lucide-house {
+  color: #6d4aff;
 }
 
 .data {

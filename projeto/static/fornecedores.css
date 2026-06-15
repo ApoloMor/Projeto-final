@@ -99,9 +99,7 @@ body {
   margin-bottom: 25px;
 }
 
-.topo > svg {
-  width: 30px;
-  height: 30px;
+.lucide-truck {
   color: #6d4aff;
 }
 
