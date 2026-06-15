@@ -1,5 +1,6 @@
 import sqlite3
 from database import conectar
+from datetime import datetime
 
 # ----- CRUD eventos -----
 
@@ -137,3 +138,25 @@ def filtrar_eventos_jogo(tipo):
     conn.close()
 
     return evento
+
+# ----- Fim Filtros  -----
+
+# ----- Vagas  -----
+
+def obter_status_evento(data_evento, vagas):
+
+    data_evento = datetime.strptime(
+        data_evento,
+        "%Y-%m-%dT%H:%M" #tranforma de: "2026-06-13T18:00" para:  (2026, 6, 13, 18, 0)
+    )
+
+    agora = datetime.now() #hora de agr no msm formato de cima
+
+    if int(vagas) <= 0:
+        return "Lotado"
+
+    elif data_evento < agora:
+        return "Encerrado"
+
+    else:
+        return "Aberto"

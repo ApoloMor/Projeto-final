@@ -10,6 +10,7 @@ from modules.eventos import (
     filtrar_eventos_id,
     filtrar_eventos_nome,
     filtrar_eventos_jogo,
+    obter_status_evento,
 )
 
 from modules.clientes import (
@@ -50,9 +51,22 @@ def eventos():
 
     lista = listar_eventos()
 
+    eventos_com_status = [] #outra lista para nn mecher no banco de dados, pois nn fizemos uma coluna status de verdade
+
+    for evento in lista:
+
+        status = obter_status_evento(
+            evento[3],#data
+            evento[4]#vagas
+        )
+
+        evento = list(evento)
+        evento.append(status)
+
+        eventos_com_status.append(evento)
     return render_template(
     "eventos.html",
-    eventos=lista,
+    eventos=eventos_com_status,
     total_eventos=len(lista),
     modo = "criar"
 )

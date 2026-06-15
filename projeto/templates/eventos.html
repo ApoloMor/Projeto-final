@@ -111,9 +111,9 @@
             <input type="text" name="busca" placeholder="Buscar evento por id ou nome" required>
             <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
           </form>
-          
+
           <form action="/eventos/busca-tipo" method="POST" class="form-busca">
-            <select name="tipo" class="tipos-select">
+            <select name="tipo" class="tipos-select" required>
               <option value="" disabled selected>Selecione o jogo / tipo</option>
               <option value="pokemon">Pokémon TCG</option>
               <option value="magic">Magic: The Gathering</option>
@@ -136,42 +136,45 @@
               <th>Jogo / Tipo</th>
               <th>Data</th>
               <th>Vagas</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
 
           <tbody>
             {% if eventos%}
-              {% for evento in eventos %}
-              <tr>
-                <td>{{ evento[0] }}</td>
-  
-                <td>{{ evento[1] }}</td>
-  
-                <td>{{ evento[2] }}</td>
-  
-                <td>{{ evento[3] }}</td>
-  
-                <td>{{ evento[4] }}</td>
-  
-                <td>
-                  <form action="/eventos/excluir/{{ evento[0] }}" method="POST">
-                    <button type="submit">🗑️</button>
-                  </form>
-                </td>
-                <td>
-                  <form action="/eventos/editar/{{ evento[0] }}" method="GET">
-                    <button type="submit">✏️</button>
-                  </form>
-                </td>
+            {% for evento in eventos %}
+            <tr>
+              <td>{{ evento[0] }}</td>
+
+              <td>{{ evento[1] }}</td>
+
+              <td>{{ evento[2] }}</td>
+
+              <td>{{ evento[3] }}</td>
+
+              <td>{{ evento[4] }}</td>
+
+              <td>{{ evento[5] }}</td>
+
+              <td>
+                <form action="/eventos/excluir/{{ evento[0] }}" method="POST">
+                  <button type="submit">🗑️</button>
+                </form>
+              </td>
+              <td>
+                <form action="/eventos/editar/{{ evento[0] }}" method="GET">
+                  <button type="submit">✏️</button>
+                </form>
+              </td>
               {% endfor %}
-              </tr>
+            </tr>
             {% else %}
-              <tr>
-                <td colspan="6">
-                  Nenhum evento encontrado
-                </td>
-              </tr>
+            <tr>
+              <td colspan="6">
+                Nenhum evento encontrado
+              </td>
+            </tr>
             {% endif %}
           </tbody>
         </table>
