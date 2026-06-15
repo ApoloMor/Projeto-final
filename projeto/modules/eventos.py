@@ -1,6 +1,7 @@
 import sqlite3
 from database import conectar
 
+# ----- CRUD eventos -----
 
 def criar_tabela_eventos():
 
@@ -89,3 +90,50 @@ def excluir_evento(id):
 
     conn.commit()
     conn.close()
+
+# ----- FIM CRUD EVENTOS -----
+
+# ----- Filtros  -----
+
+def filtrar_eventos_id(busca):
+    
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM eventos
+                      WHERE id = ?""", (busca,))
+    
+    evento = cursor.fetchone()
+
+    conn.close()
+
+    return evento
+
+def filtrar_eventos_nome(busca):
+    
+        conn = conectar()
+        cursor = conn.cursor()
+
+        cursor.execute("""SELECT * FROM eventos
+                      WHERE nome LIKE ?""", (f"%{busca}%",))
+        
+        evento = cursor.fetchall()
+
+        conn.close()
+
+        return evento
+
+
+def filtrar_eventos_jogo(tipo):
+         
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM eventos
+                      WHERE jogo = ?""", (tipo,))
+    
+    evento = cursor.fetchall()
+
+    conn.close()
+
+    return evento

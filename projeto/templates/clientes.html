@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clientes - Game Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='clientes.css') }}" />
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href={{ url_for('static', filename='clientes.css' ) }} />
 
 <body>
   <div class="sidebar">
@@ -45,7 +46,7 @@
       </div>
     </div>
 
-    <div class="card-form" id="formCliente" {% if modo == "criar" %} style="display:none;" {% endif %}>
+    <div class="card-form" id="formCliente" {% if modo=="criar" %} style="display:none;" {% endif %}>
       {% if modo == "criar" %}
       <h3>Novo Cliente</h3>
 
@@ -69,16 +70,16 @@
     </div>
 
     <div class="card-busca">
-        <form action="/clientes/buscar" method="POST">
-            <select name="tipo_busca">
-                <option value="nome">Buscar por nome</option>
-                <option value="cpf">Buscar por CPF</option>
-                <option value="id">Buscar por ID</option>
-            </select>
-            <input type="text" name="termo" placeholder="Digite sua busca..." required />
-            <button type="submit" class="btn-buscar">Buscar</button>
-            <a href="/clientes" class="btn-limpar">Limpar busca</a>
-        </form>
+      <form action="/clientes/buscar" method="POST">
+        <select name="tipo_busca">
+          <option value="nome">Buscar por nome</option>
+          <option value="cpf">Buscar por CPF</option>
+          <option value="id">Buscar por ID</option>
+        </select>
+        <input type="text" name="termo" placeholder="Digite sua busca..." required />
+        <button type="submit" class="btn-buscar">Buscar</button>
+        <a href="/clientes" class="btn-limpar">Limpar busca</a>
+      </form>
     </div>
 
     <div class="card-tabela">

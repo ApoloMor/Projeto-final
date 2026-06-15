@@ -7,6 +7,9 @@ from modules.eventos import (
     excluir_evento,
     buscar_evento,
     editar_evento,
+    filtrar_eventos_id,
+    filtrar_eventos_nome,
+    filtrar_eventos_jogo,
 )
 
 from modules.clientes import (
@@ -35,7 +38,7 @@ print(os.getcwd())
 
 @app.route("/")
 def home():
-    return render_template("Home.html")
+    return render_template("home.html")
 
 
 #ROTA DE EVENTOS E SUAS FUNÇÕES
@@ -106,7 +109,41 @@ def remover_evento(id):
 
     return redirect("/eventos")
 
-#CLIENTES - ALISSON
+@app.route("/eventos/busca", methods=["POST"])
+def buscar_eventos():
+  busca = request.form["busca"]
+  
+  if busca.isdigit():
+    
+        evento = filtrar_eventos_id(busca)
+        eventos = [evento] if evento else []
+    
+  else:
+        eventos = filtrar_eventos_nome(busca)
+  total_eventos = len(eventos)
+  
+  return render_template(
+      "eventos.html",
+      eventos=eventos,
+      total_eventos=total_eventos,
+      modo="criar"
+  )
+
+@app.route("/eventos/busca-tipo", methods=["POST"])
+def buscar_eventos_tipo():
+  
+  tipo = request.form["tipo"]
+  eventos = filtrar_eventos_jogo(tipo)
+  total_eventos=len(eventos)
+
+  return render_template(
+      "eventos.html",
+      eventos=eventos,
+      total_eventos=total_eventos,
+      modo="criar"
+  )
+  
+#ROTA DE CLIENTES E SUAS FUNÇÕES
 
 @app.route("/clientes")
 def clientes():
@@ -257,6 +294,8 @@ def remover_produtos(id):
     excluir_produtos(id)
 
     return redirect("/produtos")
+
+#ROTA DE FORNECEDORES E SUAS FUNÇÕES
 
 @app.route("/fornecedores")
 def fornecedores():
