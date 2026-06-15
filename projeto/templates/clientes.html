@@ -39,14 +39,14 @@
     </div>
 
     <div class="card-resumo">
-      <div class="resumo-tem">
+      <div class="resumo-item">
         <span class="resumo-label">Total de clientes</span>
-        <strong class="resumo-valor">{{ total_clientes }}</stron>
+        <strong class="resumo-valor">{{ total_clientes }}</strong>
       </div>
     </div>
 
     <div class="card-form" id="formCliente" {% if modo == "criar" %} style="display:none;" {% endif %}>
-      {%if modo == "criar" %}
+      {% if modo == "criar" %}
       <h3>Novo Cliente</h3>
 
       <form action="/clientes/criar" method="POST">
@@ -82,7 +82,7 @@
         </thead>
 
         <tbody>
-          {% for cliente in clinetes %}
+          {% for cliente in clientes %}
           <tr>
             <td>{{ cliente[0] }}</td>
             <td>{{ cliente[1] }}</td>
@@ -104,7 +104,11 @@
       </table>
     </div>
   </div>
-
+  <script>
+    function mostrarFormulario() {
+      document.getElementById("formCliente").style.display = "block";
+    }
+  </script>
 </body>
 
 </html>
