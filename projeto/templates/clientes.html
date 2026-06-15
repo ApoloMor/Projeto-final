@@ -1,167 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clientes</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="{{url_for('static', filename='clientes.css')}}" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes - Game Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='clientes.css') }}" />
+</head>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-  </head>
+<body>
+  <div class="sidebar">
 
-  <body>
-    <div class="sidebar">
-      <div class="logo">
-        <h1>GAME STORE</h1>
-        <p>BOARD GAMES & CARD GAMES</p>
+    <div class="logo">
+      <h1>GAME STORE</h1>
+      <p>BOARD GAMES & CARD GAMES</p>
+    </div>
+
+    <div class="menu">
+      <a href="/">🏠 Início</a>
+      <a href="/produtos">📦 Produtos</a>
+      <a href="/clientes" class="active">👥 Clientes</a>
+      <a href="/fornecedores">🚚 Fornecedores</a>
+      <a href="/eventos">🏆 Eventos / Torneios</a>
+      <a href="#">⚙️ Sair</a>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="topo">
+
+      <div class="titulo-subt">
+        <h1>Clientes</h1>
+        <p>Gerencie os clientes cadastrados na loja.</p>
       </div>
 
-      <div class="menu">
-        <a href="/">🏠 Início</a>
-        <a href="/produtos">📦 Produtos</a>
-        <a href="/clientes" class="active">👥 Clientes</a>
-        <a href="/fornecedores">🚚 Fornecedores</a>
-        <a href="/eventos">🏆 Eventos / Torneios</a>
-        <a href="#">⚙️ Sair</a>
+      <button class="btn-novo" onclick="mostrarFormulario()">+ Novo Cliente</button>
+    </div>
+
+    <div class="card-resumo">
+      <div class="resumo-tem">
+        <span class="resumo-label">Total de clientes</span>
+        <strong class="resumo-valor">{{ total_clientes }}</stron>
       </div>
     </div>
 
-    <div class="main">
-      <p>
-        <a class="links" id="atual-link" href="Home.html">Início</a>
-        >
-        <a class="links">Clientes</a>
-      </p>
+    <div class="card-form" id="formCliente" {% if modo == "criar" %} style="display:none;" {% endif %}>
+      {%if modo == "criar" %}
+      <h3>Novo Cliente</h3>
 
-      <div class="topo">
-        <i data-lucide="users"></i>
-
-        <div class="titulo-subt">
-          <h1>Clientes</h1>
-          <p>Gerencie os clientes cadastrados na loja.</p>
-        </div>
-
-        <div class="botoes-titulo">
-          <button class="new-event">+ Novo cliente</button>
-
-          <button class="export">Exportar</button>
-        </div>
-
-        <div class="data">
-          <i data-lucide="clock-3"></i>
-
-          <div class="texto-data">
-            <h4>24 de Maio de 2025</h4>
-            <p>Sábado, 10:15</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content">
-        <div class="conteudo-principal">
-          <div class="card-tabela">
-            <div class="tabs">
-              <button class="tab active">Todos</button>
-              <button class="tab">Ativos</button>
-              <button class="tab">Inativos</button>
-
-              <input
-                id="busca-input"
-                type="text"
-                placeholder="🔍 Buscar cliente..."
-              />
-            </div>
-
-            <div class="fornecedores">
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Telefone</th>
-                    <th>E-mail</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {% for cliente in clientes %}
-                  <tr>
-                  <td>{{ cliente[0] }}</td>
-                  <td>{{ cliente[1] }}</td>
-                  <td>{{ cliente[2] }}</td>
-                  <td>{{ cliente[3] }}</td>
-                  <td>{{ cliente[4] }}</td>
-
-                  <td>
-                    <form action="/clientes/editar/{{ cliente[0] }}" method="GET" style="display:inline;">
-                      <button type="submit" class="btn-editar">Editar</button>
-                    </form>
-
-                    <form action="/clientes/excluir/{{ cliente[0] }}" method="POST" style="display:inline;">
-                      <button type="submit" class="btn-excluir">Excluir</button>
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="barra-direita">
-          <div class="card-lateral">
-            <h3>Resumo de clientes</h3>
-
-            <div class="item-resumo">
-              <span>Total de clientes</span>
-              <strong>87</strong>
-            </div>
-
-            <div class="item-resumo">
-              <span>Clientes ativos</span>
-              <strong class="verde">79</strong>
-            </div>
-
-            <div class="item-resumo">
-              <span>Clientes inativos</span>
-              <strong class="vermelho">8</strong>
-            </div>
-
-            <div class="item-resumo">
-              <span>Novos este mês</span>
-              <strong>5</strong>
-            </div>
-          </div>
-
-          <div class="card-lateral">
-            <h3>Filtros</h3>
-
-            <select>
-              <option>Todos os status</option>
-            </select>
-
-            <select>
-              <option>Todas as cidades</option>
-            </select>
-
-            <input type="date" />
-            <input type="date" />
-
-            <button class="btn-filtro">Aplicar filtros</button>
-          </div>
-        </div>
-      </div>
+      <form action="/clientes/criar" method="POST">
+        <input type="text" name="nome" placeholder="Nome completo" required />
+        <input type="text" name="cpf" placeholder="CPF" required />
+        <input type="text" name="telefone" placeholder="Telefone" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <button type="submit" class="btn-cadastrar">Cadastrar</button>
+      </form>
+      {% elif modo == "editar" %}
+      <h3>Editar Cliente</h3>
+      <form action="/clientes/atualizar/{{ cliente_edicao[0] }}" method="POST">
+        <input type="text" name="nome" value="{{ cliente_edicao[1] }}" required />
+        <input type="text" name="cpf" value="{{ cliente_edicao[2] }}" required />
+        <input type="text" name="telefone" value="{{ cliente_edicao[3] }}" required />
+        <input type="email" name="email" value="{{ cliente_edicao[4] }}" required />
+        <button type="submit" class="btn-cadastrar">Salvar Alterações</button>
+      </form>
+      {% endif %}
+      
     </div>
+  </div>
 
-    <script>
-      lucide.createIcons();
-    </script>
-  </body>
+</body>
+
 </html>
