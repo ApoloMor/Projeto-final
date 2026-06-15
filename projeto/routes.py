@@ -15,7 +15,9 @@ from modules.clientes import (
     listar_clientes,
     excluir_cliente, 
     editar_cliente, 
-    buscar_cliente_por_id
+    buscar_cliente_por_id,
+    buscar_cliente,
+    buscar_cliente_nome
 )
 
 from modules.produtos import(
@@ -164,6 +166,30 @@ def atualizar_cliente(id):
 def remover_cliente(id):
     excluir_cliente(id)
     return redirect("/clientes")
+
+@app.route("/clientes/buscar", methods=["POST"])
+def buscar_cliente_route():
+    tipo = request.form["tipo_busca"]
+    termo = request.form["termo"]
+
+    if tipo == "nome":
+        lista = buscar_cliente_nome(termo)
+    elif tipo == "cpf":
+        resultado = buscar_cliente(termo)
+        lista = [resultado] if resultado else []
+    elif tipo == "id":
+        resultado = buscar_cliente_por_id(int(termo))
+        lista = [resultado] if resultado else []
+    else:
+        lista = listar_clientes()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista,
+        total_clientes=len(lista),
+        modo="criar"
+    )
+    
 
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 

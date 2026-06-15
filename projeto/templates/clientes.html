@@ -68,6 +68,19 @@
       {% endif %}
     </div>
 
+    <div class="card-busca">
+        <form action="/clientes/buscar" method="POST">
+            <select name="tipo_busca">
+                <option value="nome">Buscar por nome</option>
+                <option value="cpf">Buscar por CPF</option>
+                <option value="id">Buscar por ID</option>
+            </select>
+            <input type="text" name="termo" placeholder="Digite sua busca..." required />
+            <button type="submit" class="btn-buscar">Buscar</button>
+            <a href="/clientes" class="btn-limpar">Limpar busca</a>
+        </form>
+    </div>
+
     <div class="card-tabela">
       <table>
         <thead>
