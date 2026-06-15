@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clientes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href={{ url_for('static', filename='clientes.css' ) }} />
+  <link rel="stylesheet" href="{{ url_for('static', filename='clientes.css' ) }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Loja dos Games - Clientes</title>
 
 <body>
   <div class="sidebar">
@@ -36,12 +37,18 @@
     <div class="topo">
 
       <div class="titulo-subt">
-        <h1>Clientes</h1>
+        <h1> <i data-lucide="users-round"></i> Clientes</h1>
         <p>Gerencie os clientes cadastrados na loja.</p>
       </div>
 
       <button class="btn-novo" onclick="mostrarFormulario()">+ Novo Cliente</button>
+
+      <div class="data">
+        <i data-lucide="clock-3"></i>
+        <time id="data-hora" class="data-textos"></time>
+      </div>
     </div>
+
 
     <div class="card-resumo">
       <div class="resumo-item">
@@ -126,6 +133,23 @@
     function mostrarFormulario() {
       document.getElementById("formCliente").style.display = "block";
     }
+
+    function atualizarDataHora() {
+      const agora = new Date();
+
+      const opcoes = {
+        dateStyle: 'short',
+        timeStyle: 'medium'
+      };
+
+      document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+    }
+
+    setInterval(atualizarDataHora, 1000);
+
+    atualizarDataHora();
+
+    lucide.createIcons();
   </script>
 </body>
 

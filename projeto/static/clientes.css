@@ -121,6 +121,20 @@ body {
   background: #5a39e6;
 }
 
+.data {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f3f4f6;
+  padding: 15px 24px;
+  border-radius: 15px;
+}
+
+.data-textos h4,
+.data-textos p {
+  margin: 0;
+}
+
 /* ===== CARD RESUMO ===== */
 
 .card-resumo {

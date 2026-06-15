@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loja dos Games - Produtos</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='produtos.css') }}" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Loja dos Games - Produtos</title>
 </head>
 
 <body>
@@ -37,7 +37,7 @@
 
     <section class="topo">
       <div class="titulo-subt">
-        <h1>📦 Produtos</h1>
+        <h1><i data-lucide="package-search"></i> Produtos</h1>
         <p>Gerencie os produtos da loja.</p>
       </div>
 
@@ -47,13 +47,10 @@
         </button>
       </div>
 
+
       <div class="data">
         <i data-lucide="clock-3"></i>
-
-        <div class="data-textos">
-          <h4>24 de Maio de 2025</h4>
-          <p>Sábado, 10:15</p>
-        </div>
+        <time id="data-hora" class="data-textos"></time>
       </div>
     </section>
 
@@ -180,6 +177,21 @@
     function mostrarFormulario() {
       document.getElementById("formProduto").style.display = "block";
     }
+
+    function atualizarDataHora() {
+      const agora = new Date();
+
+      const opcoes = {
+        dateStyle: 'short',
+        timeStyle: 'medium'
+      };
+
+      document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+    }
+
+    setInterval(atualizarDataHora, 1000);
+
+    atualizarDataHora();
 
     lucide.createIcons();
   </script>

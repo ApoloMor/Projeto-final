@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href={{ url_for('static', filename='fornecedores.css' ) }} />
+  <link rel="stylesheet" href="{{ url_for('static', filename='fornecedores.css' ) }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <title>Loja dos Games - Fornecedores</title>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Loja dos Games - Fornecedores</title>
 </head>
 
 <body>
@@ -51,13 +52,10 @@
         </button>
       </div>
 
+
       <div class="data">
         <i data-lucide="clock-3"></i>
-
-        <div class="texto-data">
-          <h4>1 de Junho de 2026</h4>
-          <p>Segunda, 09:00</p>
-        </div>
+        <time id="data-hora" class="data-textos"></time>
       </div>
     </div>
 
@@ -138,6 +136,25 @@
     </div>
 
     <script>
+      function mostrarFormulario() {
+        document.getElementById("formFornecedor").style.display = "block";
+      }
+
+      function atualizarDataHora() {
+        const agora = new Date();
+
+        const opcoes = {
+          dateStyle: 'short',
+          timeStyle: 'medium'
+        };
+
+        document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+      }
+
+      setInterval(atualizarDataHora, 1000);
+
+      atualizarDataHora();
+
       lucide.createIcons();
     </script>
 </body>

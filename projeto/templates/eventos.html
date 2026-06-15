@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loja dos Games - Eventos</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='eventos.css') }}" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Loja dos Games - Eventos</title>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 
     <section class="topo">
       <div class="titulo-subt">
-        <h1>🏆 Eventos / Torneios</h1>
+        <h1><i data-lucide="trophy"></i> Eventos / Torneios</h1>
         <p>Gerencie os eventos e torneios da loja.</p>
       </div>
 
@@ -195,23 +195,20 @@
     function mostrarFormulario() {
       document.getElementById("formEvento").style.display = "block";
     }
+
     function atualizarDataHora() {
       const agora = new Date();
 
-      // Formata a data e hora para o padrão brasileiro (PT-BR)
       const opcoes = {
         dateStyle: 'short',
         timeStyle: 'medium'
       };
 
-      // Atualiza o texto dentro da tag time
       document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
     }
 
-    // Atualiza a cada 1 segundo (tempo real)
     setInterval(atualizarDataHora, 1000);
 
-    // Executa uma vez logo ao carregar a página
     atualizarDataHora();
 
     lucide.createIcons();
