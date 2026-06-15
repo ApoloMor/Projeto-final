@@ -11,6 +11,9 @@ from modules.eventos import (
     filtrar_eventos_nome,
     filtrar_eventos_jogo,
     obter_status_evento,
+    criar_tabela_inscricoes,
+    inscrever_cliente_evento,
+    contar_participantes,
 )
 
 from modules.clientes import (
@@ -37,10 +40,20 @@ import os
 
 print(os.getcwd())
 
+#ROTA DE ISCREVER CLIENTES >> EVENTO
+
 @app.route("/")
 def home():
-    return render_template("home.html")
+    criar_tabela_inscricoes()
+    return render_template("home.html")  
 
+@app.route("/inscricoes", methods=["POST"])
+def inscrever():
+    id_cliente = request.form["id_cliente"]
+    id_evento = request.form["id_evento"]
+    inscrever_cliente_evento()
+
+    return redirect("/")
 
 #ROTA DE EVENTOS E SUAS FUNÇÕES
 
@@ -240,7 +253,7 @@ def buscar_cliente_route():
         total_clientes=len(lista),
         modo="criar"
     )
-    
+
 
 #ROTA DE PRODUTOS E SUAS FUNÇÕES
 
