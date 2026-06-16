@@ -106,6 +106,27 @@ body {
   color: #6d4aff;
 }
 
+.botoes-titulo {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-top {
+  height: 52px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #6d4aff;
+  color: white;
+}
+
+.btn-top:hover {
+  background: #5a39e6;
+}
+
 .data {
   display: flex;
   align-items: center;
@@ -118,4 +139,75 @@ body {
 .data-textos h4,
 .data-textos p {
   margin: 0;
+}
+
+/* FORMULARIOS */
+
+.card-form {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.card-form h2 {
+  margin-bottom: 15px;
+}
+
+.card-form input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.card-form button {
+  width: 100%;
+  border: none;
+  background: #6d4aff;
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.card-form button:hover {
+  background: #5b3ae6;
+}
+
+#formVenda,
+#formInscricoes {
+    display: none;
+}
+
+/* TABELA */
+
+.tabela-inscricoes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tabela-inscricoes th {
+  text-align: left;
+  color: #666;
+  font-weight: 600;
+  padding: 15px;
+}
+
+.tabela-inscricoes td {
+  padding: 18px 15px;
+  border-top: 1px solid #eee;
+}
+
+.tabela-inscricoes td form button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
