@@ -53,19 +53,43 @@
         <div class="form-venda">
             <form action="/venda" method="POST">
                 <h2>Registrar venda</h2>
-                <input type="text" name="cliente_id" placeholder="ID do cliente" required />
-                <input type="text" name="produto_id" placeholder="ID do produto" required />
+                <input type="number" name="cliente_id" placeholder="ID do cliente" required />
+                <input type="number" name="produto_id" placeholder="ID do produto" required />
                 <button>Registrar Venda:</button>
             </form>
         </div>
         <div class="form-inscricoes">
-            <form action="/inscricao" method="POST">
+            <form action="/inscricoes" method="POST">
                 <h2>Inscrever cliente em torneio</h2>
-                <input type="text" name="cliente_id" placeholder="ID do cliente" required />
-                <input type="text" name="evento_id" placeholder="ID do evento" required />
+                <input type="text" name="id_cliente" placeholder="ID do cliente" required />
+                <input type="text" name="id_evento" placeholder="ID do evento" required />
                 <button type="submit">Inscrever cliente em torneio</button>
             </form>
         </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>id cliente</th>
+                    <th>id evento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscricao in inscricoes %}
+                <tr>
+                    <td>{{inscricao [0]}}</td>
+                    <td>{{inscricao [1]}}</td>
+                    <td>{{inscricao [2]}}</td>
+                    <td>
+                        <form action="/inscricoes/excluir/{{ inscricao [0] }}" method="POST">
+                            <button type="submit">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <script>

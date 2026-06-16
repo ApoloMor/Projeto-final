@@ -133,9 +133,10 @@
             <tr>
               <th>ID</th>
               <th>Evento</th>
-              <th>Jogo / Tipo</th>
+              <th>Jogo</th>
               <th>Data</th>
-              <th>Vagas</th>
+              <th>Capacidade Total</th>
+              <th>Vagas Disponíveis</th>
               <th>Status</th>
               <th>Ações</th>
             </tr>
@@ -156,6 +157,8 @@
               <td>{{ evento[4] }}</td>
 
               <td>{{ evento[5] }}</td>
+
+              <td>{{ evento[6] }}</td>
 
               <td>
                 <form action="/eventos/excluir/{{ evento[0] }}" method="POST">

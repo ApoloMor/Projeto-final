@@ -11,9 +11,6 @@ from modules.eventos import (
     filtrar_eventos_nome,
     filtrar_eventos_jogo,
     obter_status_evento,
-    criar_tabela_inscricoes,
-    inscrever_cliente_evento,
-    contar_participantes,
 )
 
 from modules.clientes import (
@@ -25,6 +22,18 @@ from modules.clientes import (
     buscar_cliente_por_id,
     buscar_cliente,
     buscar_cliente_nome
+)
+
+from modules.inscricoes import (
+    criar_tabela_inscricoes,
+    listar_inscricoes,
+    inscrever_cliente_evento,
+    contar_participantes,
+    buscar_vagas_evento,
+    vagas_disponiveis,
+    evento_lotado,
+    excluir_inscricao,
+    buscar_inscricao,
 )
 
 from modules.produtos import(
@@ -45,15 +54,45 @@ print(os.getcwd())
 @app.route("/")
 def home():
     criar_tabela_inscricoes()
-    return render_template("home.html")  
+
+    lista = listar_inscricoes()
+
+    return render_template(
+            "home.html",
+            inscricoes = lista
+)  
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
+
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
-    inscrever_cliente_evento()
+    
+    cliente = buscar_cliente_por_id(id_cliente)
+
+    if not cliente:
+        return "Cliente não encontrado"
+    
+    evento = filtrar_eventos_id(id_evento)
+    
+    if not evento:
+        return "Evento não encontrado"
+    
+    elif evento_lotado(id_evento):
+        return "Evento lotado!"
+    
+    else:
+        inscrever_cliente_evento(id_cliente, id_evento)
 
     return redirect("/")
+
+@app.route("/inscricoes/excluir/<int:id>", methods=["POST"])
+def remover_inscricao(id):
+
+    excluir_inscricao(id)
+
+    return redirect("/")
+
 
 #ROTA DE EVENTOS E SUAS FUNÇÕES
 
@@ -68,15 +107,18 @@ def eventos():
 
     for evento in lista:
 
+        vagas = vagas_disponiveis(evento[0])
         status = obter_status_evento(
             evento[3],#data
-            evento[4]#vagas
+            vagas_disponiveis(evento[0])#vagas
         )
 
         evento = list(evento)
+        evento.append(vagas)
         evento.append(status)
 
         eventos_com_status.append(evento)
+
     return render_template(
     "eventos.html",
     eventos=eventos_com_status,
