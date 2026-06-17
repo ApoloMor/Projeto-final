@@ -35,7 +35,7 @@
     </div>
     <div class="main">
         <div class="breadcrumb">
-            <a href="/home">Início</a>
+            <a href="/">Início</a>
         </div>
 
         <section class="topo">
@@ -51,9 +51,9 @@
             </div>
 
             <div class="botoes-titulo">
-              <button class="btn-top" onclick="toggleFormularioInscricao()">
-                + Inscrever Cliente
-</button>
+                <button class="btn-top" onclick="toggleFormularioInscricao()">
+                    + Inscrever Cliente
+                </button>
             </div>
             <div class="data">
                 <i data-lucide="clock-3"></i>
@@ -70,17 +70,29 @@
             </form>
         </div>
         <div class="card-form" id="formInscricoes">
+            {% if modo_insc == "criar" %}
             <form action="/inscricoes" method="POST">
                 <h2>Inscrever cliente em torneio</h2>
                 <input type="text" name="id_cliente" placeholder="ID do cliente" required />
                 <input type="text" name="id_evento" placeholder="ID do evento" required />
                 <button type="submit">Inscrever cliente em torneio</button>
             </form>
+            {% elif modo_insc == "editar" %}
+            <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
+                <h2>Alterar inscrição</h2>
+                <input type="text" name="id_evento" placeholder="ID do evento" required />
+                <button type="submit">Inscrever cliente em torneio</button>
+            </form>
+            {% endif %}
         </div>
-
+        {% if error %}
+        <div id="erro">
+            {{ error }} <button onclick="fecharErro()">X</button>
+        </div>
+        {% endif %}
         <table class="tabela-inscricoes">
             <thead>
-              <h2>Inscrições</h2>
+                <h2>Inscrições</h2>
                 <tr>
                     <th>id inscrição</th>
                     <th>id cliente</th>
@@ -109,25 +121,26 @@
     </div>
 
     <script>
-function toggleFormularioVenda() {
-  const form = document.getElementById("formVenda");
+        function toggleFormularioVenda() {
+            const form = document.getElementById("formVenda");
 
-  if (form.style.display === "none") {
-    form.style.display = "block";
-  } else {
-    form.style.display = "none";
-  }
-}
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
 
-function toggleFormularioInscricao() {
-  const form = document.getElementById("formInscricoes");
+        function toggleFormularioInscricao() {
+            const form = document.getElementById("formInscricoes");
 
-  if (form.style.display === "none") {
-    form.style.display = "block";
-  } else {
-    form.style.display = "none";
-  }
-}
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
         function atualizarDataHora() {
             const agora = new Date();
 
@@ -137,6 +150,10 @@ function toggleFormularioInscricao() {
             };
 
             document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+        }
+
+        function fecharErro() {
+            document.getElementById("erro").style.display = "none";
         }
 
         setInterval(atualizarDataHora, 1000);
