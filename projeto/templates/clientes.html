@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
-<head>
+<head><
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{{ url_for('static', filename='clientes.css' ) }}" />
@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <title>Loja dos Games - Clientes</title>
-
+</head>
 <body>
   <div class="sidebar">
 
@@ -153,8 +153,10 @@
 
     function mascaraCPF(campo) {
       let valor = campo.value;
-      valor = valor.replace(/\D/g,"");
-      if (valor.leng > 11) valor = valor.substring(0, 11);
+      valor = valor.replace(/\D/g, "");
+
+      if (valor.length > 11) valor = valor.substring(0, 11);
+      
       if (valor.length > 9) {
         valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
       } else if (valor.length > 6) {
