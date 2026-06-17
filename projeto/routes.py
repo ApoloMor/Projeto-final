@@ -51,6 +51,7 @@ from modules.produtos import(
     saida_estoque,
     criar_tabela_movimentacoes,   
     listar_todas_movimentacoes,
+    produtos_mais_vendidos,
 )
 
 from modules.fornecedores import (
@@ -268,9 +269,10 @@ def produtos():
     lista = listar_produtos()
     dados = calcular_dados_produtos(lista)
     historico = listar_todas_movimentacoes() 
+    mais_vendidos = produtos_mais_vendidos()  
 
-    return render_template("produtos.html", produtos=lista, modo="criar", historico=historico, **dados)
-
+    return render_template("produtos.html", produtos=lista, modo="criar",
+                           historico=historico, mais_vendidos=mais_vendidos, **dados)
 
 @app.route("/produtos/criar", methods=["POST"])
 def criar_produtos():
