@@ -116,6 +116,11 @@ body {
   background: #5a39e6;
 }
 
+/* ícone do título azul (mesma cor dos outros módulos) */
+.lucide-truck {
+  color: #6d4aff;
+}
+
 .data {
   display: flex;
   align-items: center;
@@ -173,12 +178,25 @@ body {
 
 .produtos {
   flex: 1;
+  overflow-x: auto; /* permite scroll horizontal apenas na área de fornecedores */
+  -webkit-overflow-scrolling: touch;
 }
 
 .card-tabela {
   background: white;
   border-radius: 20px;
   padding: 20px;
+}
+
+/* Fornece scroll interno para tabelas largas sem mover toda a página */
+.card-tabela {
+  overflow-x: auto;
+}
+
+/* Garante que a tabela ocupe a largura do container, mas possa ser rolada internamente em telas pequenas */
+.card-tabela table {
+  width: 100%;
+  min-width: 720px; /* ajustável: mantém colunas legíveis e permite scroll interno */
 }
 
 .barra-direita {
