@@ -18,7 +18,6 @@
       <h1>GAME STORE</h1>
       <p>BOARD GAMES & CARD GAMES</p>
     </div>
-
     <div class="menu">
       <a href="/">🏠 Início</a>
       <a href="/produtos" class="active">📦 Produtos</a>
@@ -41,13 +40,9 @@
         <h1><i data-lucide="package-search" class="lucide-box"></i> Produtos</h1>
         <p>Gerencie os produtos da loja.</p>
       </div>
-
       <div class="botoes-titulo">
-        <button class="new-product" onclick="mostrarFormulario()">
-          + Novo Produto
-        </button>
+        <button class="new-product" onclick="mostrarFormulario()">+ Novo Produto</button>
       </div>
-
       <div class="data">
         <i data-lucide="clock-3"></i>
         <time id="data-hora" class="data-textos"></time>
@@ -55,11 +50,10 @@
     </section>
 
     <div id="dados-grafico" data-labels='{{ categorias_labels | tojson }}'
-      data-valores='{{ categorias_valores | tojson }}' style="display:none;">
-    </div>
+      data-valores='{{ categorias_valores | tojson }}' style="display:none;"></div>
+
     <div class="card-form" id="formProduto" {% if modo=="criar" %} style="display:none;" {% endif %}>
       {% if modo == "criar" %}
-
       <h3>Novo Produto</h3>
       <form action="/produtos/criar" method="POST">
         <input type="text" name="produto" placeholder="Nome do produto" required />
@@ -74,9 +68,7 @@
         <input type="number" name="estoque" min="0" placeholder="Quantidade em estoque" required />
         <button type="submit">Cadastrar</button>
       </form>
-
       {% elif modo == "editar" %}
-
       <h3>Editar Produto</h3>
       <form action="/produtos/atualizar/{{ produto_edicao[0] }}" method="POST">
         <input type="text" name="produto" placeholder="Nome do produto" value="{{ produto_edicao[1] }}" required />
@@ -91,14 +83,12 @@
         <input type="number" name="estoque" min="0" value="{{ produto_edicao[4] }}" required />
         <button type="submit">Salvar Alterações</button>
       </form>
-
       {% endif %}
     </div>
 
     <section class="content">
 
       <div class="produtos">
-
         <div class="filtros">
           <form action="/produtos/busca" method="POST" class="form-busca">
             <input type="text" name="busca" placeholder="Buscar produto por id ou nome" required>
@@ -147,103 +137,67 @@
                 {% else %}
                 <tr class="linha-normal">
                   {% endif %}
-
                   <td>{{ produto[0] }}</td>
                   <td>{{ produto[1] }}</td>
                   <td>{{ produto[2] }}</td>
                   <td>R$ {{ "%.2f"|format(produto[3]) }}</td>
                   <td>{{ produto[4] }}</td>
-
                   <td>
-                    {% if produto[4] <= 5 %} <span class="status urgente">
-                      <i data-lucide="triangle-alert"></i> Urgente
-                      </span>
-                      {% elif produto[4] <= 20 %} <span class="status baixo">
-                        <i data-lucide="circle-alert"></i> Baixo
-                        </span>
+                    {% if produto[4] <= 5 %} <span class="status urgente"><i data-lucide="triangle-alert"></i>
+                      Urgente</span>
+                      {% elif produto[4] <= 20 %} <span class="status baixo"><i data-lucide="circle-alert"></i>
+                        Baixo</span>
                         {% else %}
-                        <span class="status normal">
-                          <i data-lucide="check-circle-2"></i> Normal
-                        </span>
+                        <span class="status normal"><i data-lucide="check-circle-2"></i> Normal</span>
                         {% endif %}
                   </td>
-
                   <td>R$ {{ "%.2f"|format(produto[3] * produto[4]) }}</td>
-
-                  <td>
-                  <td>
-                  <td>
                   <td>
                     <div class="acoes">
                       <form action="/produtos/editar/{{ produto[0] }}" method="GET">
-                        <button type="submit" class="btn-editar">
-                          <i data-lucide="pencil"></i>
-                        </button>
+                        <button type="submit" class="btn-editar"><i data-lucide="pencil"></i></button>
                       </form>
-
                       <form action="/produtos/excluir/{{ produto[0] }}" method="POST">
-                        <button type="submit" class="btn-excluir">
-                          <i data-lucide="trash-2"></i>
-                        </button>
+                        <button type="submit" class="btn-excluir"><i data-lucide="trash-2"></i></button>
                       </form>
-
                       <div class="grupo-estoque">
                         <span class="label-estoque">Entrada</span>
                         <form action="/produtos/entrada/{{ produto[0] }}" method="POST" class="form-estoque">
                           <input type="number" name="quantidade" min="1" value="1" class="input-estoque">
-                          <button type="submit" class="btn-entrada">
-                            <i data-lucide="plus"></i>
-                          </button>
+                          <button type="submit" class="btn-entrada"><i data-lucide="plus"></i></button>
                         </form>
                       </div>
-
                       <div class="grupo-estoque">
                         <span class="label-estoque">Saída</span>
                         <form action="/produtos/saida/{{ produto[0] }}" method="POST" class="form-estoque">
                           <input type="number" name="quantidade" min="1" value="1" class="input-estoque">
-                          <button type="submit" class="btn-saida">
-                            <i data-lucide="minus"></i>
-                          </button>
+                          <button type="submit" class="btn-saida"><i data-lucide="minus"></i></button>
                         </form>
                       </div>
-
                     </div>
                   </td>
-                  </td>
-                  </td>
-                  </td>
-
                 </tr>
                 {% endfor %}
           </tbody>
         </table>
-
       </div>
 
       <aside class="barra-direita">
+
         <div class="card">
           <h3>📦 Resumo</h3>
-
           <div class="info">
             <span>Total de produtos</span>
             <strong>{{ total_produtos }}</strong>
           </div>
-
           <div class="info">
             <span>Valor em estoque</span>
             <strong>R$ {{ "%.2f"|format(valor_total) }}</strong>
           </div>
-
-          <div class="info">
-            <span>Produtos em alerta</span>
-            <strong style="color: #c62828;">{{ produtos_alerta }}</strong>
-          </div>
-
           <div class="info">
             <span>Produto mais caro</span>
             <strong>{{ produto_mais_caro[1] if produto_mais_caro else '-' }}</strong>
           </div>
-
           <div class="info">
             <span>Maior estoque</span>
             <strong>{{ maior_estoque[1] if maior_estoque else '-' }}</strong>
@@ -251,29 +205,60 @@
         </div>
 
         <div class="card">
+          <h3>⚠️ Reposição</h3>
+          {% set tem_alerta = [] %}
+          {% for p in produtos %}
+          {% if p[4] <= 20 %} {% set _=tem_alerta.append(p) %} <div class="info">
+            <span class="{{ 'texto-urgente' if p[4] <= 5 else 'texto-baixo' }}">
+              {{ p[1][:22] }}{% if p[1]|length > 22 %}…{% endif %}
+            </span>
+            <strong class="{{ 'texto-urgente' if p[4] <= 5 else 'texto-baixo' }}">{{ p[4] }} un.</strong>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% if tem_alerta | length == 0 %}
+        <p style="color:#999; font-size:13px; margin-top:10px;">Nenhum produto em alerta. ✅</p>
+        {% endif %}
+        </div>
+
+        <div class="card">
           <h3>📊 Por Categoria</h3>
           <canvas id="graficoCategorias"></canvas>
-
-          <div class="card">
-            <h3>🕓 Movimentações</h3>
-            {% if historico %}
-            {% for mov in historico %}
-            <div class="mov-item {{ 'mov-entrada' if mov[2] == 'Entrada' else 'mov-saida' }}">
-              <div class="mov-info">
-                <span class="mov-produto">{{ mov[1] }}</span>
-                <span class="mov-data">{{ mov[0] }}</span>
-              </div>
-              <span class="mov-badge">
-                {{ '+' if mov[2] == 'Entrada' else '-' }}{{ mov[3] }}
-              </span>
-            </div>
-            {% endfor %}
-            {% else %}
-            <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma movimentação registrada.</p>
-            {% endif %}
-          </div>
-
         </div>
+
+        <div class="card">
+          <h3>🕓 Movimentações</h3>
+          {% if historico %}
+          {% for mov in historico %}
+          <div class="mov-item {{ 'mov-entrada' if mov[2] == 'Entrada' else 'mov-saida' }}">
+            <div class="mov-info">
+              <span class="mov-produto">{{ mov[1] }}</span>
+              <span class="mov-data">{{ mov[0] }}</span>
+            </div>
+            <span class="mov-badge">
+              {{ '+' if mov[2] == 'Entrada' else '-' }}{{ mov[3] }}
+            </span>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma movimentação registrada.</p>
+          {% endif %}
+        </div>
+
+        <div class="card">
+          <h3>🏆 Mais Vendidos</h3>
+          {% if mais_vendidos %}
+          {% for p in mais_vendidos %}
+          <div class="info">
+            <span>{{ loop.index }}. {{ p[0][:20] }}{% if p[0]|length > 20 %}…{% endif %}</span>
+            <strong>{{ p[2] }} un.</strong>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma venda registrada.</p>
+          {% endif %}
+        </div>
+
       </aside>
 
     </section>
@@ -303,10 +288,7 @@
             plugins: {
               legend: {
                 position: 'bottom',
-                labels: {
-                  font: { family: 'Poppins', size: 12 },
-                  padding: 15
-                }
+                labels: { font: { family: 'Poppins', size: 12 }, padding: 15 }
               }
             }
           }

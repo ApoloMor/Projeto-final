@@ -194,3 +194,19 @@ def listar_todas_movimentacoes():
     resultado = cursor.fetchall()
     conn.close()
     return resultado
+
+def produtos_mais_vendidos(limite=5):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT p.produto, p.tipo, SUM(m.quantidade) as total_vendido
+        FROM movimentacoes m
+        JOIN produtos p ON m.id_produto = p.id
+        WHERE m.tipo = 'Saída'
+        GROUP BY m.id_produto
+        ORDER BY total_vendido DESC
+        LIMIT ?
+    """, (limite,))
+    resultado = cursor.fetchall()
+    conn.close()
+    return resultado
