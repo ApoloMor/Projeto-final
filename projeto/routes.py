@@ -97,16 +97,17 @@ def calcular_dados_produtos(lista):
 
 @app.route("/")
 def home():
+
     criar_tabela_inscricoes()
+
     lista = listar_inscricoes()
-    return render_template("home.html", inscricoes=lista)
 
     return render_template(
             "home.html",
             inscricoes = lista,
             modo_insc = "criar",
             modo_vnd = "criar",
-)  
+)   
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
