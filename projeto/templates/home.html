@@ -80,8 +80,9 @@
             {% elif modo_insc == "editar" %}
             <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
                 <h2>Alterar inscrição</h2>
+                <input type="text" name="id_cliente" placeholder="ID do Cliente" required />
                 <input type="text" name="id_evento" placeholder="ID do evento" required />
-                <button type="submit">Inscrever cliente em torneio</button>
+                <button type="submit"><i data-lucide="check"></i>Salvar</button>
             </form>
             {% endif %}
         </div>
@@ -110,7 +111,7 @@
                         <form action="/inscricoes/excluir/{{ inscricao [0] }}" method="POST">
                             <button type="submit"><i data-lucide="trash-2"></i></button>
                         </form>
-                        <form action="/inscricoes/editar/{{ inscricao [0] }}" method="POST">
+                        <form action="/inscricoes/atualizar/{{ inscricao [0] }}" method="POST">
                             <button type="submit"><i data-lucide="pencil"></i></button>
                         </form>
                     </td>
@@ -141,6 +142,10 @@
             }
         }
 
+        function fecharErro() {
+            document.getElementById("erro").style.display = "none";
+        }
+
         function atualizarDataHora() {
             const agora = new Date();
 
@@ -150,10 +155,6 @@
             };
 
             document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
-        }
-
-        function fecharErro() {
-            document.getElementById("erro").style.display = "none";
         }
 
         setInterval(atualizarDataHora, 1000);

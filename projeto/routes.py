@@ -165,6 +165,7 @@ def edicao_inscricao(id,):
 
 @app.route("/inscricoes/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
 def atualizar_inscricao(id):
+    
     lista = listar_inscricoes()
 
     id_cliente = request.form["id_cliente"]

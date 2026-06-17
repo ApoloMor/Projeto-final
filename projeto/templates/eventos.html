@@ -41,7 +41,7 @@
       </div>
 
       <div class="botoes-titulo">
-        <button class="new-event" onclick="mostrarFormulario()">
+        <button class="new-event" onclick="toggleFormulario()">
           + Novo Evento
         </button>
       </div>
@@ -195,8 +195,15 @@
     </section>
   </main>
   <script>
-    function mostrarFormulario() {
-      document.getElementById("formEvento").style.display = "block";
+
+    function toggleFormulario() {
+      const form = document.getElementById("formEvento");
+
+      if (form.style.display === "none") {
+        form.style.display = "block";
+      } else {
+        form.style.display = "none";
+      }
     }
 
     function atualizarDataHora() {
