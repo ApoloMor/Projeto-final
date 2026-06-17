@@ -73,7 +73,7 @@ def excluir_inscricao(id):
     conn.commit()
     conn.close
 
-  def editar_incricao(id, id_cliente, id_evento):
+def editar_inscricao(id, id_cliente, id_evento):
 
     conn = conectar()
     cursor = conn.cursor()

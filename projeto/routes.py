@@ -87,8 +87,33 @@ def inscrever():
 
     return redirect("/")
 
-@app.route("/inscricoes/editar")
-def edicao_inscricao():
+@app.route("/inscricoes/editar", methods=["GET"])
+def edicao_inscricao(id, id_cliente, id_evento):
+  
+    inscricao = buscar_inscricao(id)
+    lista = listar_inscricoes()
+
+    return render_template("home.html", inscricao=lista, modo="editar")
+
+
+@app.route("/inscricoes/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
+def atualizar_eventos(id):
+    
+    nome = request.form["nome"]
+    jogo = request.form["jogo"]
+    data = request.form["data"]
+    vagas = request.form["vagas"] 
+
+    editar_evento(
+        id,
+        nome,
+        jogo,
+        data,
+        vagas
+    )
+    return redirect("/eventos")
+    
+  
 
   
 @app.route("/inscricoes/excluir/<int:id>", methods=["POST"])
