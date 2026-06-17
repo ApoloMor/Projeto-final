@@ -1,5 +1,7 @@
 from flask import render_template, request, redirect
 from flask_app import app
+from collections import Counter
+
 from modules.eventos import (
     criar_tabela_eventos,
     cadastrar_evento,
@@ -43,236 +45,187 @@ from modules.produtos import(
     listar_produtos,
     buscar_produtos,
     editar_produtos,
-    
+    buscar_produtos_nome,
+    buscar_produtos_por_tipo,
 )
 
 import os
 
 print(os.getcwd())
 
-#ROTA DE ISCREVER CLIENTES >> EVENTO
+
+def calcular_dados_produtos(lista):
+    total_produtos = len(lista)
+    valor_total = sum(p[3] * p[4] for p in lista) if lista else 0
+    produtos_alerta = len([p for p in lista if p[4] <= 20])
+    produto_mais_caro = max(lista, key=lambda p: p[3], default=None)
+    maior_estoque = max(lista, key=lambda p: p[4], default=None)
+    categorias = Counter(p[2] for p in lista) if lista else {}
+    categorias_labels = list(categorias.keys())
+    categorias_valores = list(categorias.values())
+
+    return {
+        "total_produtos": total_produtos,
+        "valor_total": valor_total,
+        "produtos_alerta": produtos_alerta,
+        "produto_mais_caro": produto_mais_caro,
+        "maior_estoque": maior_estoque,
+        "categorias_labels": categorias_labels,
+        "categorias_valores": categorias_valores,
+    }
+
+
+# ROTA DE INSCREVER CLIENTES >> EVENTO
 
 @app.route("/")
 def home():
     criar_tabela_inscricoes()
-
     lista = listar_inscricoes()
+    return render_template("home.html", inscricoes=lista)
 
-    return render_template(
-            "home.html",
-            inscricoes = lista
-)  
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
-
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
     
     cliente = buscar_cliente_por_id(id_cliente)
-
     if not cliente:
         return "Cliente não encontrado"
     
     evento = filtrar_eventos_id(id_evento)
-    
     if not evento:
         return "Evento não encontrado"
-    
     elif evento_lotado(id_evento):
         return "Evento lotado!"
-    
     else:
         inscrever_cliente_evento(id_cliente, id_evento)
 
     return redirect("/")
 
+
 @app.route("/inscricoes/excluir/<int:id>", methods=["POST"])
 def remover_inscricao(id):
-
     excluir_inscricao(id)
-
     return redirect("/")
 
 
-#ROTA DE EVENTOS E SUAS FUNÇÕES
+# ROTA DE EVENTOS E SUAS FUNÇÕES
 
 @app.route("/eventos")
 def eventos():
-
     criar_tabela_eventos()
-
     lista = listar_eventos()
 
-    eventos_com_status = [] #outra lista para nn mecher no banco de dados, pois nn fizemos uma coluna status de verdade
-
+    eventos_com_status = []
     for evento in lista:
-
         vagas = vagas_disponiveis(evento[0])
-        status = obter_status_evento(
-            evento[3],#data
-            vagas_disponiveis(evento[0])#vagas
-        )
-
+        status = obter_status_evento(evento[3], vagas_disponiveis(evento[0]))
         evento = list(evento)
         evento.append(vagas)
         evento.append(status)
-
         eventos_com_status.append(evento)
 
     return render_template(
-    "eventos.html",
-    eventos=eventos_com_status,
-    total_eventos=len(lista),
-    modo = "criar"
-)
+        "eventos.html",
+        eventos=eventos_com_status,
+        total_eventos=len(lista),
+        modo="criar"
+    )
+
 
 @app.route("/eventos/criar", methods=["POST"])
 def criar_evento():
-
     nome = request.form["nome"]
     jogo = request.form["jogo"]
     data = request.form["data"]
     vagas = request.form["vagas"]
-
-    cadastrar_evento(
-        nome,
-        jogo,
-        data,
-        vagas
-    )
-
+    cadastrar_evento(nome, jogo, data, vagas)
     return redirect("/eventos")
 
 
 @app.route("/eventos/editar/<int:id>", methods=["GET"])
 def mostrar_edicao(id):
-
     evento = buscar_evento(id)
     lista = listar_eventos()
-
     return render_template("eventos.html", eventos=lista, total_eventos=len(lista), evento_edicao=evento, modo="editar")
 
 
-@app.route("/eventos/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
+@app.route("/eventos/atualizar/<int:id>", methods=["POST"])
 def atualizar_eventos(id):
-    
     nome = request.form["nome"]
     jogo = request.form["jogo"]
     data = request.form["data"]
-    vagas = request.form["vagas"] 
-
-    editar_evento(
-        id,
-        nome,
-        jogo,
-        data,
-        vagas
-    )
+    vagas = request.form["vagas"]
+    editar_evento(id, nome, jogo, data, vagas)
     return redirect("/eventos")
 
 
 @app.route("/eventos/excluir/<int:id>", methods=["POST"])
 def remover_evento(id):
-
     excluir_evento(id)
-
     return redirect("/eventos")
+
 
 @app.route("/eventos/busca", methods=["POST"])
 def buscar_eventos():
-  busca = request.form["busca"]
-  
-  if busca.isdigit():
-    
+    busca = request.form["busca"]
+    if busca.isdigit():
         evento = filtrar_eventos_id(busca)
         eventos = [evento] if evento else []
-    
-  else:
+    else:
         eventos = filtrar_eventos_nome(busca)
-  total_eventos = len(eventos)
-  
-  return render_template(
-      "eventos.html",
-      eventos=eventos,
-      total_eventos=total_eventos,
-      modo="criar"
-  )
+    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
+
 
 @app.route("/eventos/busca-tipo", methods=["POST"])
 def buscar_eventos_tipo():
-  
-  tipo = request.form["tipo"]
-  eventos = filtrar_eventos_jogo(tipo)
-  total_eventos=len(eventos)
+    tipo = request.form["tipo"]
+    eventos = filtrar_eventos_jogo(tipo)
+    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
 
-  return render_template(
-      "eventos.html",
-      eventos=eventos,
-      total_eventos=total_eventos,
-      modo="criar"
-  )
-  
-#ROTA DE CLIENTES E SUAS FUNÇÕES
+
+# ROTA DE CLIENTES E SUAS FUNÇÕES
 
 @app.route("/clientes")
 def clientes():
     criar_tabela_clientes()
-
     lista = listar_clientes()
+    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar")
 
-    return render_template(
-        "clientes.html", 
-        clientes = lista, 
-        total_clientes = len(lista), 
-        modo="criar"
-    )
 
 @app.route("/clientes/criar", methods=["POST"])
-def criar_cliente(): #request.form eh pra preencher auto com os dados que vieram do html
+def criar_cliente():
     nome = request.form["nome"]
     cpf = request.form["cpf"]
     telefone = request.form["telefone"]
     email = request.form["email"]
-
     cadastrar_cliente(nome, cpf, telefone, email)
-
     return redirect("/clientes")
+
 
 @app.route("/clientes/editar/<int:id>", methods=["GET"])
 def mostrar_edicao_cliente(id):
     cliente = buscar_cliente_por_id(id)
     lista = listar_clientes()
+    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), cliente_edicao=cliente, modo="editar")
 
-    return render_template(
-        "clientes.html",
-        clientes=lista, 
-        total_clientes=len(lista),
-        cliente_edicao=cliente,
-        modo="editar"
-    )
 
 @app.route("/clientes/atualizar/<int:id>", methods=["POST"])
 def atualizar_cliente(id):
-
     nome = request.form["nome"]
     cpf = request.form["cpf"]
     telefone = request.form["telefone"]
     email = request.form["email"]
-
-    editar_cliente(
-        id, 
-        nome, 
-        cpf, 
-        telefone, 
-        email
-    )
+    editar_cliente(id, nome, cpf, telefone, email)
     return redirect("/clientes")
+
 
 @app.route("/clientes/excluir/<int:id>", methods=["POST"])
 def remover_cliente(id):
     excluir_cliente(id)
     return redirect("/clientes")
+
 
 @app.route("/clientes/buscar", methods=["POST"])
 def buscar_cliente_route():
@@ -290,89 +243,78 @@ def buscar_cliente_route():
     else:
         lista = listar_clientes()
 
-    return render_template(
-        "clientes.html",
-        clientes=lista,
-        total_clientes=len(lista),
-        modo="criar"
-    )
+    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar")
 
 
-#ROTA DE PRODUTOS E SUAS FUNÇÕES
+# ROTA DE PRODUTOS E SUAS FUNÇÕES
 
 @app.route("/produtos")
 def produtos():
-
     criar_tabela_produtos()
-
     lista = listar_produtos()
+    dados = calcular_dados_produtos(lista)
 
-    return render_template(
-        "produtos.html",
-        produtos=lista,
-        total_produtos=len(lista),
-        modo="criar"
-    )
+    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
 
 
 @app.route("/produtos/criar", methods=["POST"])
 def criar_produtos():
-
     produto = request.form["produto"]
     tipo = request.form["tipo"]
     preco = request.form["preco"]
     estoque = request.form["estoque"]
-
-    cadastrar_produtos(
-        produto,
-        tipo,
-        preco,
-        estoque
-    )
-
+    cadastrar_produtos(produto, tipo, preco, estoque)
     return redirect("/produtos")
+
 
 @app.route("/produtos/editar/<int:id>", methods=["GET"])
 def edicao(id):
-
     produto = buscar_produtos(id)
     lista = listar_produtos()
+    dados = calcular_dados_produtos(lista)
 
-    return render_template(
-        "produtos.html",
-        produtos=lista,
-        total_produtos=len(lista),
-        produto_edicao=produto,
-        modo="editar"
-    )
+    return render_template("produtos.html", produtos=lista, produto_edicao=produto, modo="editar", **dados)
 
 
-@app.route("/produtos/atualizar/<int:id>", methods=["POST"]) 
+@app.route("/produtos/atualizar/<int:id>", methods=["POST"])
 def atualizar_produtos(id):
-    
     produto = request.form["produto"]
     tipo = request.form["tipo"]
     preco = request.form["preco"]
-    estoque = request.form["estoque"] 
-
-    editar_produtos(
-        id,
-        produto,
-        tipo,
-        preco,
-        estoque
-    )
+    estoque = request.form["estoque"]
+    editar_produtos(id, produto, tipo, preco, estoque)
     return redirect("/produtos")
 
 
 @app.route("/produtos/excluir/<int:id>", methods=["POST"])
 def remover_produtos(id):
-
     excluir_produtos(id)
-
     return redirect("/produtos")
 
-#ROTA DE FORNECEDORES E SUAS FUNÇÕES
+
+@app.route("/produtos/busca", methods=["POST"])
+def buscar_produtos_route():
+    busca = request.form["busca"]
+    if busca.isdigit():
+        produto = buscar_produtos(int(busca))
+        lista = [produto] if produto else []
+    else:
+        lista = buscar_produtos_nome(busca)
+    dados = calcular_dados_produtos(lista)
+
+    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+
+
+@app.route("/produtos/busca-tipo", methods=["POST"])
+def buscar_produtos_tipo():
+    tipo = request.form["tipo"]
+    lista = buscar_produtos_por_tipo(tipo)
+    dados = calcular_dados_produtos(lista)
+
+    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+
+
+# ROTA DE FORNECEDORES E SUAS FUNÇÕES
 
 @app.route("/fornecedores")
 def fornecedores():

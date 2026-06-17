@@ -88,3 +88,32 @@ def editar_produtos(id, produto, tipo, preco, estoque):
     conn.close()
 
 
+def buscar_produtos_nome(nome):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM produtos WHERE produto LIKE ?", (f"%{nome}%",))
+    produtos = cursor.fetchall()
+
+    conn.close()
+    return produtos
+
+
+def buscar_produtos_por_tipo(tipo):
+    tipos_map = {
+        "pokemon": "Pokémon TCG",
+        "magic": "Magic: The Gathering",
+        "yugioh": "Yu-Gi-Oh!",
+        "board": "Board Game"
+    }
+
+    tipo_real = tipos_map.get(tipo, tipo)
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM produtos WHERE tipo = ?", (tipo_real,))
+    produtos = cursor.fetchall()
+
+    conn.close()
+    return produtos
