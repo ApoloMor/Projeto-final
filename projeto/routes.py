@@ -43,6 +43,7 @@ from modules.produtos import(
     listar_produtos,
     buscar_produtos,
     editar_produtos,
+    
 )
 
 import os
@@ -301,17 +302,18 @@ def buscar_cliente_route():
 
 @app.route("/produtos")
 def produtos():
-    
+
     criar_tabela_produtos()
 
     lista = listar_produtos()
 
     return render_template(
-    "produtos.html",
-    produtos=lista,
-    total_produtos=len(lista),
-    modo="criar"
-)
+        "produtos.html",
+        produtos=lista,
+        total_produtos=len(lista),
+        modo="criar"
+    )
+
 
 @app.route("/produtos/criar", methods=["POST"])
 def criar_produtos():

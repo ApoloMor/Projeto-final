@@ -257,3 +257,39 @@ body {
 .info strong {
   color: #6d4aff;
 }
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 90px;
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.normal {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.baixo {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+.urgente {
+    background-color: #ffebee;
+    color: #c62828;
+}
+.linha-urgente {
+    background-color: rgba(220, 53, 69, 0.08);
+}
+
+.linha-baixo {
+    background-color: rgba(255, 193, 7, 0.08);
+}

@@ -57,75 +57,65 @@
 
     <div class="card-form" id="formProduto" {% if modo=="criar" %} style="display:none;" {% endif %}>
       {% if modo == "criar" %}
-      <h1>{{ modo }}</h1>
+
       <h3>Novo Produto</h3>
 
       <form action="/produtos/criar" method="POST">
 
-  <input type="text"
-         name="produto"
-         placeholder="Nome do produto"
-         required />
+        <input type="text" name="produto" placeholder="Nome do produto" required />
 
-  <select name="tipo" required>
-    <option value="" disabled selected>Selecione a categoria</option>
-    <option value="Pokémon TCG">Pokémon TCG</option>
-    <option value="Magic: The Gathering">Magic: The Gathering</option>
-    <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
-    <option value="Board Game">Board Game</option>
-  </select>
+        <select name="tipo" required>
+          <option value="" disabled selected>Selecione a categoria</option>
+          <option value="Pokémon TCG">Pokémon TCG</option>
+          <option value="Magic: The Gathering">Magic: The Gathering</option>
+          <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+          <option value="Board Game">Board Game</option>
+        </select>
 
-  <input type="number"
-         name="preco"
-         step="0.01"
-         min="0"
-         placeholder="Preço do produto"
-         required />
+        <input type="number" name="preco" step="0.01" min="0" placeholder="Preço do produto" required />
 
-  <input type="number"
-         name="estoque"
-         min="0"
-         placeholder="Quantidade em estoque"
-         required />
+        <input type="number" name="estoque" min="0" placeholder="Quantidade em estoque" required />
 
-  <button type="submit">Cadastrar</button>
+        <button type="submit">Cadastrar</button>
 
-</form>
+      </form>
 
       {% elif modo == "editar" %}
 
-      <h1>{{ modo }}</h1>
       <h3>Editar Produto</h3>
 
       <form action="/produtos/atualizar/{{ produto_edicao[0] }}" method="POST">
-        <input type="text" name="nome" placeholder="Nome do produto" value="{{ produto_edicao[1] }}" required />
 
-        <select name="jogo" required>
-          <option value="" disabled>Selecione a categoria</option>
+        <input type="text" name="produto" placeholder="Nome do produto" value="{{ produto_edicao[1] }}" required />
 
-          <option value="pokemon" {% if produto_edicao[2]=="pokemon" %}selected{% endif %}>
+        <select name="tipo" required>
+
+          <option value="Pokémon TCG" {% if produto_edicao[2]=="Pokémon TCG" %}selected{% endif %}>
             Pokémon TCG
           </option>
 
-          <option value="magic" {% if produto_edicao[2]=="magic" %}selected{% endif %}>
+          <option value="Magic: The Gathering" {% if produto_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>
             Magic: The Gathering
           </option>
 
-          <option value="yugioh" {% if produto_edicao[2]=="yugioh" %}selected{% endif %}>
+          <option value="Yu-Gi-Oh!" {% if produto_edicao[2]=="Yu-Gi-Oh!" %}selected{% endif %}>
             Yu-Gi-Oh!
           </option>
 
-          <option value="board" {% if produto_edicao[2]=="board" %}selected{% endif %}>
+          <option value="Board Game" {% if produto_edicao[2]=="Board Game" %}selected{% endif %}>
             Board Game
           </option>
+
         </select>
 
-        <input type="datetime-local" name="data" value="{{ produto_edicao[3] }}" required />
+        <input type="number" name="preco" step="0.01" min="0" value="{{ produto_edicao[3] }}" required />
 
-        <input type="number" name="vagas" min="1" placeholder="Quantidade em estoque" value="{{ produto_edicao[4] }}"
-          required />
+        <input type="number" name="estoque" min="0" value="{{ produto_edicao[4] }}" required />
 
-        <button type="submit">Salvar Alterações</button>
+        <button type="submit">
+          Salvar Alterações
+        </button>
+
       </form>
 
       {% endif %}
@@ -141,36 +131,70 @@
               <th>Tipo</th>
               <th>Preço</th>
               <th>Estoque</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
 
           <tbody>
+
             {% for produto in produtos %}
-            <tr>
-              <td>{{ produto[0] }}</td>
 
-              <td>{{ produto[1] }}</td>
+            {% if produto[4] <= 5 %} <tr class="linha-urgente">
 
-              <td>{{ produto[2] }}</td>
+              {% elif produto[4] <= 20 %} <tr class="linha-baixo">
 
-              <td>{{ produto[3] }}</td>
+                {% else %}
+                <tr>
+                  {% endif %}
 
-              <td>{{ produto[4] }}</td>
+                  <td>{{ produto[0] }}</td>
+                  <td>{{ produto[1] }}</td>
+                  <td>{{ produto[2] }}</td>
+                  <td>R$ {{ "%.2f"|format(produto[3]) }}</td>
+                  <td>{{ produto[4] }}</td>
 
-              <td>
-                <form action="/produtos/excluir/{{ produto[0] }}" method="POST">
-                  <button type="submit">🗑️</button>
-                </form>
-              </td>
+                  <td>
+                    {% if produto[4] <= 5 %} <span class="status urgente">
+                      <i data-lucide="triangle-alert"></i>
+                      Urgente
+                      </span>
 
-              <td>
-                <form action="/produtos/editar/{{ produto[0] }}" method="GET">
-                  <button type="submit">✏️</button>
-                </form>
-              </td>
-            </tr>
-            {% endfor %}
+                      {% elif produto[4] <= 20 %} <span class="status baixo">
+                        <i data-lucide="circle-alert"></i>
+                        Baixo
+                        </span>
+
+                        {% else %}
+                        <span class="status normal">
+                          <i data-lucide="check-circle-2"></i>
+                          Normal
+                        </span>
+                        {% endif %}
+                  </td>
+
+                  <td>
+                    <div class="acoes">
+
+                      <form action="/produtos/editar/{{ produto[0] }}" method="GET">
+                        <button type="submit" class="btn-editar">
+                          <i data-lucide="pencil"></i>
+                        </button>
+                      </form>
+
+                      <form action="/produtos/excluir/{{ produto[0] }}" method="POST">
+                        <button type="submit" class="btn-excluir">
+                          <i data-lucide="trash-2"></i>
+                        </button>
+                      </form>
+
+                    </div>
+                  </td>
+
+                </tr>
+
+                {% endfor %}
+
           </tbody>
         </table>
       </div>

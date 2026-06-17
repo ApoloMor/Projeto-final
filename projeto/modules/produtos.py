@@ -86,3 +86,5 @@ def editar_produtos(id, produto, tipo, preco, estoque):
                    )
     conn.commit()
     conn.close()
+
+
