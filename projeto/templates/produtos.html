@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <title>Loja dos Games - Produtos</title>
+  <link rel="stylesheet" href="../static/produtos.css">
 </head>
 
 <body>
@@ -60,22 +61,36 @@
       <h3>Novo Produto</h3>
 
       <form action="/produtos/criar" method="POST">
-        <input type="text" name="nome" placeholder="Nome do produto" required />
 
-        <select name="jogo" required>
-          <option value="" disabled selected>Selecione a categoria</option>
-          <option value="pokemon">Pokémon TCG</option>
-          <option value="magic">Magic: The Gathering</option>
-          <option value="yugioh">Yu-Gi-Oh!</option>
-          <option value="board">Board Game</option>
-        </select>
+  <input type="text"
+         name="produto"
+         placeholder="Nome do produto"
+         required />
 
-        <input type="datetime-local" name="data" required />
+  <select name="tipo" required>
+    <option value="" disabled selected>Selecione a categoria</option>
+    <option value="Pokémon TCG">Pokémon TCG</option>
+    <option value="Magic: The Gathering">Magic: The Gathering</option>
+    <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+    <option value="Board Game">Board Game</option>
+  </select>
 
-        <input type="number" name="vagas" min="1" placeholder="Quantidade em estoque" required />
+  <input type="number"
+         name="preco"
+         step="0.01"
+         min="0"
+         placeholder="Preço do produto"
+         required />
 
-        <button type="submit">Cadastrar</button>
-      </form>
+  <input type="number"
+         name="estoque"
+         min="0"
+         placeholder="Quantidade em estoque"
+         required />
+
+  <button type="submit">Cadastrar</button>
+
+</form>
 
       {% elif modo == "editar" %}
 
