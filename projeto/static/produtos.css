@@ -194,13 +194,6 @@ body {
   gap: 25px;
 }
 
-.produtos {
-  flex: 1;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-}
-
 .barra-direita {
   width: 320px;
 }
@@ -218,22 +211,33 @@ body {
 
 /* ========================= TABELA ========================= */
 
+.produtos {
+  flex: 1;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
 .tabela-produtos {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-size: 13px;
 }
 
 .tabela-produtos th {
-  text-align: left;
+  text-align: center;
   color: #666;
   font-weight: 600;
-  padding: 15px;
+  padding: 10px 6px;
 }
 
 .tabela-produtos td {
-  padding: 18px 15px;
+  padding: 10px 6px;
   border-top: 1px solid #eee;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .tabela-produtos td form button {
@@ -242,6 +246,30 @@ body {
   cursor: pointer;
   font-size: 16px;
 }
+
+.tabela-produtos th:nth-child(1),
+.tabela-produtos td:nth-child(1) { text-align: center; }
+
+.tabela-produtos th:nth-child(2),
+.tabela-produtos td:nth-child(2) { text-align: left; }
+
+.tabela-produtos th:nth-child(3),
+.tabela-produtos td:nth-child(3) { text-align: left; }
+
+.tabela-produtos th:nth-child(4),
+.tabela-produtos td:nth-child(4) { text-align: center; }
+
+.tabela-produtos th:nth-child(5),
+.tabela-produtos td:nth-child(5) { text-align: center; }
+
+.tabela-produtos th:nth-child(6),
+.tabela-produtos td:nth-child(6) { text-align: center; }
+
+.tabela-produtos th:nth-child(7),
+.tabela-produtos td:nth-child(7) { text-align: center; }
+
+.tabela-produtos th:nth-child(8),
+.tabela-produtos td:nth-child(8) { text-align: center !important; }
 
 /* ========================= RESUMO ========================= */
 
@@ -253,10 +281,12 @@ body {
 
 .info span {
   color: #666;
+  white-space: nowrap;
 }
 
 .info strong {
   color: #6d4aff;
+  text-align: right;
 }
 
 /* ========================= STATUS ========================= */
@@ -364,17 +394,149 @@ body {
 .btn-clear:hover {
   background: #5a39e6;
 }
-.info span {
-  color: #666;
-  white-space: nowrap;
-}
 
-.info strong {
-  color: #6d4aff;
-  text-align: right;
-}
+/* ========================= GRÁFICO ========================= */
+
 #graficoCategorias {
   width: 100% !important;
   height: 280px !important;
   margin-top: 15px;
+}
+
+/* ========================= AÇÕES / ESTOQUE ========================= */
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  width: 100%;
+}
+
+.grupo-estoque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.label-estoque {
+  font-size: 9px;
+  color: #666;
+  font-weight: 600;
+}
+
+.form-estoque {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.input-estoque {
+  width: 35px;
+  padding: 3px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.btn-entrada {
+  background: #22c55e !important;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.btn-saida {
+  background: #ef4444 !important;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.btn-entrada i,
+.btn-saida i {
+  width: 12px;
+  height: 12px;
+}
+
+.btn-editar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6d4aff;
+  font-size: 16px;
+  padding: 4px;
+}
+
+.btn-excluir {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  font-size: 16px;
+  padding: 4px;
+}
+
+/* ========================= MOVIMENTAÇÕES ========================= */
+
+.mov-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.mov-entrada {
+  background-color: rgba(34, 197, 94, 0.10);
+}
+
+.mov-saida {
+  background-color: rgba(239, 68, 68, 0.10);
+}
+
+.mov-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mov-produto {
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+}
+
+.mov-data {
+  font-size: 11px;
+  color: #888;
+}
+
+.mov-badge {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.mov-entrada .mov-badge {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.mov-saida .mov-badge {
+  background: #fee2e2;
+  color: #dc2626;
 }

@@ -47,6 +47,10 @@ from modules.produtos import(
     editar_produtos,
     buscar_produtos_nome,
     buscar_produtos_por_tipo,
+    entrada_estoque,
+    saida_estoque,
+    criar_tabela_movimentacoes,   
+    listar_todas_movimentacoes,
 )
 
 import os
@@ -251,10 +255,12 @@ def buscar_cliente_route():
 @app.route("/produtos")
 def produtos():
     criar_tabela_produtos()
+    criar_tabela_movimentacoes() 
     lista = listar_produtos()
     dados = calcular_dados_produtos(lista)
+    historico = listar_todas_movimentacoes() 
 
-    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+    return render_template("produtos.html", produtos=lista, modo="criar", historico=historico, **dados)
 
 
 @app.route("/produtos/criar", methods=["POST"])
@@ -312,6 +318,18 @@ def buscar_produtos_tipo():
     dados = calcular_dados_produtos(lista)
 
     return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+
+@app.route("/produtos/entrada/<int:id>", methods=["POST"])
+def entrada_produto(id):
+    quantidade = int(request.form["quantidade"])
+    entrada_estoque(id, quantidade)
+    return redirect("/produtos")
+
+@app.route("/produtos/saida/<int:id>", methods=["POST"])
+def saida_produto(id):
+    quantidade = int(request.form["quantidade"])
+    saida_estoque(id, quantidade)
+    return redirect("/produtos")
 
 
 # ROTA DE FORNECEDORES E SUAS FUNÇÕES

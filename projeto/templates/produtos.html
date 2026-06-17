@@ -171,18 +171,46 @@
                   <td>R$ {{ "%.2f"|format(produto[3] * produto[4]) }}</td>
 
                   <td>
+                  <td>
+                  <td>
+                  <td>
                     <div class="acoes">
                       <form action="/produtos/editar/{{ produto[0] }}" method="GET">
                         <button type="submit" class="btn-editar">
                           <i data-lucide="pencil"></i>
                         </button>
                       </form>
+
                       <form action="/produtos/excluir/{{ produto[0] }}" method="POST">
                         <button type="submit" class="btn-excluir">
                           <i data-lucide="trash-2"></i>
                         </button>
                       </form>
+
+                      <div class="grupo-estoque">
+                        <span class="label-estoque">Entrada</span>
+                        <form action="/produtos/entrada/{{ produto[0] }}" method="POST" class="form-estoque">
+                          <input type="number" name="quantidade" min="1" value="1" class="input-estoque">
+                          <button type="submit" class="btn-entrada">
+                            <i data-lucide="plus"></i>
+                          </button>
+                        </form>
+                      </div>
+
+                      <div class="grupo-estoque">
+                        <span class="label-estoque">Saída</span>
+                        <form action="/produtos/saida/{{ produto[0] }}" method="POST" class="form-estoque">
+                          <input type="number" name="quantidade" min="1" value="1" class="input-estoque">
+                          <button type="submit" class="btn-saida">
+                            <i data-lucide="minus"></i>
+                          </button>
+                        </form>
+                      </div>
+
                     </div>
+                  </td>
+                  </td>
+                  </td>
                   </td>
 
                 </tr>
@@ -225,6 +253,26 @@
         <div class="card">
           <h3>📊 Por Categoria</h3>
           <canvas id="graficoCategorias"></canvas>
+
+          <div class="card">
+            <h3>🕓 Movimentações</h3>
+            {% if historico %}
+            {% for mov in historico %}
+            <div class="mov-item {{ 'mov-entrada' if mov[2] == 'Entrada' else 'mov-saida' }}">
+              <div class="mov-info">
+                <span class="mov-produto">{{ mov[1] }}</span>
+                <span class="mov-data">{{ mov[0] }}</span>
+              </div>
+              <span class="mov-badge">
+                {{ '+' if mov[2] == 'Entrada' else '-' }}{{ mov[3] }}
+              </span>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma movimentação registrada.</p>
+            {% endif %}
+          </div>
+
         </div>
       </aside>
 
@@ -232,52 +280,52 @@
   </main>
 
   <script>
-document.addEventListener('DOMContentLoaded', function() {
-  lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', function () {
+      lucide.createIcons();
 
-  const dadosGrafico = document.getElementById('dados-grafico');
-  const labels = JSON.parse(dadosGrafico.dataset.labels || '[]');
-  const valores = JSON.parse(dadosGrafico.dataset.valores || '[]');
+      const dadosGrafico = document.getElementById('dados-grafico');
+      const labels = JSON.parse(dadosGrafico.dataset.labels || '[]');
+      const valores = JSON.parse(dadosGrafico.dataset.valores || '[]');
 
-  if (labels.length > 0) {
-    const ctx = document.getElementById('graficoCategorias').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: valores,
-          backgroundColor: ['#6d4aff', '#facc15', '#ef4444', '#22c55e'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              font: { family: 'Poppins', size: 12 },
-              padding: 15
+      if (labels.length > 0) {
+        const ctx = document.getElementById('graficoCategorias').getContext('2d');
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: valores,
+              backgroundColor: ['#6d4aff', '#facc15', '#ef4444', '#22c55e'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  font: { family: 'Poppins', size: 12 },
+                  padding: 15
+                }
+              }
             }
           }
-        }
+        });
       }
     });
-  }
-});
 
-function mostrarFormulario() {
-  document.getElementById("formProduto").style.display = "block";
-}
+    function mostrarFormulario() {
+      document.getElementById("formProduto").style.display = "block";
+    }
 
-function atualizarDataHora() {
-  const agora = new Date();
-  const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
-  document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
-}
+    function atualizarDataHora() {
+      const agora = new Date();
+      const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
+      document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+    }
 
-setInterval(atualizarDataHora, 1000);
-atualizarDataHora();
+    setInterval(atualizarDataHora, 1000);
+    atualizarDataHora();
   </script>
 
 </body>
