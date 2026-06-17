@@ -1,6 +1,29 @@
 import sqlite3
 from database import conectar
 from datetime import datetime
+from modules.inscricoes import vagas_disponiveis
+
+# ----- LOADER DA PAG  -----
+def carregar_eventos():
+    lista = listar_eventos()
+
+    eventos_com_status = []
+
+    for evento in lista:
+        vagas = vagas_disponiveis(evento[0])
+
+        status = obter_status_evento(
+            evento[3],
+            vagas
+        )
+
+        evento = list(evento)
+        evento.append(vagas)
+        evento.append(status)
+
+        eventos_com_status.append(evento)
+
+    return eventos_com_status
 
 # ----- CRUD eventos -----
 
@@ -141,14 +164,11 @@ def filtrar_eventos_jogo(tipo):
 
 # ----- Fim Filtros  -----
 
-# ----- Vagas  -----
+# ----- Vagas e Datas -----
 
 def obter_status_evento(data_evento, vagas_disponiveis):
 
-    data_evento = datetime.strptime(
-        data_evento,
-        "%Y-%m-%dT%H:%M" #tranforma de: "2026-06-13T18:00" para:  (2026, 6, 13, 18, 0)
-    )
+    data_evento = datetime.strptime( data_evento, "%Y-%m-%dT%H:%M" ) #tranforma de: "2026-06-13T18:00" para:  (2026, 6, 13, 18, 0)
 
     agora = datetime.now() #hora de agr no msm formato de cima
 
@@ -161,4 +181,16 @@ def obter_status_evento(data_evento, vagas_disponiveis):
     else:
         return "Aberto"
     
-# ----- Fim Vagas e EVENTOS  -----
+def verificar_data(data):
+
+    data_convertida = datetime.strptime( data, "%Y-%m-%dT%H:%M" )
+
+    if data_convertida < datetime.now():
+        return True
+
+    return False
+
+# ----- Fim Vagas e Data  -----
+
+
+

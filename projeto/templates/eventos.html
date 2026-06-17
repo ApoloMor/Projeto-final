@@ -162,12 +162,12 @@
 
               <td>
                 <form action="/eventos/excluir/{{ evento[0] }}" method="POST">
-                  <button type="submit">🗑️</button>
+                  <button type="submit"><i data-lucide="trash-2"></i></button>
                 </form>
               </td>
               <td>
                 <form action="/eventos/editar/{{ evento[0] }}" method="GET">
-                  <button type="submit">✏️</button>
+                  <button type="submit"><i data-lucide="pencil"></i></button>
                 </form>
               </td>
               {% endfor %}

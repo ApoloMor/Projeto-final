@@ -3,6 +3,7 @@ from flask_app import app
 from collections import Counter
 
 from modules.eventos import (
+    carregar_eventos,
     criar_tabela_eventos,
     cadastrar_evento,
     listar_eventos,
@@ -13,6 +14,7 @@ from modules.eventos import (
     filtrar_eventos_nome,
     filtrar_eventos_jogo,
     obter_status_evento,
+    verificar_data,
 )
 
 from modules.clientes import (
@@ -36,6 +38,7 @@ from modules.inscricoes import (
     evento_lotado,
     excluir_inscricao,
     buscar_inscricao,
+    editar_inscricao,
 )
 
 from modules.produtos import(
@@ -64,6 +67,7 @@ from modules.fornecedores import (
 )
 
 import os
+from datetime import datetime
 
 print(os.getcwd())
 
@@ -93,30 +97,117 @@ def calcular_dados_produtos(lista):
 
 @app.route("/")
 def home():
-    criar_tabela_inscricoes()
-    lista = listar_inscricoes()
-    return render_template("home.html", inscricoes=lista)
 
+    criar_tabela_inscricoes()
+
+    lista = listar_inscricoes()
+
+    return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+)   
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
+
+    lista = listar_inscricoes()
+
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
     
     cliente = buscar_cliente_por_id(id_cliente)
     if not cliente:
-        return "Cliente não encontrado"
+        return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Cliente não encontrado!",
+        )
     
     evento = filtrar_eventos_id(id_evento)
     if not evento:
-        return "Evento não encontrado"
+        return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Evento não encontrado!",
+        )
+    
     elif evento_lotado(id_evento):
-        return "Evento lotado!"
+        return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Evento lotado!",
+        )
+    
     else:
         inscrever_cliente_evento(id_cliente, id_evento)
 
     return redirect("/")
 
+@app.route("/inscricoes/editar", methods=["GET"])
+def edicao_inscricao(id,):
+
+    inscricao = buscar_inscricao(id)
+    lista = listar_inscricoes()
+
+    return render_template(
+        "home.html", 
+        inscricao=lista, 
+        modo="editar")
+
+
+@app.route("/inscricoes/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
+def atualizar_inscricao(id):
+    lista = listar_inscricoes()
+
+    id_cliente = request.form["id_cliente"]
+    id_evento = request.form["id_evento"]
+
+    cliente = buscar_cliente_por_id(id_cliente)
+
+    if not cliente:
+        return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Cliente não encontrado!",
+        )
+    
+    evento = filtrar_eventos_id(id_evento)
+    
+    if not evento:
+        return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Evento não encontrado!",
+        )
+    
+    elif evento_lotado(id_evento):
+        return render_template(
+            "home.html",
+            inscricoes = lista,
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Evento lotado!",
+        )
+    
+    editar_evento(
+        id,
+        id_cliente,
+        id_cliente
+    )
+
+    return redirect("/")
 
 @app.route("/inscricoes/excluir/<int:id>", methods=["POST"])
 def remover_inscricao(id):
@@ -129,32 +220,43 @@ def remover_inscricao(id):
 @app.route("/eventos")
 def eventos():
     criar_tabela_eventos()
-    lista = listar_eventos()
 
-    eventos_com_status = []
-    for evento in lista:
-        vagas = vagas_disponiveis(evento[0])
-        status = obter_status_evento(evento[3], vagas_disponiveis(evento[0]))
-        evento = list(evento)
-        evento.append(vagas)
-        evento.append(status)
-        eventos_com_status.append(evento)
+    eventos = carregar_eventos()
 
     return render_template(
         "eventos.html",
-        eventos=eventos_com_status,
-        total_eventos=len(lista),
-        modo="criar"
-    )
-
+        eventos=eventos,
+        total_eventos = len(eventos),
+        modo = "criar",
+)
 
 @app.route("/eventos/criar", methods=["POST"])
 def criar_evento():
+
+    eventos = carregar_eventos()
+
     nome = request.form["nome"]
     jogo = request.form["jogo"]
     data = request.form["data"]
     vagas = request.form["vagas"]
-    cadastrar_evento(nome, jogo, data, vagas)
+
+    if verificar_data(data):
+        return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos=len(eventos),
+        modo = "criar",
+        error = "Data inválida!"
+)
+    
+    else:
+        cadastrar_evento(
+            nome,
+            jogo,
+            data,
+            vagas
+        )
+
     return redirect("/eventos")
 
 
@@ -162,16 +264,42 @@ def criar_evento():
 def mostrar_edicao(id):
     evento = buscar_evento(id)
     lista = listar_eventos()
-    return render_template("eventos.html", eventos=lista, total_eventos=len(lista), evento_edicao=evento, modo="editar")
+
+    return render_template(
+        "eventos.html", 
+        eventos=lista, 
+        total_eventos=len(lista), 
+        evento_edicao=evento, 
+        modo="editar")
 
 
 @app.route("/eventos/atualizar/<int:id>", methods=["POST"])
 def atualizar_eventos(id):
+    
+    eventos = carregar_eventos()
+
     nome = request.form["nome"]
     jogo = request.form["jogo"]
     data = request.form["data"]
-    vagas = request.form["vagas"]
-    editar_evento(id, nome, jogo, data, vagas)
+    vagas = request.form["vagas"] 
+
+    if verificar_data(data):
+        return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos = len(eventos),
+        modo = "criar",
+        error ="Data inválida!"
+        )
+    else:
+
+        editar_evento(
+            id,
+            nome,
+            jogo,
+            data,
+            vagas
+    )
     return redirect("/eventos")
 
 
@@ -183,14 +311,24 @@ def remover_evento(id):
 
 @app.route("/eventos/busca", methods=["POST"])
 def buscar_eventos():
+     
     busca = request.form["busca"]
+    
     if busca.isdigit():
         evento = filtrar_eventos_id(busca)
         eventos = [evento] if evento else []
+        
     else:
         eventos = filtrar_eventos_nome(busca)
-    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
-
+            
+    total_eventos = len(eventos)
+    
+    return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos=total_eventos,
+        modo="criar"
+    )
 
 @app.route("/eventos/busca-tipo", methods=["POST"])
 def buscar_eventos_tipo():
