@@ -106,12 +106,12 @@
                     <td>{{inscricao [0]}}</td>
                     <td>{{inscricao [1]}}</td>
                     <td>{{inscricao [2]}}</td>
-                    <td>
+                    <td id="acoes">
                         <form action="/inscricoes/excluir/{{ inscricao [0] }}" method="POST">
-                            <button type="submit">🗑️</button>
+                            <button type="submit"><i data-lucide="trash-2"></i></button>
                         </form>
                         <form action="/inscricoes/editar/{{ inscricao [0] }}" method="POST">
-                            <button type="submit">✏️</button>
+                            <button type="submit"><i data-lucide="pencil"></i></button>
                         </form>
                     </td>
                 </tr>
