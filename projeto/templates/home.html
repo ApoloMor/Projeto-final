@@ -97,6 +97,9 @@
                         <form action="/inscricoes/excluir/{{ inscricao [0] }}" method="POST">
                             <button type="submit">🗑️</button>
                         </form>
+                        <form action="/inscricoes/editar/{{ inscricao [0] }}" method="POST">
+                            <button type="submit">✏️</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

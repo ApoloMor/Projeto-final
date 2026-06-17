@@ -34,6 +34,7 @@ from modules.inscricoes import (
     evento_lotado,
     excluir_inscricao,
     buscar_inscricao,
+    editar_inscricao,
 )
 
 from modules.produtos import(
@@ -86,6 +87,10 @@ def inscrever():
 
     return redirect("/")
 
+@app.route("/inscricoes/editar")
+def edicao_inscricao():
+
+  
 @app.route("/inscricoes/excluir/<int:id>", methods=["POST"])
 def remover_inscricao(id):
 
