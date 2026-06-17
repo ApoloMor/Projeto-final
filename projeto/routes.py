@@ -53,6 +53,15 @@ from modules.produtos import(
     listar_todas_movimentacoes,
 )
 
+from modules.fornecedores import (
+    criar_tabela_fornecedores,
+    cadastrar_fornecedor,
+    listar_fornecedores,
+    buscar_fornecedor,
+    editar_fornecedor,
+    excluir_fornecedor,
+)
+
 import os
 
 print(os.getcwd())
@@ -336,4 +345,51 @@ def saida_produto(id):
 
 @app.route("/fornecedores")
 def fornecedores():
-    return render_template("fornecedores.html")
+    criar_tabela_fornecedores()
+    lista = listar_fornecedores()
+    return render_template(
+        "fornecedores.html",
+        fornecedores=lista,
+        total_fornecedores=len(lista),
+        modo="criar"
+    )
+
+
+@app.route("/fornecedores/criar", methods=["POST"])
+def criar_fornecedor_route():
+    nome = request.form["nome"]
+    cnpj = request.form["cnpj"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+    cadastrar_fornecedor(nome, cnpj, telefone, email)
+    return redirect("/fornecedores")
+
+
+@app.route("/fornecedores/editar/<int:id>", methods=["GET"])
+def editar_fornecedor_route(id):
+    criar_tabela_fornecedores()
+    fornecedor = buscar_fornecedor(id)
+    lista = listar_fornecedores()
+    return render_template(
+        "fornecedores.html",
+        fornecedores=lista,
+        total_fornecedores=len(lista),
+        fornecedor_edicao=fornecedor,
+        modo="editar"
+    )
+
+
+@app.route("/fornecedores/atualizar/<int:id>", methods=["POST"])
+def atualizar_fornecedor(id):
+    nome = request.form["nome"]
+    cnpj = request.form["cnpj"]
+    telefone = request.form["telefone"]
+    email = request.form["email"]
+    editar_fornecedor(id, nome, cnpj, telefone, email)
+    return redirect("/fornecedores")
+
+
+@app.route("/fornecedores/excluir/<int:id>", methods=["POST"])
+def remover_fornecedor(id):
+    excluir_fornecedor(id)
+    return redirect("/fornecedores")

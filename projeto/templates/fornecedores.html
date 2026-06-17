@@ -1,10 +1,10 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='fornecedores.css' ) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='fornecedores.css') }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
   <div class="sidebar">
     <div class="logo">
       <h1>GAME STORE</h1>
@@ -29,129 +28,116 @@
     </div>
   </div>
 
-  <div class="main">
-
+  <main class="main">
     <div class="breadcrumb">
       <a href="/">Início</a>
       <span>></span>
       <a href="/fornecedores">Fornecedores</a>
     </div>
 
-    <div class="topo">
+    <section class="topo">
       <div class="titulo-subt">
         <h1><i data-lucide="truck"></i> Fornecedores</h1>
         <p>Gerencie os fornecedores da loja.</p>
       </div>
 
       <div class="botoes-titulo">
-        <button class="new-event">
-          <span>+</span> Novo Fornecedor
-        </button>
+        <button class="new-product" onclick="mostrarFormulario()">+ Novo Fornecedor</button>
       </div>
-
 
       <div class="data">
-        <i data-lucide="clock-3" class="lucide-truck"></i>
+        <i data-lucide="clock-3"></i>
         <time id="data-hora" class="data-textos"></time>
       </div>
+    </section>
+
+    <div class="card-form" id="formFornecedor" {% if modo == "criar" %}style="display:none;"{% endif %}>
+      {% if modo == "criar" %}
+      <h3>Novo Fornecedor</h3>
+      <form action="/fornecedores/criar" method="POST">
+        <input type="text" name="nome" placeholder="Nome do fornecedor" required />
+        <input type="text" name="cnpj" placeholder="CNPJ" required />
+        <input type="text" name="telefone" placeholder="Telefone" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+      {% elif modo == "editar" %}
+      <h3>Editar Fornecedor</h3>
+      <form action="/fornecedores/atualizar/{{ fornecedor_edicao[0] }}" method="POST">
+        <input type="text" name="nome" placeholder="Nome do fornecedor" value="{{ fornecedor_edicao[1] }}" required />
+        <input type="text" name="cnpj" placeholder="CNPJ" value="{{ fornecedor_edicao[2] }}" required />
+        <input type="text" name="telefone" placeholder="Telefone" value="{{ fornecedor_edicao[3] }}" required />
+        <input type="email" name="email" placeholder="E-mail" value="{{ fornecedor_edicao[4] }}" required />
+        <button type="submit">Salvar Alterações</button>
+      </form>
+      {% endif %}
     </div>
 
-    <div class="content">
-
-      <div class="conteudo-principal">
-
+    <section class="content">
+      <div class="produtos">
         <div class="card-tabela">
-
-          <div class="fornecedores">
-
-            <table>
-
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Fornecedor</th>
-                  <th>CNPJ</th>
-                  <th>Telefone</th>
-                  <th>E-mail</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-
-              <tbody>
-
-                <tr>
-                  <td>001</td>
-                  <td>Galápagos Jogos</td>
-                  <td>15.234.657/0001-95</td>
-                  <td>(11) 3052-3600</td>
-                  <td>contato@galapagosjogos.com.br</td>
-                  <td>✏️ 🗑️</td>
-                </tr>
-
-                <tr>
-                  <td>002</td>
-                  <td>Copag</td>
-                  <td>61.082.426/0001-07</td>
-                  <td>(11) 3672-4200</td>
-                  <td>comercial@copag.com.br</td>
-                  <td>✏️ 🗑️</td>
-                </tr>
-
-                <tr>
-                  <td>003</td>
-                  <td>Devir Livraria</td>
-                  <td>08.704.131/0001-56</td>
-                  <td>(11) 5087-5180</td>
-                  <td>vendas@devir.com.br</td>
-                  <td>✏️ 🗑️</td>
-                </tr>
-
-              </tbody>
-
-            </table>
-
-          </div>
-
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fornecedor</th>
+                <th>CNPJ</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for fornecedor in fornecedores %}
+              <tr>
+                <td>{{ fornecedor[0] }}</td>
+                <td>{{ fornecedor[1] }}</td>
+                <td>{{ fornecedor[2] }}</td>
+                <td>{{ fornecedor[3] }}</td>
+                <td>{{ fornecedor[4] }}</td>
+                <td>
+                  <div class="acoes">
+                    <form action="/fornecedores/editar/{{ fornecedor[0] }}" method="GET">
+                      <button type="submit" class="btn-editar"><i data-lucide="pencil"></i></button>
+                    </form>
+                    <form action="/fornecedores/excluir/{{ fornecedor[0] }}" method="POST">
+                      <button type="submit" class="btn-excluir"><i data-lucide="trash-2"></i></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-
       </div>
 
-      <div class="barra-direita">
-
+      <aside class="barra-direita">
         <div class="card-lateral">
           <h3>Resumo de fornecedores</h3>
-
           <div class="item-resumo">
             <span>Total de fornecedores</span>
-            <strong>24</strong>
+            <strong>{{ total_fornecedores }}</strong>
           </div>
-
         </div>
+      </aside>
+    </section>
+  </main>
 
-      </div>
+  <script>
+    function mostrarFormulario() {
+      document.getElementById('formFornecedor').style.display = 'block';
+    }
 
-    </div>
+    function atualizarDataHora() {
+      const agora = new Date();
+      const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
+      document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+    }
 
-    <script>
-      function mostrarFormulario() {
-        document.getElementById("formFornecedor").style.display = "block";
-      }
-
-      function atualizarDataHora() {
-        const agora = new Date();
-
-        const opcoes = {
-          dateStyle: 'short',
-          timeStyle: 'medium'
-        };
-
-        document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
-      }
-
-      setInterval(atualizarDataHora, 1000);
-
-      atualizarDataHora();
-
-      lucide.createIcons();
-    </script>
+    setInterval(atualizarDataHora, 1000);
+    atualizarDataHora();
+    lucide.createIcons();
+  </script>
 </body>
+</html>
