@@ -42,7 +42,7 @@ from modules.produtos import(
     excluir_produtos,
     listar_produtos,
     buscar_produtos,
-    editar_produtos
+    editar_produtos,
 )
 
 import os
@@ -301,7 +301,7 @@ def buscar_cliente_route():
 
 @app.route("/produtos")
 def produtos():
-
+    
     criar_tabela_produtos()
 
     lista = listar_produtos()
