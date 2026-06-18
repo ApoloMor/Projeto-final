@@ -163,7 +163,7 @@ body {
   font-size: 14px;
 }
 
-.card-form button {
+.submit {
   width: 100%;
   border: none;
   background: #6d4aff;
@@ -176,13 +176,45 @@ body {
   transition: 0.3s;
 }
 
-.card-form button:hover {
+.submit:hover {
   background: #5b3ae6;
 }
 
-#formVenda,
-#formInscricoes {
-    display: none;
+.titulo-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.btn-cancelar {
+  border: none;
+  border-radius: 12px;
+  background: #6d4aff;
+  color: #b91c1c;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#erro {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#erro button {
+  border: none;
+  color: #b91c1c;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 /* TABELA */

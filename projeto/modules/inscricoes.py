@@ -71,7 +71,21 @@ def excluir_inscricao(id):
     )
 
     conn.commit()
-    conn.close
+    conn.close()
+
+def editar_inscricao(id, id_cliente, id_evento):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE inscricoes 
+        SET id_cliente = ?, id_evento = ?
+        WHERE id = ?
+    """, (id_cliente, id_evento, id))
+
+    conn.commit()
+    conn.close()
 
 def contar_participantes(id_evento): #diz quantos inscritos em tal evento
 
