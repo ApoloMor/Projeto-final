@@ -8,7 +8,7 @@ def criar_tabela_inscricoes():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    cursor.execute(""" 
         CREATE TABLE IF NOT EXISTS inscricoes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_cliente INTEGER NOT NULL,
@@ -73,21 +73,23 @@ def excluir_inscricao(id):
     conn.commit()
     conn.close()
 
-def editar_inscricao(id, id_cliente, id_evento):
+def editar_inscricao(id, id_evento):
 
     conn = conectar()
     cursor = conn.cursor()
 
     cursor.execute("""
         UPDATE inscricoes 
-        SET id_cliente = ?, id_evento = ?
+        SET id_evento = ?
         WHERE id = ?
-    """, (id_cliente, id_evento, id))
+    """, (id_evento, id))
 
     conn.commit()
     conn.close()
 
-def contar_participantes(id_evento): #diz quantos inscritos em tal evento
+# ----- DEMAIS FUNÇÕES -----
+
+def contar_inscricoes(id_evento): #diz quantos inscritos em tal evento
 
     conn = conectar()
     cursor = conn.cursor()
@@ -103,6 +105,22 @@ def contar_participantes(id_evento): #diz quantos inscritos em tal evento
     conn.close()
 
     return quantidade
+
+def total_clientes_inscritos():
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(DISTINCT id_cliente)
+        FROM inscricoes
+    """)
+
+    total = cursor.fetchone()[0]
+
+    conn.close()
+
+    return total
 
 def buscar_vagas_evento(id_evento):
 
@@ -124,7 +142,7 @@ def buscar_vagas_evento(id_evento):
 def vagas_disponiveis(id_evento):
 
     vagas_totais = buscar_vagas_evento(id_evento)
-    inscritos = contar_participantes(id_evento)
+    inscritos = contar_inscricoes(id_evento)
 
     vagas_disponiveis = vagas_totais - inscritos
 
@@ -133,3 +151,47 @@ def vagas_disponiveis(id_evento):
 def evento_lotado(id_evento):
 
     return vagas_disponiveis(id_evento) <= 0
+
+def total_clientes_inscritos():
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM inscricoes
+    """)
+
+    total = cursor.fetchone()[0]
+
+    conn.close()
+
+    return total
+
+def total_eventos_com_vagas():
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, vagas
+        FROM eventos
+    """)
+
+    eventos = cursor.fetchall()
+
+    total = 0
+
+    for evento in eventos:
+
+        id_evento = evento[0]
+        vagas = evento[1]
+
+        inscritos = contar_inscricoes(id_evento)
+
+        if vagas > inscritos:
+            total += 1
+
+    conn.close()
+
+    return total

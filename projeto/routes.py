@@ -32,15 +32,16 @@ from modules.inscricoes import (
     criar_tabela_inscricoes,
     listar_inscricoes,
     inscrever_cliente_evento,
-    contar_participantes,
+    contar_inscricoes,
     buscar_vagas_evento,
     vagas_disponiveis,
     evento_lotado,
     excluir_inscricao,
     buscar_inscricao,
     editar_inscricao,
+    total_clientes_inscritos,
+    total_eventos_com_vagas
 )
-
 from modules.produtos import(
     criar_tabela_produtos,
     cadastrar_produtos,
@@ -103,11 +104,14 @@ def home():
     lista = listar_inscricoes()
 
     return render_template(
-            "home.html",
-            inscricoes = lista,
-            modo_insc = "criar",
-            modo_vnd = "criar",
-)   
+        "home.html",
+        inscricoes=lista,
+        total_inscricoes=len(lista),
+        total_clientes=total_clientes_inscritos(),
+        eventos_abertos=total_eventos_com_vagas(),
+        modo_insc="criar",
+        modo_vnd="criar",
+    ) 
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
@@ -170,20 +174,8 @@ def edicao_inscricao(id):
 def atualizar_inscricao(id):
 
     lista = listar_inscricoes()
-    print(request.form)
-    id_cliente = request.form["id_cliente"]
+
     id_evento = request.form["id_evento"]
-
-    cliente = buscar_cliente_por_id(id_cliente)
-
-    if not cliente:
-        return render_template(
-            "home.html",
-            inscricoes = lista,
-            modo_insc = "criar",
-            modo_vnd = "criar",
-            error = "Cliente não encontrado!",
-        )
     
     evento = filtrar_eventos_id(id_evento)
     
@@ -207,7 +199,6 @@ def atualizar_inscricao(id):
     
     editar_inscricao(
         id,
-        id_cliente,
         id_evento
     )
 

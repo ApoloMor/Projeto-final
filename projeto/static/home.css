@@ -216,8 +216,72 @@ body {
   font-size: 16px;
   font-weight: bold;
 }
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.form-busca,
+.form-nofiltros {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-busca input,
+.tipos-select {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  min-width: 220px;
+}
+
+.btn-filter,
+.btn-clear {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn-filter {
+  background: #6d4aff;
+  color: white;
+}
+
+.btn-filter:hover {
+  background: #5b3ae6;
+}
+
+.btn-clear {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-clear:hover {
+  background: #dc2626;
+}
+
+.lucide-btn {
+  width: 16px;
+  height: 16px;
+}
+/*content*/
+.content {
+  display: flex;
+  gap: 25px;
+}
 
 /* TABELA */
+
+.inscricoes{
+    flex: 1;
+}
 
 .tabela-inscricoes {
   width: 100%;
@@ -242,4 +306,35 @@ body {
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+
+/* RESUMO */
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.info span {
+  color: #666;
+}
+
+.info strong {
+  color: #6d4aff;
+}
+
+.barra-direita {
+  width: 320px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  margin-bottom: 15px;
 }

@@ -162,6 +162,18 @@ def filtrar_eventos_jogo(tipo):
 
     return evento
 
+#def filtrar_eventos_vaga():r
+def filtrar_eventos_nome(id_eventos):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT 
+    """)
+
+    conn.close()
+
 # ----- Fim Filtros  -----
 
 # ----- Vagas e Datas -----
@@ -189,6 +201,18 @@ def verificar_data(data):
         return True
 
     return False
+
+def total_eventos_com_vagas():
+
+    eventos = listar_eventos()
+
+    total = 0
+
+    for evento in eventos:
+        if vagas_disponiveis(evento[0]) > 0:
+            total += 1
+
+    return total
 
 # ----- Fim Vagas e Data  -----
 
