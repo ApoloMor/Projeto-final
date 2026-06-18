@@ -1,7 +1,7 @@
 import sqlite3
 from database import conectar
 
-# ----- INSCRIÇÕES  -----
+# ----- CRUD INSCRIÇÕES  -----
 
 def criar_tabela_inscricoes():
 
@@ -86,6 +86,49 @@ def editar_inscricao(id, id_evento):
 
     conn.commit()
     conn.close()
+  
+# ----- FILTROS E BUSCAS INSCRIÇÕES  -----
+
+def buscar_inscricao_id(busca):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT * 
+            FROM inscricoes
+            WHERE id = ? """, (busca,)
+)
+
+    inscricao = fetchone()
+  
+    cursor.close()
+
+    return inscricao
+
+def filtrar_cliente(
+  
+)
+
+
+# ----- sla  -----
+
+def nome_cliente_id(id_cliente):
+    
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT * 
+            FROM inscricoes
+            WHERE id = ? """, (id_cliente,)
+)
+
+    inscricao = fetchone()
+  
+    cursor.close()
+
+    return inscricao
 
 # ----- DEMAIS FUNÇÕES -----
 

@@ -209,7 +209,16 @@ def remover_inscricao(id):
     excluir_inscricao(id)
     return redirect("/")
 
+@app.route("/inscricoes/busca", methods = ["POST"])
+def buscar_inscricao():
+  busca = request.form["busca"]
 
+  if busca.isdigit():
+        inscricao = buscar_inscricao_id(busca)
+        inscricoes = [inscricao] if inscricao else []
+  else:
+        pass
+  
 # ROTA DE EVENTOS E SUAS FUNÇÕES
 
 @app.route("/eventos")

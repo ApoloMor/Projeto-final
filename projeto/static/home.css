@@ -222,6 +222,7 @@ body {
   gap: 12px;
   margin-bottom: 20px;
   align-items: center;
+  margin: 15px;
 }
 
 .form-busca,
@@ -279,8 +280,11 @@ body {
 
 /* TABELA */
 
-.inscricoes{
+.inscricoes {
     flex: 1;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .tabela-inscricoes {
@@ -306,6 +310,16 @@ body {
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+
+#acoes {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#acoes form {
+    margin: 0;
 }
 
 /* RESUMO */
