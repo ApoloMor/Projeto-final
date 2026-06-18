@@ -151,23 +151,26 @@ def inscrever():
 
     return redirect("/")
 
-@app.route("/inscricoes/editar", methods=["GET"])
-def edicao_inscricao(id,):
+@app.route("/inscricoes/editar/<int:id>", methods=["GET"])
+def edicao_inscricao(id): 
 
     inscricao = buscar_inscricao(id)
     lista = listar_inscricoes()
 
     return render_template(
-        "home.html", 
-        inscricao=lista, 
-        modo="editar")
+        "home.html",
+        inscricoes=lista,
+        inscricao=inscricao,
+        modo_insc="editar",
+        modo_vnd="criar"
+    )
 
 
 @app.route("/inscricoes/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
 def atualizar_inscricao(id):
-    
-    lista = listar_inscricoes()
 
+    lista = listar_inscricoes()
+    print(request.form)
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
 
@@ -202,10 +205,10 @@ def atualizar_inscricao(id):
             error = "Evento lotado!",
         )
     
-    editar_evento(
+    editar_inscricao(
         id,
         id_cliente,
-        id_cliente
+        id_evento
     )
 
     return redirect("/")
