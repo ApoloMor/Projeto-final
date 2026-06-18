@@ -11,3 +11,5 @@ CAMINHO_BANCO = os.path.join(
 
 def conectar():
     return sqlite3.connect(CAMINHO_BANCO)
+
+
