@@ -25,7 +25,7 @@ from modules.clientes import (
     editar_cliente, 
     buscar_cliente_por_id,
     buscar_cliente,
-    buscar_cliente_nome
+    buscar_cliente_nome,
 )
 
 from modules.inscricoes import (
@@ -37,13 +37,14 @@ from modules.inscricoes import (
     vagas_disponiveis,
     evento_lotado,
     excluir_inscricao,
-    buscar_inscricao,
+    buscar_inscricao1,
     editar_inscricao,
     total_clientes_inscritos,
     total_eventos_com_vagas,
     buscar_inscricao_id,
     filtrar_cliente_nome,
     filtrar_eventos_nome_insc,
+    buscar_inscricao_cliente,
 
 )
 from modules.produtos import(
@@ -134,7 +135,7 @@ def inscrever():
             modo_vnd = "criar",
             error = "Cliente não encontrado!",
         )
-    
+  
     evento = filtrar_eventos_id(id_evento)
     if not evento:
         return render_template(
@@ -162,7 +163,7 @@ def inscrever():
 @app.route("/inscricoes/editar/<int:id>", methods=["GET"])
 def edicao_inscricao(id): 
 
-    inscricao = buscar_inscricao(id)
+    inscricao = buscar_inscricao1(id)
     lista = listar_inscricoes()
 
     return render_template(
@@ -219,7 +220,7 @@ def buscar_inscricao():
     busca = request.form["busca"]
 
     if busca.isdigit():
-        inscricao = buscar_inscricao_id(busca)
+        inscricao = buscar_inscricao_id(busac)
         inscricoes = [inscricao] if inscricao else []
 
     else:

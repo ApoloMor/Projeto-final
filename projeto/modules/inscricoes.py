@@ -32,7 +32,7 @@ def listar_inscricoes():
 
     return inscricoes
 
-def buscar_inscricao(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = ? ↓ fetchone()↓ return evento
+def buscar_inscricao1(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = ? ↓ fetchone()↓ return evento
 
     conn = conectar()
     cursor = conn.cursor()
@@ -55,10 +55,10 @@ def inscrever_cliente_evento(id_cliente, id_evento):
         INSERT INTO inscricoes(id_cliente, id_evento)
         VALUES (?, ?)
     """, (id_cliente, id_evento))
- 
-
+  
     conn.commit()
     conn.close()
+  
 
 def excluir_inscricao(id):
 
