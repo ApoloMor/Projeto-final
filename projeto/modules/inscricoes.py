@@ -1,7 +1,7 @@
 import sqlite3
 from database import conectar
 
-# ----- INSCRIÇÕES  -----
+# ----- CRUD INSCRIÇÕES  -----
 
 def criar_tabela_inscricoes():
 
@@ -32,7 +32,7 @@ def listar_inscricoes():
 
     return inscricoes
 
-def buscar_inscricao(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = ? ↓ fetchone()↓ return evento
+def buscar_inscricao1(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = ? ↓ fetchone()↓ return evento
 
     conn = conectar()
     cursor = conn.cursor()
@@ -66,10 +66,10 @@ def inscrever_cliente_evento(id_cliente, id_evento):
         INSERT INTO inscricoes(id_cliente, id_evento)
         VALUES (?, ?)
     """, (id_cliente, id_evento))
- 
-
+  
     conn.commit()
     conn.close()
+  
 
 def excluir_inscricao(id):
 
@@ -97,6 +97,90 @@ def editar_inscricao(id, id_evento):
 
     conn.commit()
     conn.close()
+  
+# ----- FILTROS E BUSCAS INSCRIÇÕES  -----
+
+def buscar_inscricao_id(busca):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT * 
+            FROM inscricoes
+            WHERE id = ? """, (busca,)
+)
+
+    inscricao = cursor.fetchone()
+  
+    cursor.close()
+
+    return inscricao
+
+def filtrar_cliente_nome(nome):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT i.*
+        FROM inscricoes i
+        JOIN clientes c ON i.id_cliente = c.id
+        WHERE c.nome LIKE ?
+    """, (f"%{nome}%",))
+
+    inscricoes = cursor.fetchall()
+
+    conn.close()
+
+    return inscricoes
+
+def filtrar_eventos_nome_insc(busca):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM eventos
+        WHERE nome LIKE ?
+    """, (f"%{busca}%",))
+
+    evento = cursor.fetchone()
+
+    if not evento:
+        conn.close()
+        return []
+
+    cursor.execute("""
+        SELECT *
+        FROM inscricoes
+        WHERE id_evento = ?
+    """, (evento[0],))
+
+    inscricoes = cursor.fetchall()
+
+    conn.close()
+
+    return inscricoes
+
+# ----- sla  -----
+
+def nome_cliente_id(id_cliente):
+    
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT * 
+            FROM inscricoes
+            WHERE id = ? """, (id_cliente,)
+)
+
+    inscricao = cursor.fetchone()
+  
+    cursor.close()
+
+    return inscricao
 
 # ----- DEMAIS FUNÇÕES -----
 

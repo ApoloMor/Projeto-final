@@ -28,7 +28,7 @@ from modules.clientes import (
     editar_cliente, 
     buscar_cliente_por_id,
     buscar_cliente,
-    buscar_cliente_nome
+    buscar_cliente_nome,
 )
 
 from modules.inscricoes import (
@@ -40,10 +40,15 @@ from modules.inscricoes import (
     vagas_disponiveis,
     evento_lotado,
     excluir_inscricao,
-    buscar_inscricao,
+    buscar_inscricao1,
     editar_inscricao,
     total_clientes_inscritos,
-    total_eventos_com_vagas
+    total_eventos_com_vagas,
+    buscar_inscricao_id,
+    filtrar_cliente_nome,
+    filtrar_eventos_nome_insc,
+    buscar_inscricao_cliente,
+
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -137,7 +142,6 @@ def inscrever():
             modo_vnd="criar",
             error="Cliente não encontrado!"
         )
-
     evento = filtrar_eventos_id(id_evento)
     if not evento:
         return render_template(
@@ -175,6 +179,12 @@ def inscrever():
             error="Cliente já inscrito neste evento!"
         )
 
+@app.route("/inscricoes/editar/<int:id>", methods=["GET"])
+def edicao_inscricao(id): 
+
+    inscricao = buscar_inscricao1(id)
+    lista = listar_inscricoes()
+  
     inscrever_cliente_evento(id_cliente, id_evento)
 
     return render_template(
@@ -228,7 +238,30 @@ def remover_inscricao(id):
     excluir_inscricao(id)
     return redirect("/")
 
+@app.route("/inscricoes/busca", methods=["POST"])
+def buscar_inscricao():
 
+    busca = request.form["busca"]
+
+    if busca.isdigit():
+        inscricao = buscar_inscricao_id(busac)
+        inscricoes = [inscricao] if inscricao else []
+
+    else:
+        inscricoes = filtrar_cliente_nome(busca)
+
+        if not inscricoes:
+            inscricoes = filtrar_eventos_nome_insc(busca)
+    print(inscricoes)
+    return render_template(
+        "home.html",
+        inscricoes=inscricoes,
+        total_inscricoes=len(inscricoes),
+        total_clientes=total_clientes_inscritos(),
+        eventos_abertos=total_eventos_com_vagas(),
+        modo_insc="criar",
+        modo_vnd="criar",
+    )
 # ROTA DE EVENTOS E SUAS FUNÇÕES
 
 @app.route("/eventos")
