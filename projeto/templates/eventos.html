@@ -89,7 +89,17 @@
       </form>
       {% endif %}
     </div>
+    {% if error %}
+    <div id="erro">
+      {{ error }} <button onclick="fecharErro()">X</button>
+    </div>
+    {% endif %}
 
+    {% if success %}
+    <div id="sucesso">
+      {{ success }} <button onclick="fecharSucesso()">X</button>
+    </div>
+    {% endif %}
     <div class="filtros">
       <form action="/eventos/busca" method="POST" class="form-busca">
         <input type="text" name="busca" placeholder="Buscar evento por id ou nome" required>
@@ -160,16 +170,22 @@
       const form = document.getElementById("formEvento");
       form.style.display = form.style.display === "none" ? "block" : "none";
     }
+    function fecharErro() {
+      document.getElementById("erro").style.display = "none";
+    }
 
+    function fecharSucesso() {
+      document.getElementById("sucesso").style.display = "none";
+    }
     function atualizarDataHora() {
       const agora = new Date();
       const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
       document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
     }
-
     setInterval(atualizarDataHora, 1000);
     atualizarDataHora();
     lucide.createIcons();
   </script>
 </body>
+
 </html>

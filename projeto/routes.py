@@ -303,7 +303,13 @@ def criar_evento():
             vagas
         )
 
-    return redirect("/eventos")
+    return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos=len(eventos),
+        modo = "criar",
+        success = "Evento cadastrado!"
+)
 
 
 @app.route("/eventos/editar/<int:id>", methods=["GET"])
