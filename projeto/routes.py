@@ -16,7 +16,6 @@ from modules.eventos import (
     filtrar_eventos_id,
     filtrar_eventos_nome,
     filtrar_eventos_jogo,
-    obter_status_evento,
     verificar_data,
 )
 
@@ -35,9 +34,6 @@ from modules.inscricoes import (
     criar_tabela_inscricoes,
     listar_inscricoes,
     inscrever_cliente_evento,
-    contar_inscricoes,
-    buscar_vagas_evento,
-    vagas_disponiveis,
     evento_lotado,
     excluir_inscricao,
     buscar_inscricao1,
@@ -47,6 +43,7 @@ from modules.inscricoes import (
     buscar_inscricao_id,
     filtrar_cliente_nome,
     filtrar_eventos_nome_insc,
+    filtrar_eventos_tipo_insc,
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -261,6 +258,13 @@ def buscar_inscricao():
         modo_insc="criar",
         modo_vnd="criar",
     )
+
+@app.route("/inscricoes/busca", methods=["POST"])
+def buscar_inscricao_tipo():
+    filtrar_eventos_tipo_insc(tipo)
+
+
+
 # ROTA DE EVENTOS E SUAS FUNÇÕES
 
 @app.route("/eventos")
