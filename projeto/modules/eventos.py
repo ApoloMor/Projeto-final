@@ -162,17 +162,6 @@ def filtrar_eventos_jogo(tipo):
 
     return evento
 
-#def filtrar_eventos_vaga():r
-def filtrar_eventos_nome(id_eventos):
-
-    conn = conectar()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-            SELECT 
-    """)
-
-    conn.close()
 
 # ----- Fim Filtros  -----
 

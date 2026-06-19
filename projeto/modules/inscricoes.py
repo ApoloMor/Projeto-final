@@ -100,16 +100,57 @@ def buscar_inscricao_id(busca):
             WHERE id = ? """, (busca,)
 )
 
-    inscricao = fetchone()
+    inscricao = cursor.fetchone()
   
     cursor.close()
 
     return inscricao
 
-def filtrar_cliente(
-  
-)
+def filtrar_cliente_nome(nome):
+    conn = conectar()
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        SELECT i.*
+        FROM inscricoes i
+        JOIN clientes c ON i.id_cliente = c.id
+        WHERE c.nome LIKE ?
+    """, (f"%{nome}%",))
+
+    inscricoes = cursor.fetchall()
+
+    conn.close()
+
+    return inscricoes
+
+def filtrar_eventos_nome_insc(busca):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM eventos
+        WHERE nome LIKE ?
+    """, (f"%{busca}%",))
+
+    evento = cursor.fetchone()
+
+    if not evento:
+        conn.close()
+        return []
+
+    cursor.execute("""
+        SELECT *
+        FROM inscricoes
+        WHERE id_evento = ?
+    """, (evento[0],))
+
+    inscricoes = cursor.fetchall()
+
+    conn.close()
+
+    return inscricoes
 
 # ----- sla  -----
 
@@ -124,7 +165,7 @@ def nome_cliente_id(id_cliente):
             WHERE id = ? """, (id_cliente,)
 )
 
-    inscricao = fetchone()
+    inscricao = cursor.fetchone()
   
     cursor.close()
 

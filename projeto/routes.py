@@ -40,7 +40,11 @@ from modules.inscricoes import (
     buscar_inscricao,
     editar_inscricao,
     total_clientes_inscritos,
-    total_eventos_com_vagas
+    total_eventos_com_vagas,
+    buscar_inscricao_id,
+    filtrar_cliente_nome,
+    filtrar_eventos_nome_insc,
+
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -209,16 +213,30 @@ def remover_inscricao(id):
     excluir_inscricao(id)
     return redirect("/")
 
-@app.route("/inscricoes/busca", methods = ["POST"])
+@app.route("/inscricoes/busca", methods=["POST"])
 def buscar_inscricao():
-  busca = request.form["busca"]
 
-  if busca.isdigit():
+    busca = request.form["busca"]
+
+    if busca.isdigit():
         inscricao = buscar_inscricao_id(busca)
         inscricoes = [inscricao] if inscricao else []
-  else:
-        pass
-  
+
+    else:
+        inscricoes = filtrar_cliente_nome(busca)
+
+        if not inscricoes:
+            inscricoes = filtrar_eventos_nome_insc(busca)
+    print(inscricoes)
+    return render_template(
+        "home.html",
+        inscricoes=inscricoes,
+        total_inscricoes=len(inscricoes),
+        total_clientes=total_clientes_inscritos(),
+        eventos_abertos=total_eventos_com_vagas(),
+        modo_insc="criar",
+        modo_vnd="criar",
+    )
 # ROTA DE EVENTOS E SUAS FUNÇÕES
 
 @app.route("/eventos")
