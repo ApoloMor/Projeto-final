@@ -1,3 +1,6 @@
+from modules.inscricoes import ja_inscrito
+from modules.vendas import criar_tabela_vendas, registrar_venda
+from modules.clientes import buscar_cliente_por_id
 from flask import render_template, request, redirect
 from flask_app import app
 from collections import Counter
@@ -70,6 +73,8 @@ from modules.fornecedores import (
     buscar_fornecedor,
     editar_fornecedor,
     excluir_fornecedor,
+    buscar_fornecedor_nome,
+    buscar_fornecedor_cnpj,
 )
 
 import os
@@ -120,58 +125,77 @@ def home():
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
-
     lista = listar_inscricoes()
 
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
-    
+
     cliente = buscar_cliente_por_id(id_cliente)
     if not cliente:
         return render_template(
             "home.html",
-            inscricoes = lista,
-            modo_insc = "criar",
-            modo_vnd = "criar",
-            error = "Cliente não encontrado!",
+            inscricoes=lista,
+            total_inscricoes=len(lista),
+            total_clientes=total_clientes_inscritos(),
+            eventos_abertos=total_eventos_com_vagas(),
+            modo_insc="criar",
+            modo_vnd="criar",
+            error="Cliente não encontrado!"
         )
-  
     evento = filtrar_eventos_id(id_evento)
     if not evento:
         return render_template(
             "home.html",
-            inscricoes = lista,
-            modo_insc = "criar",
-            modo_vnd = "criar",
-            error = "Evento não encontrado!",
+            inscricoes=lista,
+            total_inscricoes=len(lista),
+            total_clientes=total_clientes_inscritos(),
+            eventos_abertos=total_eventos_com_vagas(),
+            modo_insc="criar",
+            modo_vnd="criar",
+            error="Evento não encontrado!"
         )
-    
-    elif evento_lotado(id_evento):
+
+    if evento_lotado(id_evento):
         return render_template(
             "home.html",
-            inscricoes = lista,
-            modo_insc = "criar",
-            modo_vnd = "criar",
-            error = "Evento lotado!",
+            inscricoes=lista,
+            total_inscricoes=len(lista),
+            total_clientes=total_clientes_inscritos(),
+            eventos_abertos=total_eventos_com_vagas(),
+            modo_insc="criar",
+            modo_vnd="criar",
+            error="Evento lotado!"
         )
-    
-    else:
-        inscrever_cliente_evento(id_cliente, id_evento)
 
-    return redirect("/")
+    if ja_inscrito(id_cliente, id_evento):
+        return render_template(
+            "home.html",
+            inscricoes=lista,
+            total_inscricoes=len(lista),
+            total_clientes=total_clientes_inscritos(),
+            eventos_abertos=total_eventos_com_vagas(),
+            modo_insc="criar",
+            modo_vnd="criar",
+            error="Cliente já inscrito neste evento!"
+        )
 
 @app.route("/inscricoes/editar/<int:id>", methods=["GET"])
 def edicao_inscricao(id): 
 
     inscricao = buscar_inscricao1(id)
     lista = listar_inscricoes()
+  
+    inscrever_cliente_evento(id_cliente, id_evento)
 
     return render_template(
         "home.html",
-        inscricoes=lista,
-        inscricao=inscricao,
-        modo_insc="editar",
-        modo_vnd="criar"
+        inscricoes=listar_inscricoes(),
+        total_inscricoes=len(listar_inscricoes()),
+        total_clientes=total_clientes_inscritos(),
+        eventos_abertos=total_eventos_com_vagas(),
+        modo_insc="criar",
+        modo_vnd="criar",
+        success="Cliente inscrito com sucesso!"
     )
 
 
@@ -521,10 +545,12 @@ def fornecedores():
 @app.route("/fornecedores/criar", methods=["POST"])
 def criar_fornecedor_route():
     nome = request.form["nome"]
+    tipo = request.form["tipo"]
     cnpj = request.form["cnpj"]
     telefone = request.form["telefone"]
     email = request.form["email"]
-    cadastrar_fornecedor(nome, cnpj, telefone, email)
+    margem_lucro = request.form["margem_lucro"]
+    cadastrar_fornecedor(nome, tipo, cnpj, telefone, email, margem_lucro)
     return redirect("/fornecedores")
 
 
@@ -545,10 +571,12 @@ def editar_fornecedor_route(id):
 @app.route("/fornecedores/atualizar/<int:id>", methods=["POST"])
 def atualizar_fornecedor(id):
     nome = request.form["nome"]
+    tipo = request.form["tipo"]
     cnpj = request.form["cnpj"]
     telefone = request.form["telefone"]
     email = request.form["email"]
-    editar_fornecedor(id, nome, cnpj, telefone, email)
+    margem_lucro = request.form["margem_lucro"]
+    editar_fornecedor(id, nome, tipo, cnpj, telefone, email, margem_lucro)
     return redirect("/fornecedores")
 
 
@@ -556,3 +584,70 @@ def atualizar_fornecedor(id):
 def remover_fornecedor(id):
     excluir_fornecedor(id)
     return redirect("/fornecedores")
+
+
+@app.route("/fornecedores/busca", methods=["POST"])
+def buscar_fornecedor_route():
+    busca = request.form["busca"]
+    if busca.isdigit():
+        fornecedor = buscar_fornecedor(int(busca))
+        lista = [fornecedor] if fornecedor else []
+    else:
+        lista = buscar_fornecedor_nome(busca)
+    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar")
+
+
+@app.route("/fornecedores/busca-cnpj", methods=["POST"])
+def buscar_fornecedor_cnpj_route():
+    cnpj = request.form["cnpj"]
+    lista = buscar_fornecedor_cnpj(cnpj)
+    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar")
+
+
+@app.route("/venda", methods=["POST"])
+def venda():
+    lista = listar_inscricoes()
+
+    id_cliente = request.form["cliente_id"]
+    id_produto = request.form["produto_id"]
+    quantidade = int(request.form["quantidade"])
+
+    criar_tabela_vendas()
+
+    cliente = buscar_cliente_por_id(int(id_cliente))
+    if not cliente:
+        return render_template(
+            "home.html",
+            inscricoes=lista,
+            total_inscricoes=len(lista),
+            total_clientes=total_clientes_inscritos(),
+            eventos_abertos=total_eventos_com_vagas(),
+            modo_insc="criar",
+            modo_vnd="criar",
+            error="Cliente não encontrado!"
+        )
+
+    sucesso, mensagem = registrar_venda(int(id_cliente), int(id_produto), quantidade)
+
+    if not sucesso:
+        return render_template(
+            "home.html",
+            inscricoes=lista,
+            total_inscricoes=len(lista),
+            total_clientes=total_clientes_inscritos(),
+            eventos_abertos=total_eventos_com_vagas(),
+            modo_insc="criar",
+            modo_vnd="criar",
+            error=mensagem
+        )
+
+    return render_template(
+        "home.html",
+        inscricoes=listar_inscricoes(),
+        total_inscricoes=len(listar_inscricoes()),
+        total_clientes=total_clientes_inscritos(),
+        eventos_abertos=total_eventos_com_vagas(),
+        modo_insc="criar",
+        modo_vnd="criar",
+        success=mensagem
+    )

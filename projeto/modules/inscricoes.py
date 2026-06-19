@@ -46,6 +46,17 @@ def buscar_inscricao1(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = 
 
     return inscricao
 
+def ja_inscrito(id_cliente, id_evento):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT COUNT(*) FROM inscricoes 
+        WHERE id_cliente = ? AND id_evento = ?
+    """, (id_cliente, id_evento))
+    resultado = cursor.fetchone()[0]
+    conn.close()
+    return resultado > 0
+
 def inscrever_cliente_evento(id_cliente, id_evento):
 
     conn = conectar()

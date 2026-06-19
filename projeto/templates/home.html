@@ -6,23 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <title>Loja dos Games</title>
 </head>
 
 <body>
-
-    <!-- SIDEBAR -->
-
     <div class="sidebar">
-
         <div class="logo">
             <h1>GAME STORE</h1>
             <p>BOARD GAMES & CARD GAMES</p>
         </div>
-
         <div class="menu">
             <a href="/" class="active">🏠 Início</a>
             <a href="/produtos">📦 Produtos</a>
@@ -31,8 +25,8 @@
             <a href="/eventos">🏆 Eventos / Torneios</a>
             <a href="#">⚙️ Sair</a>
         </div>
-
     </div>
+
     <div class="main">
         <div class="breadcrumb">
             <a href="/">Início</a>
@@ -43,177 +37,154 @@
                 <h1><i data-lucide="house" class="lucide-house"></i> Página Inicial</h1>
                 <p>Gerencie as vendas da loja e inscreva clientes em eventos organizados por nós!</p>
             </div>
-
             <div class="botoes-titulo">
-                <button class="btn-top" onclick="toggleFormularioVenda()">
-                    + Registrar Venda
-                </button>
-            </div>
-
-            <div class="botoes-titulo">
-                <button class="btn-top" onclick="toggleFormularioInscricao()">
-                    + Inscrever Cliente
-                </button>
+                <button class="btn-top" onclick="toggleFormularioVenda()">+ Registrar Venda</button>
+                <button class="btn-top" onclick="toggleFormularioInscricao()">+ Inscrever Cliente</button>
             </div>
             <div class="data">
                 <i data-lucide="clock-3"></i>
                 <time id="data-hora" class="data-textos"></time>
             </div>
         </section>
-                        
-                <div class="card-form" id="formVenda" style="display:none;">
-                    <form action="/venda" method="POST">
-                        <h2>Registrar venda</h2>
-                        <input type="number" name="cliente_id" placeholder="ID do cliente" required />
-                        <input type="number" name="produto_id" placeholder="ID do produto" required />
-                        <button>Registrar Venda:</button>
-                    </form>
-                </div>
-                <div class="card-form" id="formInscricoes" {% if modo_insc=="criar" %}style="display:none;" {% endif %}>
-                    {% if modo_insc == "criar" %}
-                    <form action="/inscricoes" method="POST">
-                        <h2>Inscrever cliente em torneio</h2>
-                        <input type="text" name="id_cliente" placeholder="ID do cliente" required />
-                        <input type="text" name="id_evento" placeholder="ID do evento" required />
-                        <button type="submit">Inscrever cliente em torneio</button>
-                    </form>
-                    {% elif modo_insc == "editar" %}
-                    <div class="titulo-form">
-                        <h2>Alterar inscrição</h2>
-                        <form action="/" method="GET">
-                            <button type="submit" class="btn-cancelar">
-                                <i data-lucide="x"></i>
-                            </button>
-                        </form>
-                    </div>
-                    <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
-                        <input type="text" name="id_evento" placeholder="ID do evento" required />
-                        <button type="submit" class="submit"><i data-lucide="check"></i></button>
-                    </form>
-                    {% endif %}
-                </div>
-                {% if error %}
-                <div id="erro">
-                    {{ error }} <button onclick="fecharErro()">X</button>
-                </div>
-                {% endif %}
-      
-      <section class="content">
-          <div class="inscricoes">
-            <h2>Inscrições</h2>
-            <div class="filtros">
 
-          <form action="/inscricoes/busca" method="POST" class="form-busca">
-            <input type="text" name="busca" placeholder="Buscar por id, evento ou cliente" required>
-            <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
-          </form>
-            <form action="/inscricoes/busca-tipo" method="POST" class="form-busca">
-            <select name="tipo" class="tipos-select" required>
-              <option value="" disabled selected>Selecione o jogo / tipo</option>
-              <option value="pokemon">Pokémon TCG</option>
-              <option value="magic">Magic: The Gathering</option>
-              <option value="yugioh">Yu-Gi-Oh!</option>
-              <option value="board">Board Game</option>
-            </select>
-            <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
-          </form>
-          <form class="form-nofiltros" action="/">
-            <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-btn"></i> Limpar
-              filtros</button>
-          </form>
-
-        </div>
-                <table class="tabela-inscricoes">
-                    <thead>
-                        <tr>
-                            <th>id inscrição</th>
-                            <th>id cliente</th>
-                            <th>id evento</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for inscricao in inscricoes %}
-                        <tr>
-                            <td>{{inscricao [0]}}</td>
-                            <td>{{inscricao [1]}}</td>
-                            <td>{{inscricao [2]}}</td>
-                            <td id="acoes">
-                                <form action="/inscricoes/excluir/{{ inscricao [0] }}" method="POST">
-                                    <button type="submit"><i data-lucide="trash-2"></i></button>
-                                </form>
-                                <form action="/inscricoes/editar/{{ inscricao [0] }}" method="GET">
-                                    <button type="submit"><i data-lucide="pencil"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="card-resumo">
+            <div class="resumo-item">
+                <span class="resumo-label">Total de Inscrições</span>
+                <strong class="resumo-valor">{{ total_inscricoes }}</strong>
             </div>
-  
-            <aside class="barra-direita">
-                <div class="card">
-                    <h3><i data-lucide="clipboard-list"></i> Resumo</h3>
-                    <div class="info">
-    <span>Total de Inscrições</span>
-    <strong>{{ total_inscricoes }}</strong>
-</div>
+            <div class="resumo-item">
+                <span class="resumo-label">Clientes Inscritos</span>
+                <strong class="resumo-valor">{{ total_clientes }}</strong>
+            </div>
+            <div class="resumo-item">
+                <span class="resumo-label">Eventos com vagas</span>
+                <strong class="resumo-valor">{{ eventos_abertos }}</strong>
+            </div>
+        </div>
 
-<div class="info">
-    <span>Clientes Inscritos</span>
-    <strong>{{ total_clientes }}</strong>
-</div>
+        <div class="card-form" id="formVenda" style="display:none;">
+            <h3>Registrar venda</h3>
+            <form action="/venda" method="POST">
+                <input type="number" name="cliente_id" placeholder="ID do cliente" required />
+                <input type="number" name="produto_id" placeholder="ID do produto" required />
+                <input type="number" name="quantidade" placeholder="Quantidade" min="1" value="1" required />
+                <button type="submit" class="btn-submit">Registrar Venda</button>
+            </form>
+        </div>
 
-<div class="info">
-    <span>Eventos com vagas</span>
-    <strong>{{ eventos_abertos }}</strong>
-</div>
-                </div>
-            </aside>
-        </section>
+        <div class="card-form" id="formInscricoes" {% if modo_insc=="criar" %}style="display:none;"{% endif %}>
+            {% if modo_insc == "criar" %}
+            <h3>Inscrever cliente em torneio</h3>
+            <form action="/inscricoes" method="POST">
+                <input type="text" name="id_cliente" placeholder="ID do cliente" required />
+                <input type="text" name="id_evento" placeholder="ID do evento" required />
+                <button type="submit" class="btn-submit">Inscrever cliente</button>
+            </form>
+            {% elif modo_insc == "editar" %}
+            <div class="titulo-form">
+                <h3>Alterar inscrição</h3>
+                <form action="/" method="GET">
+                    <button type="submit" class="btn-cancelar"><i data-lucide="x"></i></button>
+                </form>
+            </div>
+            <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
+                <input type="text" name="id_evento" placeholder="ID do evento" required />
+                <button type="submit" class="btn-submit">Salvar Alteração</button>
+            </form>
+            {% endif %}
+        </div>
+
+        {% if error %}
+        <div id="erro">
+            {{ error }} <button onclick="fecharErro()">X</button>
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div id="sucesso">
+            {{ success }} <button onclick="fecharSucesso()">X</button>
+        </div>
+        {% endif %}
+
+        <div class="filtros">
+            <form action="/inscricoes/busca" method="POST" class="form-busca">
+                <input type="text" name="busca" placeholder="Buscar por id, evento ou cliente" required>
+                <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
+            </form>
+            <form action="/inscricoes/busca-tipo" method="POST" class="form-busca">
+                <select name="tipo" class="tipos-select" required>
+                    <option value="" disabled selected>Selecione o jogo / tipo</option>
+                    <option value="pokemon">Pokémon TCG</option>
+                    <option value="magic">Magic: The Gathering</option>
+                    <option value="yugioh">Yu-Gi-Oh!</option>
+                    <option value="board">Board Game</option>
+                </select>
+                <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
+            </form>
+            <form class="form-nofiltros" action="/">
+                <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-btn"></i> Limpar filtros</button>
+            </form>
+        </div>
+
+        <div class="card-tabela">
+            <table class="tabela-inscricoes">
+                <thead>
+                    <tr>
+                        <th>ID Inscrição</th>
+                        <th>ID Cliente</th>
+                        <th>ID Evento</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inscricao in inscricoes %}
+                    <tr>
+                        <td>{{ inscricao[0] }}</td>
+                        <td>{{ inscricao[1] }}</td>
+                        <td>{{ inscricao[2] }}</td>
+                        <td>
+                            <form action="/inscricoes/excluir/{{ inscricao[0] }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn-excluir">Excluir</button>
+                            </form>
+                            <form action="/inscricoes/editar/{{ inscricao[0] }}" method="GET" style="display:inline;">
+                                <button type="submit" class="btn-editar">Editar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         function toggleFormularioVenda() {
             const form = document.getElementById("formVenda");
-
-            if (form.style.display === "none") {
-                form.style.display = "block";
-            } else {
-                form.style.display = "none";
-            }
+            form.style.display = form.style.display === "none" ? "block" : "none";
         }
 
         function toggleFormularioInscricao() {
             const form = document.getElementById("formInscricoes");
-
-            if (form.style.display === "none") {
-                form.style.display = "block";
-            } else {
-                form.style.display = "none";
-            }
+            form.style.display = form.style.display === "none" ? "block" : "none";
         }
 
         function fecharErro() {
             document.getElementById("erro").style.display = "none";
         }
 
+        function fecharSucesso() {
+            document.getElementById("sucesso").style.display = "none";
+        }
+
         function atualizarDataHora() {
             const agora = new Date();
-
-            const opcoes = {
-                dateStyle: 'short',
-                timeStyle: 'medium'
-            };
-
+            const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
             document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
         }
 
         setInterval(atualizarDataHora, 1000);
-
         atualizarDataHora();
-
         lucide.createIcons();
     </script>
 </body>
-
 </html>

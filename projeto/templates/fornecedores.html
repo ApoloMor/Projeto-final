@@ -17,7 +17,6 @@
       <h1>GAME STORE</h1>
       <p>BOARD GAMES & CARD GAMES</p>
     </div>
-
     <div class="menu">
       <a href="/">🏠 Início</a>
       <a href="/produtos">📦 Produtos</a>
@@ -40,88 +39,129 @@
         <h1><i data-lucide="truck" class="lucide-truck"></i> Fornecedores</h1>
         <p>Gerencie os fornecedores da loja.</p>
       </div>
-
       <div class="botoes-titulo">
         <button class="new-product" onclick="mostrarFormulario()">+ Novo Fornecedor</button>
       </div>
-
       <div class="data">
         <i data-lucide="clock-3"></i>
         <time id="data-hora" class="data-textos"></time>
       </div>
     </section>
 
+    <div class="card-resumo">
+      <div class="resumo-item">
+        <span class="resumo-label">Total de fornecedores</span>
+        <strong class="resumo-valor">{{ total_fornecedores }}</strong>
+      </div>
+    </div>
+
     <div class="card-form" id="formFornecedor" {% if modo == "criar" %}style="display:none;"{% endif %}>
       {% if modo == "criar" %}
       <h3>Novo Fornecedor</h3>
       <form action="/fornecedores/criar" method="POST">
         <input type="text" name="nome" placeholder="Nome do fornecedor" required />
-        <input type="text" name="cnpj" placeholder="CNPJ" required />
-        <input type="text" name="telefone" placeholder="Telefone" required />
+        <select name="tipo" required>
+          <option value="" disabled selected>Selecione o tipo de produto</option>
+          <option value="Pokémon TCG">Pokémon TCG</option>
+          <option value="Magic: The Gathering">Magic: The Gathering</option>
+          <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+          <option value="Board Game">Board Game</option>
+        </select>
+        <input type="text" name="cnpj" id="cnpj-criar" placeholder="00.000.000/0000-00" maxlength="18" required />
+        <input type="text" name="telefone" id="tel-criar" placeholder="(00) 00000-0000" maxlength="15" required />
         <input type="email" name="email" placeholder="E-mail" required />
+        <select name="margem_lucro" required>
+          <option value="" disabled selected>Selecione a margem de lucro</option>
+          <option value="Alta">Alta</option>
+          <option value="Média">Média</option>
+        </select>
         <button type="submit">Cadastrar</button>
       </form>
       {% elif modo == "editar" %}
       <h3>Editar Fornecedor</h3>
       <form action="/fornecedores/atualizar/{{ fornecedor_edicao[0] }}" method="POST">
-        <input type="text" name="nome" placeholder="Nome do fornecedor" value="{{ fornecedor_edicao[1] }}" required />
-        <input type="text" name="cnpj" placeholder="CNPJ" value="{{ fornecedor_edicao[2] }}" required />
-        <input type="text" name="telefone" placeholder="Telefone" value="{{ fornecedor_edicao[3] }}" required />
-        <input type="email" name="email" placeholder="E-mail" value="{{ fornecedor_edicao[4] }}" required />
+        <input type="text" name="nome" value="{{ fornecedor_edicao[1] }}" required />
+        <select name="tipo" required>
+          <option value="Pokémon TCG" {% if fornecedor_edicao[2]=="Pokémon TCG" %}selected{% endif %}>Pokémon TCG</option>
+          <option value="Magic: The Gathering" {% if fornecedor_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>Magic: The Gathering</option>
+          <option value="Yu-Gi-Oh!" {% if fornecedor_edicao[2]=="Yu-Gi-Oh!" %}selected{% endif %}>Yu-Gi-Oh!</option>
+          <option value="Board Game" {% if fornecedor_edicao[2]=="Board Game" %}selected{% endif %}>Board Game</option>
+        </select>
+        <input type="text" name="cnpj" id="cnpj-editar" value="{{ fornecedor_edicao[3] }}" maxlength="18" required />
+        <input type="text" name="telefone" id="tel-editar" value="{{ fornecedor_edicao[4] }}" maxlength="15" required />
+        <input type="email" name="email" value="{{ fornecedor_edicao[5] }}" required />
+        <select name="margem_lucro" required>
+          <option value="Alta" {% if fornecedor_edicao[6]=="Alta" %}selected{% endif %}>Alta</option>
+          <option value="Média" {% if fornecedor_edicao[6]=="Média" %}selected{% endif %}>Média</option>
+        </select>
         <button type="submit">Salvar Alterações</button>
       </form>
       {% endif %}
     </div>
 
-    <section class="content">
-      <div class="produtos">
-        <div class="card-tabela">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Fornecedor</th>
-                <th>CNPJ</th>
-                <th>Telefone</th>
-                <th>E-mail</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for fornecedor in fornecedores %}
-              <tr>
-                <td>{{ fornecedor[0] }}</td>
-                <td>{{ fornecedor[1] }}</td>
-                <td>{{ fornecedor[2] }}</td>
-                <td>{{ fornecedor[3] }}</td>
-                <td>{{ fornecedor[4] }}</td>
-                <td>
-                  <div class="acoes">
-                    <form action="/fornecedores/editar/{{ fornecedor[0] }}" method="GET">
-                      <button type="submit" class="btn-editar"><i data-lucide="pencil"></i></button>
-                    </form>
-                    <form action="/fornecedores/excluir/{{ fornecedor[0] }}" method="POST">
-                      <button type="submit" class="btn-excluir"><i data-lucide="trash-2"></i></button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="filtros">
+      <form action="/fornecedores/busca" method="POST" class="form-busca">
+        <input type="text" name="busca" placeholder="Buscar fornecedor por id ou nome" required>
+        <button type="submit" class="btn-filter">
+          <i data-lucide="search" class="lucide-btn"></i> Buscar
+        </button>
+      </form>
 
-      <aside class="barra-direita">
-        <div class="card-lateral">
-          <h3>Resumo de fornecedores</h3>
-          <div class="item-resumo">
-            <span>Total de fornecedores</span>
-            <strong>{{ total_fornecedores }}</strong>
-          </div>
-        </div>
-      </aside>
-    </section>
+      <form action="/fornecedores/busca-cnpj" method="POST" class="form-busca">
+        <input type="text" name="cnpj" placeholder="Buscar por CNPJ" required>
+        <button type="submit" class="btn-filter">
+          <i data-lucide="search" class="lucide-btn"></i> Buscar
+        </button>
+      </form>
+
+      <form class="form-nofiltros" action="/fornecedores">
+        <button type="submit" class="btn-clear">
+          <i data-lucide="trash-2" class="lucide-btn"></i> Limpar filtros
+        </button>
+      </form>
+    </div>
+
+    <div class="card-tabela">
+      <table class="tabela-fornecedores">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fornecedor</th>
+            <th>Tipo</th>
+            <th>CNPJ</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th>Margem de Lucro</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fornecedor in fornecedores %}
+          <tr>
+            <td>{{ fornecedor[0] }}</td>
+            <td>{{ fornecedor[1] }}</td>
+            <td>{{ fornecedor[2] }}</td>
+            <td>{{ fornecedor[3] }}</td>
+            <td>{{ fornecedor[4] }}</td>
+            <td>{{ fornecedor[5] }}</td>
+            <td>
+              <span class="margem {% if fornecedor[6] == 'Alta' %}margem-alta{% else %}margem-media{% endif %}">
+                {{ fornecedor[6] }}
+              </span>
+            </td>
+            <td>
+              <form action="/fornecedores/excluir/{{ fornecedor[0] }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn-excluir">Excluir</button>
+              </form>
+              <form action="/fornecedores/editar/{{ fornecedor[0] }}" method="GET" style="display:inline;">
+                <button type="submit" class="btn-editar">Editar</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </main>
 
   <script>
@@ -138,6 +178,44 @@
     setInterval(atualizarDataHora, 1000);
     atualizarDataHora();
     lucide.createIcons();
+
+    function mascaraCNPJ(campo) {
+      let v = campo.value.replace(/\D/g, "");
+      if (v.length > 14) v = v.substring(0, 14);
+      if (v.length > 12) {
+        v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{1,2})/, "$1.$2.$3/$4-$5");
+      } else if (v.length > 8) {
+        v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{1,4})/, "$1.$2.$3/$4");
+      } else if (v.length > 5) {
+        v = v.replace(/(\d{2})(\d{3})(\d{1,3})/, "$1.$2.$3");
+      } else if (v.length > 2) {
+        v = v.replace(/(\d{2})(\d{1,3})/, "$1.$2");
+      }
+      campo.value = v;
+    }
+
+    function mascaraTelefone(campo) {
+      let v = campo.value.replace(/\D/g, "");
+      if (v.length > 11) v = v.substring(0, 11);
+      if (v.length > 6) {
+        v = v.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
+      } else if (v.length > 2) {
+        v = v.replace(/(\d{2})(\d{1,5})/, "($1) $2");
+      }
+      campo.value = v;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var cnpjCriar = document.getElementById("cnpj-criar");
+      var cnpjEditar = document.getElementById("cnpj-editar");
+      var telCriar = document.getElementById("tel-criar");
+      var telEditar = document.getElementById("tel-editar");
+
+      if (cnpjCriar) cnpjCriar.addEventListener("input", function() { mascaraCNPJ(this); });
+      if (cnpjEditar) cnpjEditar.addEventListener("input", function() { mascaraCNPJ(this); });
+      if (telCriar) telCriar.addEventListener("input", function() { mascaraTelefone(this); });
+      if (telEditar) telEditar.addEventListener("input", function() { mascaraTelefone(this); });
+    });
   </script>
 </body>
 </html>
