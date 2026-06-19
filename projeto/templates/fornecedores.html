@@ -60,32 +60,78 @@
       <h3>Novo Fornecedor</h3>
       <form action="/fornecedores/criar" method="POST">
         <input type="text" name="nome" placeholder="Nome do fornecedor" required />
+        <select name="tipo" required>
+          <option value="" disabled selected>Selecione o tipo de produto</option>
+          <option value="Pokémon TCG">Pokémon TCG</option>
+          <option value="Magic: The Gathering">Magic: The Gathering</option>
+          <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+          <option value="Board Game">Board Game</option>
+        </select>
         <input type="text" name="cnpj" id="cnpj-criar" placeholder="00.000.000/0000-00" maxlength="18" required />
         <input type="text" name="telefone" id="tel-criar" placeholder="(00) 00000-0000" maxlength="15" required />
         <input type="email" name="email" placeholder="E-mail" required />
+        <select name="margem_lucro" required>
+          <option value="" disabled selected>Selecione a margem de lucro</option>
+          <option value="Alta">Alta</option>
+          <option value="Média">Média</option>
+        </select>
         <button type="submit">Cadastrar</button>
       </form>
       {% elif modo == "editar" %}
       <h3>Editar Fornecedor</h3>
       <form action="/fornecedores/atualizar/{{ fornecedor_edicao[0] }}" method="POST">
         <input type="text" name="nome" value="{{ fornecedor_edicao[1] }}" required />
-        <input type="text" name="cnpj" id="cnpj-editar" value="{{ fornecedor_edicao[2] }}" maxlength="18" required />
-        <input type="text" name="telefone" id="tel-editar" value="{{ fornecedor_edicao[3] }}" maxlength="15" required />
-        <input type="email" name="email" value="{{ fornecedor_edicao[4] }}" required />
+        <select name="tipo" required>
+          <option value="Pokémon TCG" {% if fornecedor_edicao[2]=="Pokémon TCG" %}selected{% endif %}>Pokémon TCG</option>
+          <option value="Magic: The Gathering" {% if fornecedor_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>Magic: The Gathering</option>
+          <option value="Yu-Gi-Oh!" {% if fornecedor_edicao[2]=="Yu-Gi-Oh!" %}selected{% endif %}>Yu-Gi-Oh!</option>
+          <option value="Board Game" {% if fornecedor_edicao[2]=="Board Game" %}selected{% endif %}>Board Game</option>
+        </select>
+        <input type="text" name="cnpj" id="cnpj-editar" value="{{ fornecedor_edicao[3] }}" maxlength="18" required />
+        <input type="text" name="telefone" id="tel-editar" value="{{ fornecedor_edicao[4] }}" maxlength="15" required />
+        <input type="email" name="email" value="{{ fornecedor_edicao[5] }}" required />
+        <select name="margem_lucro" required>
+          <option value="Alta" {% if fornecedor_edicao[6]=="Alta" %}selected{% endif %}>Alta</option>
+          <option value="Média" {% if fornecedor_edicao[6]=="Média" %}selected{% endif %}>Média</option>
+        </select>
         <button type="submit">Salvar Alterações</button>
       </form>
       {% endif %}
     </div>
 
+    <div class="filtros">
+      <form action="/fornecedores/busca" method="POST" class="form-busca">
+        <input type="text" name="busca" placeholder="Buscar fornecedor por id ou nome" required>
+        <button type="submit" class="btn-filter">
+          <i data-lucide="search" class="lucide-btn"></i> Buscar
+        </button>
+      </form>
+
+      <form action="/fornecedores/busca-cnpj" method="POST" class="form-busca">
+        <input type="text" name="cnpj" placeholder="Buscar por CNPJ" required>
+        <button type="submit" class="btn-filter">
+          <i data-lucide="search" class="lucide-btn"></i> Buscar
+        </button>
+      </form>
+
+      <form class="form-nofiltros" action="/fornecedores">
+        <button type="submit" class="btn-clear">
+          <i data-lucide="trash-2" class="lucide-btn"></i> Limpar filtros
+        </button>
+      </form>
+    </div>
+
     <div class="card-tabela">
-      <table>
+      <table class="tabela-fornecedores">
         <thead>
           <tr>
             <th>ID</th>
             <th>Fornecedor</th>
+            <th>Tipo</th>
             <th>CNPJ</th>
             <th>Telefone</th>
             <th>E-mail</th>
+            <th>Margem de Lucro</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -97,12 +143,18 @@
             <td>{{ fornecedor[2] }}</td>
             <td>{{ fornecedor[3] }}</td>
             <td>{{ fornecedor[4] }}</td>
+            <td>{{ fornecedor[5] }}</td>
             <td>
-              <form action="/fornecedores/editar/{{ fornecedor[0] }}" method="GET" style="display:inline;">
-                <button type="submit" class="btn-editar">Editar</button>
-              </form>
+              <span class="margem {% if fornecedor[6] == 'Alta' %}margem-alta{% else %}margem-media{% endif %}">
+                {{ fornecedor[6] }}
+              </span>
+            </td>
+            <td>
               <form action="/fornecedores/excluir/{{ fornecedor[0] }}" method="POST" style="display:inline;">
                 <button type="submit" class="btn-excluir">Excluir</button>
+              </form>
+              <form action="/fornecedores/editar/{{ fornecedor[0] }}" method="GET" style="display:inline;">
+                <button type="submit" class="btn-editar">Editar</button>
               </form>
             </td>
           </tr>

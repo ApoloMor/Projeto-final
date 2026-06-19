@@ -68,6 +68,8 @@ from modules.fornecedores import (
     buscar_fornecedor,
     editar_fornecedor,
     excluir_fornecedor,
+    buscar_fornecedor_nome,
+    buscar_fornecedor_cnpj,
 )
 
 import os
@@ -510,10 +512,12 @@ def fornecedores():
 @app.route("/fornecedores/criar", methods=["POST"])
 def criar_fornecedor_route():
     nome = request.form["nome"]
+    tipo = request.form["tipo"]
     cnpj = request.form["cnpj"]
     telefone = request.form["telefone"]
     email = request.form["email"]
-    cadastrar_fornecedor(nome, cnpj, telefone, email)
+    margem_lucro = request.form["margem_lucro"]
+    cadastrar_fornecedor(nome, tipo, cnpj, telefone, email, margem_lucro)
     return redirect("/fornecedores")
 
 
@@ -534,10 +538,12 @@ def editar_fornecedor_route(id):
 @app.route("/fornecedores/atualizar/<int:id>", methods=["POST"])
 def atualizar_fornecedor(id):
     nome = request.form["nome"]
+    tipo = request.form["tipo"]
     cnpj = request.form["cnpj"]
     telefone = request.form["telefone"]
     email = request.form["email"]
-    editar_fornecedor(id, nome, cnpj, telefone, email)
+    margem_lucro = request.form["margem_lucro"]
+    editar_fornecedor(id, nome, tipo, cnpj, telefone, email, margem_lucro)
     return redirect("/fornecedores")
 
 
@@ -545,6 +551,25 @@ def atualizar_fornecedor(id):
 def remover_fornecedor(id):
     excluir_fornecedor(id)
     return redirect("/fornecedores")
+
+
+@app.route("/fornecedores/busca", methods=["POST"])
+def buscar_fornecedor_route():
+    busca = request.form["busca"]
+    if busca.isdigit():
+        fornecedor = buscar_fornecedor(int(busca))
+        lista = [fornecedor] if fornecedor else []
+    else:
+        lista = buscar_fornecedor_nome(busca)
+    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar")
+
+
+@app.route("/fornecedores/busca-cnpj", methods=["POST"])
+def buscar_fornecedor_cnpj_route():
+    cnpj = request.form["cnpj"]
+    lista = buscar_fornecedor_cnpj(cnpj)
+    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar")
+
 
 @app.route("/venda", methods=["POST"])
 def venda():

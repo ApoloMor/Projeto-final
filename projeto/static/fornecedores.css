@@ -198,6 +198,67 @@ body {
   background: #5a39e6;
 }
 
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.form-busca,
+.form-nofiltros {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-busca input,
+.form-busca select {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  min-width: 220px;
+  font-family: "Poppins", sans-serif;
+}
+
+.btn-filter,
+.btn-clear {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-filter {
+  background: #6d4aff;
+  color: white;
+}
+
+.btn-filter:hover {
+  background: #5b3ae6;
+}
+
+.btn-clear {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-clear:hover {
+  background: #dc2626;
+}
+
+.lucide-btn {
+  width: 16px;
+  height: 16px;
+}
+
 .card-tabela {
   background: white;
   border-radius: 20px;
@@ -205,26 +266,25 @@ body {
   overflow-x: auto;
 }
 
-table {
+.tabela-fornecedores {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px;
+  min-width: 800px;
 }
 
-thead th {
+.tabela-fornecedores th {
   text-align: left;
   color: #666;
   font-weight: 600;
-  padding: 14px 12px;
+  padding: 15px;
 }
 
-tbody td {
-  padding: 16px 12px;
+.tabela-fornecedores td {
+  padding: 18px 15px;
   border-top: 1px solid #eee;
-  color: #333;
 }
 
-tbody tr:hover {
+.tabela-fornecedores tbody tr:hover {
   background: #fafafa;
 }
 
@@ -261,4 +321,27 @@ tbody tr:hover {
 .btn-excluir:hover {
   background: #e94560;
   color: white;
+}
+
+/* ========================= MARGEM DE LUCRO ========================= */
+
+.margem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.margem-alta {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.margem-media {
+  background-color: #fff8e1;
+  color: #f57f17;
 }
