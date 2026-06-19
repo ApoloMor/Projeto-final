@@ -116,7 +116,6 @@ body {
   background: #5a39e6;
 }
 
-/* ícone do título azul (mesma cor dos outros módulos) */
 .lucide-truck {
   color: #6d4aff;
 }
@@ -130,9 +129,30 @@ body {
   border-radius: 15px;
 }
 
-.data-textos h4,
-.data-textos p {
-  margin: 0;
+.card-resumo {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.resumo-item {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 200px;
+}
+
+.resumo-label {
+  font-size: 14px;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.resumo-valor {
+  font-size: 28px;
+  color: #6d4aff;
+  font-weight: 600;
 }
 
 .card-form {
@@ -153,6 +173,12 @@ body {
   border-radius: 12px;
   margin-bottom: 15px;
   font-size: 14px;
+  font-family: "Poppins", sans-serif;
+}
+
+.card-form input:focus {
+  outline: none;
+  border-color: #6d4aff;
 }
 
 .card-form button {
@@ -164,6 +190,7 @@ body {
   border-radius: 12px;
   cursor: pointer;
   font-size: 15px;
+  font-family: "Poppins", sans-serif;
   transition: 0.3s;
 }
 
@@ -171,69 +198,17 @@ body {
   background: #5a39e6;
 }
 
-.content {
-  display: flex;
-  gap: 25px;
-}
-
-.produtos {
-  flex: 1;
-  overflow-x: auto; /* permite scroll horizontal apenas na área de fornecedores */
-  -webkit-overflow-scrolling: touch;
-}
-
 .card-tabela {
   background: white;
   border-radius: 20px;
   padding: 20px;
-}
-
-/* Fornece scroll interno para tabelas largas sem mover toda a página */
-.card-tabela {
   overflow-x: auto;
-}
-
-/* Garante que a tabela ocupe a largura do container, mas possa ser rolada internamente em telas pequenas */
-.card-tabela table {
-  width: 100%;
-  min-width: 720px; /* ajustável: mantém colunas legíveis e permite scroll interno */
-}
-
-.barra-direita {
-  width: 320px;
-}
-
-.card-lateral {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-}
-
-.card-lateral h3 {
-  margin-bottom: 15px;
-}
-
-.item-resumo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 16px;
-  border: 1px solid #eef0f6;
-  border-radius: 14px;
-  background: #fafafa;
-}
-
-.item-resumo span {
-  color: #666;
-}
-
-.item-resumo strong {
-  color: #081120;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 720px;
 }
 
 thead th {
@@ -253,39 +228,37 @@ tbody tr:hover {
   background: #fafafa;
 }
 
-.acoes {
-  display: flex;
-  gap: 8px;
-}
-
-.acoes form {
-  display: inline-block;
-}
-
-.btn-editar,
-.btn-excluir {
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 10px;
-  background: #e8eaf6;
-  color: #2a2a72;
+.btn-editar {
+  background: none;
+  border: 1px solid #6d4aff;
+  color: #6d4aff;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+  margin-right: 6px;
 }
 
 .btn-editar:hover {
-  background: #d1c4e9;
+  background: #6d4aff;
+  color: white;
 }
 
 .btn-excluir {
-  background: #fdecea;
-  color: #b00020;
+  background: none;
+  border: 1px solid #e94560;
+  color: #e94560;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
 }
 
 .btn-excluir:hover {
-  background: #f8c4c4;
+  background: #e94560;
+  color: white;
 }

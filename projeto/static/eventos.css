@@ -10,8 +10,6 @@ body {
   display: flex;
 }
 
-/* SIDEBAR */
-
 .sidebar {
   width: 260px;
   height: 100vh;
@@ -50,27 +48,16 @@ body {
   font-size: 15px;
 }
 
-.menu a:hover {
-  background: #6d4aff;
-}
-
+.menu a:hover,
 .menu a.active {
   background: #6d4aff;
 }
 
-/* =========================
-   MAIN
-========================= */
-
 .main {
   margin-left: 260px;
   width: calc(100% - 260px);
-  padding: 30px;
+  padding: 25px 30px;
 }
-
-/* =========================
-   BREADCRUMB
-========================= */
 
 .breadcrumb {
   margin-bottom: 20px;
@@ -86,10 +73,6 @@ body {
   color: #999;
 }
 
-/* =========================
-   TOPO
-========================= */
-
 .topo {
   display: flex;
   align-items: center;
@@ -98,7 +81,6 @@ body {
   padding: 25px;
   border-radius: 20px;
   margin-bottom: 25px;
-  width: 100%;
 }
 
 .titulo-subt {
@@ -132,6 +114,7 @@ body {
   transition: 0.3s;
   background: #6d4aff;
   color: white;
+  font-family: "Poppins", sans-serif;
 }
 
 .new-event:hover {
@@ -147,14 +130,31 @@ body {
   border-radius: 15px;
 }
 
-.data-textos h4,
-.data-textos p {
-  margin: 0;
+.card-resumo {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 25px;
 }
 
-/* =========================
-   FORMULÁRIO (NOVO EVENTO)
-========================= */
+.resumo-item {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 200px;
+}
+
+.resumo-label {
+  font-size: 14px;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.resumo-valor {
+  font-size: 28px;
+  color: #6d4aff;
+  font-weight: 600;
+}
 
 .card-form {
   background: white;
@@ -163,7 +163,6 @@ body {
   margin-bottom: 25px;
 }
 
-.card-form h1,
 .card-form h3 {
   margin-bottom: 15px;
 }
@@ -176,6 +175,7 @@ body {
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 14px;
+  font-family: "Poppins", sans-serif;
 }
 
 .card-form button {
@@ -188,6 +188,7 @@ body {
   margin-top: 15px;
   cursor: pointer;
   font-size: 15px;
+  font-family: "Poppins", sans-serif;
   transition: 0.3s;
 }
 
@@ -195,45 +196,78 @@ body {
   background: #5b3ae6;
 }
 
-/* =========================
-   CONTEÚDO
-========================= */
-
-.content {
+.filtros {
   display: flex;
-  gap: 25px;
-}
-
-.eventos {
-  flex: 1;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-}
-
-.barra-direita {
-  width: 320px;
-}
-
-.card {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 20px;
+  align-items: center;
 }
 
-.card h3 {
-  margin-bottom: 15px;
+.form-busca,
+.form-nofiltros {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-/* =========================
-   TABELA
-========================= */
+.form-busca input,
+.tipos-select {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  min-width: 220px;
+  font-family: "Poppins", sans-serif;
+}
+
+.btn-filter,
+.btn-clear {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-filter {
+  background: #6d4aff;
+  color: white;
+}
+
+.btn-filter:hover {
+  background: #5b3ae6;
+}
+
+.btn-clear {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-clear:hover {
+  background: #dc2626;
+}
+
+.lucide-btn {
+  width: 16px;
+  height: 16px;
+}
+
+.card-tabela {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  overflow-x: auto;
+}
 
 .tabela-eventos {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  min-width: 800px;
 }
 
 .tabela-eventos th {
@@ -248,86 +282,41 @@ body {
   border-top: 1px solid #eee;
 }
 
-.tabela-eventos td form button {
+.tabela-eventos tbody tr:hover {
+  background: #fafafa;
+}
+
+.btn-editar {
   background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.filtros {
-  display: flex;
-}
-
-.form-busca {
-  display: flex;
-  gap: 10px;
-}
-
-.form-busca input,
-select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 14px;
-  margin-right: 20px;
-}
-
-.tipos-select {
-  margin-left: 30px;
-}
-
-.lucide-btn {
-  width: 16px;
-  height: 16px;
-}
-
-.btn-filter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #6d4aff;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.form-nofiltros {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-clear {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #6d4aff;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin-left: 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-/* =========================
-   RESUMO
-========================= */
-
-.info {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 18px;
-}
-
-.info span {
-  color: #666;
-}
-
-.info strong {
+  border: 1px solid #6d4aff;
   color: #6d4aff;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+  margin-right: 6px;
+}
+
+.btn-editar:hover {
+  background: #6d4aff;
+  color: white;
+}
+
+.btn-excluir {
+  background: none;
+  border: 1px solid #e94560;
+  color: #e94560;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+}
+
+.btn-excluir:hover {
+  background: #e94560;
+  color: white;
 }
