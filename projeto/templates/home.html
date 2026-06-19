@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <title>Loja dos Games</title>
 </head>
@@ -72,7 +73,7 @@
             </form>
         </div>
 
-        <div class="card-form" id="formInscricoes" {% if modo_insc=="criar" %}style="display:none;"{% endif %}>
+        <div class="card-form" id="formInscricoes" {% if modo_insc=="criar" %}style="display:none;" {% endif %}>
             {% if modo_insc == "criar" %}
             <h3>Inscrever cliente em torneio</h3>
             <form action="/inscricoes" method="POST">
@@ -88,7 +89,7 @@
                 </form>
             </div>
             <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
-                <input type="text" name="id_evento" placeholder="ID do evento" required />
+                <input type="text" name="id_evento" value="{{ inscricao[2] }}" required />
                 <button type="submit" class="btn-submit">Salvar Alteração</button>
             </form>
             {% endif %}
@@ -122,7 +123,8 @@
                 <button type="submit" class="btn-filter"><i data-lucide="search" class="lucide-btn"></i> Buscar</button>
             </form>
             <form class="form-nofiltros" action="/">
-                <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-btn"></i> Limpar filtros</button>
+                <button type="submit" class="btn-clear"><i data-lucide="trash-2" class="lucide-btn"></i> Limpar
+                    filtros</button>
             </form>
         </div>
 
@@ -187,4 +189,5 @@
         lucide.createIcons();
     </script>
 </body>
+
 </html>

@@ -113,7 +113,7 @@ def buscar_inscricao_id(busca):
 
     inscricao = cursor.fetchone()
   
-    cursor.close()
+    conn.close()
 
     return inscricao
 
@@ -163,24 +163,23 @@ def filtrar_eventos_nome_insc(busca):
 
     return inscricoes
 
-# ----- sla  -----
+def filtrar_eventos_tipo_insc(tipo):
 
-def nome_cliente_id(id_cliente):
-    
     conn = conectar()
     cursor = conn.cursor()
 
     cursor.execute("""
-            SELECT * 
-            FROM inscricoes
-            WHERE id = ? """, (id_cliente,)
-)
+        SELECT i.*
+        FROM inscricoes i
+        JOIN eventos e ON i.id_evento = e.id
+        WHERE e.jogo = ?
+    """, (tipo,))
 
-    inscricao = cursor.fetchone()
-  
-    cursor.close()
+    inscricoes = cursor.fetchall()
 
-    return inscricao
+    conn.close()
+
+    return inscricoes
 
 # ----- DEMAIS FUNÇÕES -----
 
@@ -246,22 +245,6 @@ def vagas_disponiveis(id_evento):
 def evento_lotado(id_evento):
 
     return vagas_disponiveis(id_evento) <= 0
-
-def total_clientes_inscritos():
-
-    conn = conectar()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT COUNT(*)
-        FROM inscricoes
-    """)
-
-    total = cursor.fetchone()[0]
-
-    conn.close()
-
-    return total
 
 def total_eventos_com_vagas():
 
