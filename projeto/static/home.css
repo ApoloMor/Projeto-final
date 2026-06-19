@@ -125,8 +125,6 @@ body {
     border-radius: 15px;
 }
 
-/* RESUMO */
-
 .card-resumo {
     display: flex;
     gap: 16px;
@@ -152,8 +150,6 @@ body {
     color: #6d4aff;
     font-weight: 600;
 }
-
-/* FORMULÁRIOS */
 
 .card-form {
     background: white;
@@ -230,7 +226,25 @@ body {
     font-weight: bold;
 }
 
-/* FILTROS */
+#sucesso {
+    background: #dcfce7;
+    color: #166534;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#sucesso button {
+    border: none;
+    color: #166534;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
 
 .filtros {
     display: flex;
@@ -265,6 +279,9 @@ body {
     font-weight: 500;
     transition: 0.3s;
     font-family: "Poppins", sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-filter {
@@ -289,8 +306,6 @@ body {
     width: 16px;
     height: 16px;
 }
-
-/* TABELA */
 
 .card-tabela {
     background: white;

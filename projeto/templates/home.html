@@ -67,6 +67,7 @@
             <form action="/venda" method="POST">
                 <input type="number" name="cliente_id" placeholder="ID do cliente" required />
                 <input type="number" name="produto_id" placeholder="ID do produto" required />
+                <input type="number" name="quantidade" placeholder="Quantidade" min="1" value="1" required />
                 <button type="submit" class="btn-submit">Registrar Venda</button>
             </form>
         </div>
@@ -88,7 +89,7 @@
             </div>
             <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
                 <input type="text" name="id_evento" placeholder="ID do evento" required />
-                <button type="submit" class="btn-submit"><i data-lucide="check"></i></button>
+                <button type="submit" class="btn-submit">Salvar Alteração</button>
             </form>
             {% endif %}
         </div>
@@ -96,6 +97,12 @@
         {% if error %}
         <div id="erro">
             {{ error }} <button onclick="fecharErro()">X</button>
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div id="sucesso">
+            {{ success }} <button onclick="fecharSucesso()">X</button>
         </div>
         {% endif %}
 
@@ -163,6 +170,10 @@
 
         function fecharErro() {
             document.getElementById("erro").style.display = "none";
+        }
+
+        function fecharSucesso() {
+            document.getElementById("sucesso").style.display = "none";
         }
 
         function atualizarDataHora() {
