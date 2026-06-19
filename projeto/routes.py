@@ -47,8 +47,6 @@ from modules.inscricoes import (
     buscar_inscricao_id,
     filtrar_cliente_nome,
     filtrar_eventos_nome_insc,
-    buscar_inscricao_cliente,
-
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -178,24 +176,25 @@ def inscrever():
             modo_vnd="criar",
             error="Cliente já inscrito neste evento!"
         )
+    inscrever_cliente_evento(id_cliente, id_evento)
+
+    return redirect("/")
 
 @app.route("/inscricoes/editar/<int:id>", methods=["GET"])
-def edicao_inscricao(id): 
+def edicao_inscricao(id):
 
     inscricao = buscar_inscricao1(id)
     lista = listar_inscricoes()
-  
-    inscrever_cliente_evento(id_cliente, id_evento)
 
     return render_template(
         "home.html",
-        inscricoes=listar_inscricoes(),
-        total_inscricoes=len(listar_inscricoes()),
+        inscricoes=lista,
+        inscricao=inscricao,
+        total_inscricoes=len(lista),
         total_clientes=total_clientes_inscritos(),
         eventos_abertos=total_eventos_com_vagas(),
-        modo_insc="criar",
-        modo_vnd="criar",
-        success="Cliente inscrito com sucesso!"
+        modo_insc="editar",
+        modo_vnd="criar"
     )
 
 
@@ -244,7 +243,7 @@ def buscar_inscricao():
     busca = request.form["busca"]
 
     if busca.isdigit():
-        inscricao = buscar_inscricao_id(busac)
+        inscricao = buscar_inscricao_id(busca)
         inscricoes = [inscricao] if inscricao else []
 
     else:
