@@ -89,7 +89,17 @@
       </form>
       {% endif %}
     </div>
+    {% if error %}
+    <div id="erro">
+      {{ error }} <button onclick="fecharErro()">X</button>
+    </div>
+    {% endif %}
 
+    {% if success %}
+    <div id="sucesso">
+      {{ success }} <button onclick="fecharSucesso()">X</button>
+    </div>
+    {% endif %}
     <div class="filtros">
       <form action="/eventos/busca" method="POST" class="form-busca">
         <input type="text" name="busca" placeholder="Buscar evento por id ou nome" required>
@@ -134,7 +144,15 @@
             <td>{{ evento[3] }}</td>
             <td>{{ evento[4] }}</td>
             <td>{{ evento[5] }}</td>
-            <td>{{ evento[6] }}</td>
+            {% if evento[6] == "Encerrado" %}
+            <td class="status"><i data-lucide="calendar-x" class="lucide-status" id="calendar-x"></i> {{ evento[6] }}
+            </td>
+            {% elif evento[6] == "Lotado" %}
+            <td class="status"><i data-lucide="user-round-x" class="lucide-status" id="user-round-x"></i> {{ evento[6]
+              }}</td>
+            {% else %}
+            <td class="status"><i data-lucide="user-plus" class="lucide-status" id="user-plus"></i> {{ evento[6] }}</td>
+            {% endif %}
             <td>
               <form action="/eventos/excluir/{{ evento[0] }}" method="POST" style="display:inline;">
                 <button type="submit" class="btn-excluir">Excluir</button>
@@ -160,16 +178,22 @@
       const form = document.getElementById("formEvento");
       form.style.display = form.style.display === "none" ? "block" : "none";
     }
+    function fecharErro() {
+      document.getElementById("erro").style.display = "none";
+    }
 
+    function fecharSucesso() {
+      document.getElementById("sucesso").style.display = "none";
+    }
     function atualizarDataHora() {
       const agora = new Date();
       const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
       document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
     }
-
     setInterval(atualizarDataHora, 1000);
     atualizarDataHora();
     lucide.createIcons();
   </script>
 </body>
+
 </html>

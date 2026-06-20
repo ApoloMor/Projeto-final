@@ -4,12 +4,13 @@ from datetime import datetime
 from modules.inscricoes import vagas_disponiveis
 
 # ----- LOADER DA PAG  -----
-def carregar_eventos():
-    lista = listar_eventos()
+
+def adicionar_status_eventos(lista):
 
     eventos_com_status = []
 
     for evento in lista:
+
         vagas = vagas_disponiveis(evento[0])
 
         status = obter_status_evento(
@@ -24,6 +25,10 @@ def carregar_eventos():
         eventos_com_status.append(evento)
 
     return eventos_com_status
+
+def carregar_eventos():
+    lista = listar_eventos()
+    return adicionar_status_eventos(lista)
 
 # ----- CRUD eventos -----
 
