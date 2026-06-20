@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{{ url_for('static', filename='fornecedores.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -55,7 +56,7 @@
       </div>
     </div>
 
-    <div class="card-form" id="formFornecedor" {% if modo == "criar" %}style="display:none;"{% endif %}>
+    <div class="card-form" id="formFornecedor" {% if modo=="criar" %}style="display:none;" {% endif %}>
       {% if modo == "criar" %}
       <h3>Novo Fornecedor</h3>
       <form action="/fornecedores/criar" method="POST">
@@ -82,8 +83,10 @@
       <form action="/fornecedores/atualizar/{{ fornecedor_edicao[0] }}" method="POST">
         <input type="text" name="nome" value="{{ fornecedor_edicao[1] }}" required />
         <select name="tipo" required>
-          <option value="Pokémon TCG" {% if fornecedor_edicao[2]=="Pokémon TCG" %}selected{% endif %}>Pokémon TCG</option>
-          <option value="Magic: The Gathering" {% if fornecedor_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>Magic: The Gathering</option>
+          <option value="Pokémon TCG" {% if fornecedor_edicao[2]=="Pokémon TCG" %}selected{% endif %}>Pokémon TCG
+          </option>
+          <option value="Magic: The Gathering" {% if fornecedor_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>
+            Magic: The Gathering</option>
           <option value="Yu-Gi-Oh!" {% if fornecedor_edicao[2]=="Yu-Gi-Oh!" %}selected{% endif %}>Yu-Gi-Oh!</option>
           <option value="Board Game" {% if fornecedor_edicao[2]=="Board Game" %}selected{% endif %}>Board Game</option>
         </select>
@@ -205,17 +208,18 @@
       campo.value = v;
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       var cnpjCriar = document.getElementById("cnpj-criar");
       var cnpjEditar = document.getElementById("cnpj-editar");
       var telCriar = document.getElementById("tel-criar");
       var telEditar = document.getElementById("tel-editar");
 
-      if (cnpjCriar) cnpjCriar.addEventListener("input", function() { mascaraCNPJ(this); });
-      if (cnpjEditar) cnpjEditar.addEventListener("input", function() { mascaraCNPJ(this); });
-      if (telCriar) telCriar.addEventListener("input", function() { mascaraTelefone(this); });
-      if (telEditar) telEditar.addEventListener("input", function() { mascaraTelefone(this); });
+      if (cnpjCriar) cnpjCriar.addEventListener("input", function () { mascaraCNPJ(this); });
+      if (cnpjEditar) cnpjEditar.addEventListener("input", function () { mascaraCNPJ(this); });
+      if (telCriar) telCriar.addEventListener("input", function () { mascaraTelefone(this); });
+      if (telEditar) telEditar.addEventListener("input", function () { mascaraTelefone(this); });
     });
   </script>
 </body>
+
 </html>
