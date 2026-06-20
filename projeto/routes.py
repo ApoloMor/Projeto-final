@@ -16,6 +16,7 @@ from modules.eventos import (
     filtrar_eventos_id,
     filtrar_eventos_nome,
     filtrar_eventos_jogo,
+    adicionar_status_eventos,
     verificar_data,
 )
 
@@ -259,11 +260,22 @@ def buscar_inscricao():
         modo_vnd="criar",
     )
 
-@app.route("/inscricoes/busca", methods=["POST"])
+@app.route("/inscricoes/busca-tipo", methods=["POST"])
 def buscar_inscricao_tipo():
-    filtrar_eventos_tipo_insc(tipo)
 
+    tipo = request.form["tipo"]
 
+    inscricoes = filtrar_eventos_tipo_insc(tipo)
+
+    return render_template(
+        "home.html",
+        inscricoes=inscricoes,
+        total_inscricoes=len(inscricoes),
+        total_clientes=total_clientes_inscritos(),
+        eventos_abertos=total_eventos_com_vagas(),
+        modo_insc="criar",
+        modo_vnd="criar",
+    )
 
 # ROTA DE EVENTOS E SUAS FUNÇÕES
 
@@ -376,7 +388,8 @@ def buscar_eventos():
         
     else:
         eventos = filtrar_eventos_nome(busca)
-            
+
+    eventos = adicionar_status_eventos(eventos)        
     total_eventos = len(eventos)
     
     return render_template(
@@ -390,6 +403,7 @@ def buscar_eventos():
 def buscar_eventos_tipo():
     tipo = request.form["tipo"]
     eventos = filtrar_eventos_jogo(tipo)
+    eventos = adicionar_status_eventos(eventos)
     return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
 
 

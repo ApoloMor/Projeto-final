@@ -144,7 +144,15 @@
             <td>{{ evento[3] }}</td>
             <td>{{ evento[4] }}</td>
             <td>{{ evento[5] }}</td>
-            <td>{{ evento[6] }}</td>
+            {% if evento[6] == "Encerrado" %}
+            <td class="status"><i data-lucide="calendar-x" class="lucide-status" id="calendar-x"></i> {{ evento[6] }}
+            </td>
+            {% elif evento[6] == "Lotado" %}
+            <td class="status"><i data-lucide="user-round-x" class="lucide-status" id="user-round-x"></i> {{ evento[6]
+              }}</td>
+            {% else %}
+            <td class="status"><i data-lucide="user-plus" class="lucide-status" id="user-plus"></i> {{ evento[6] }}</td>
+            {% endif %}
             <td>
               <form action="/eventos/excluir/{{ evento[0] }}" method="POST" style="display:inline;">
                 <button type="submit" class="btn-excluir">Excluir</button>

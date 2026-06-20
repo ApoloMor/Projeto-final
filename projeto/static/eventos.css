@@ -326,6 +326,31 @@ body {
   background: #fafafa;
 }
 
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lucide-status {
+  margin-right: 5px;
+}
+
+#user-plus {
+  color: rgb(4, 158, 4);
+}
+#user-round-x {
+  color: red;
+}
+#calendar-x {
+  color: red;
+}
+
 .btn-editar {
   background: none;
   border: 1px solid #6d4aff;
