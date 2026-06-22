@@ -1,5 +1,6 @@
 import sqlite3
 from database import conectar
+from modules.reutilizaveis import formatar_data
 
 # ----- CRUD INSCRIÇÕES  -----
 
@@ -19,24 +20,30 @@ def criar_tabela_inscricoes():
     conn.commit()
     conn.close()
 
+    # ---- loader ----
+def carregar_inscricoes():
+    lista = listar_inscricoes()
+    return adicionar_nomes(lista)
+
 def adicionar_nomes(lista):
 
     inscricao_adicionada = []
 
     for inscricao in lista:
+        inscricao = list(inscricao)
+
         nome_cliente = add_nome_cliente(inscricao[1])
         nome_evento = add_nome_evento(inscricao[2])
+        data_evento = buscar_data_evento(inscricao[2])
+        data_evento = formatar_data(data_evento)
 
-        inscricao = list(inscricao)
         inscricao.append(nome_cliente)
         inscricao.append(nome_evento)
+        inscricao.append(data_evento)
         inscricao_adicionada.append(inscricao)
 
-    return inscricao_adicionada
 
-def carregar_inscricoes():
-    lista = listar_inscricoes()
-    return adicionar_nomes(lista)
+    return inscricao_adicionada
 
 def add_nome_cliente(id_cliente):
     conn = conectar()
@@ -234,9 +241,42 @@ def filtrar_eventos_tipo_insc(tipo):
 
     return inscricoes
 
+
+# ----- RESUMO -----
+
+def total_clientes_inscritos():#resumo
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(DISTINCT id_cliente)
+        FROM inscricoes
+    """)
+
+    total = cursor.fetchone()[0]
+
+    conn.close()
+
+    return total
+
+def total_eventos_com_vagas(): #resumo
+    from modules.eventos import carregar_eventos
+
+    eventos = carregar_eventos()
+
+    total = 0
+
+    for evento in eventos:
+
+        if evento[6] == "Aberto" and vagas_disponiveis(evento[0]) > 0:
+            total += 1
+
+    return total
+
 # ----- DEMAIS FUNÇÕES -----
 
-def contar_inscricoes(id_evento): #diz quantos inscritos em tal evento
+def contar_inscricoes(id_evento): #Verifica para editar evento
 
     conn = conectar()
     cursor = conn.cursor()
@@ -253,23 +293,26 @@ def contar_inscricoes(id_evento): #diz quantos inscritos em tal evento
 
     return quantidade
 
-def total_clientes_inscritos():
-
+def buscar_data_evento(id_evento): # Para o load
+        
     conn = conectar()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT COUNT(DISTINCT id_cliente)
-        FROM inscricoes
-    """)
+        SELECT data
+        FROM eventos
+        WHERE  id = ?""", (id_evento,))
 
-    total = cursor.fetchone()[0]
+    data = cursor.fetchone()[0]
 
+    conn.commit()
     conn.close()
 
-    return total
+    return data
 
-def buscar_vagas_evento(id_evento):
+
+
+def buscar_vagas_evento(id_evento): # Para o load
 
     conn = conectar()
     cursor = conn.cursor()
@@ -296,19 +339,4 @@ def vagas_disponiveis(id_evento):
     return vagas_disponiveis
 
 def evento_lotado(id_evento):
-
     return vagas_disponiveis(id_evento) <= 0
-def total_eventos_com_vagas():
-    from modules.eventos import carregar_eventos
-
-    eventos = carregar_eventos()
-
-    total = 0
-
-    for evento in eventos:
-
-        if evento[6] == "Aberto" and vagas_disponiveis(evento[0]) > 0:
-            total += 1
-
-    return total
-

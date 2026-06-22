@@ -134,6 +134,7 @@
                         <th>ID Inscrição</th>
                         <th>ID Cliente</th>
                         <th>ID Evento</th>
+                        <th>Data do Evento</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -143,6 +144,8 @@
                         <td>{{ inscricao[0] }}</td>
                         <td>{{ inscricao[1] }} | {{ inscricao[3] }}</td>
                         <td>{{ inscricao[2] }} | {{ inscricao[4] }}</td>
+                        <td>{{ inscricao[5] }}</td>
+
                         <td>
                             <form action="/inscricoes/excluir/{{ inscricao[0] }}" method="POST" style="display:inline;">
                                 <button type="submit" class="btn-excluir">Excluir</button>

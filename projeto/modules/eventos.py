@@ -2,6 +2,7 @@ import sqlite3
 from database import conectar
 from datetime import datetime
 from modules.inscricoes import vagas_disponiveis
+from modules.reutilizaveis import formatar_data
 
 # ----- LOADER DA PAG  -----
 
@@ -172,14 +173,6 @@ def filtrar_eventos_jogo(tipo):
 # ----- Fim Filtros  -----
 
 # ----- Vagas e Datas -----
-
-from datetime import datetime
-
-def formatar_data(data):
-    return datetime.strptime(
-        data,
-        "%Y-%m-%dT%H:%M"
-    ).strftime("%d/%m/%Y %H:%M")
 
 def obter_status_evento(data_evento, vagas_disponiveis):
 
