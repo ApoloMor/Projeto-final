@@ -85,9 +85,7 @@
             {% elif modo_insc == "editar" %}
             <div class="titulo-form">
                 <h3>Alterar inscrição</h3>
-                <form action="/" method="GET">
-                    <button type="submit" class="btn-cancelar"><i data-lucide="x"></i></button>
-                </form>
+                <a href="/"><button type="submit" class="btn-cancelar"><i data-lucide="x"></i></button></a>
             </div>
             <form action="/inscricoes/atualizar/{{ inscricao[0] }}" method="POST">
                 <input type="text" name="id_evento" value="{{ inscricao[2] }}" required />

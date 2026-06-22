@@ -178,7 +178,7 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-.card-form button {
+.enviar {
   width: 100%;
   border: none;
   background: #6d4aff;
@@ -192,8 +192,24 @@ body {
   transition: 0.3s;
 }
 
-.card-form button:hover {
+.enviar:hover {
   background: #5b3ae6;
+}
+
+.titulo-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.btn-cancelar {
+  border: none;
+  border-radius: 12px;
+  background: #fee2e2;
+  color: #b91c1c;
+  cursor: pointer;
+  padding: 8px 12px;
 }
 
 #erro {

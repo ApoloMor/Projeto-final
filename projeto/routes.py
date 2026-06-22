@@ -47,6 +47,7 @@ from modules.inscricoes import (
     carregar_inscricoes,
     adicionar_nomes,
     total_eventos_com_vagas,
+    contar_inscricoes,
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -361,6 +362,14 @@ def atualizar_eventos(id):
         total_eventos = len(eventos),
         modo = "criar",
         error ="Data inválida!"
+        )
+    if int(vagas) < contar_inscricoes(id):
+        return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos = len(eventos),
+        modo = "criar",
+        error ="Não pode haver menos vagas que inscritos!"
         )
     else:
 
