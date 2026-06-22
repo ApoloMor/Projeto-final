@@ -40,7 +40,7 @@ from modules.inscricoes import (
     buscar_inscricao_por_id,
     editar_inscricao,
     total_clientes_inscritos,
-    pesquisar_inscricao_id,
+    filtrar_inscricao_id,
     filtrar_cliente_nome,
     filtrar_eventos_nome_insc,
     filtrar_eventos_tipo_insc,
@@ -244,7 +244,7 @@ def buscar_inscricao():
     busca = request.form["busca"]
 
     if busca.isdigit():
-        inscricao = pesquisar_inscricao_id(busca)
+        inscricao = filtrar_inscricao_id(busca)
         inscricoes = [inscricao] if inscricao else []
 
     else:

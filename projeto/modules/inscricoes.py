@@ -2,25 +2,7 @@ import sqlite3
 from database import conectar
 from modules.reutilizaveis import formatar_data
 
-# ----- CRUD INSCRIÇÕES  -----
-
-def criar_tabela_inscricoes():
-
-    conn = conectar()
-    cursor = conn.cursor()
-
-    cursor.execute(""" 
-        CREATE TABLE IF NOT EXISTS inscricoes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            id_cliente INTEGER NOT NULL,
-            id_evento INTEGER NOT NULL
-        )
-""")
-
-    conn.commit()
-    conn.close()
-
-    # ---- loader ----
+# ---- LOADER ----
 def carregar_inscricoes():
     lista = listar_inscricoes()
     return adicionar_nomes(lista)
@@ -92,19 +74,23 @@ def listar_inscricoes():
 
     return inscricoes
 
-def buscar_inscricao_por_id(id):
+# ----- CRUD INSCRIÇÕES  -----
+
+def criar_tabela_inscricoes():
 
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("""SELECT * FROM inscricoes
-                      WHERE id = ?""",(id,))
-    
-    inscricao = cursor.fetchone()
+    cursor.execute(""" 
+        CREATE TABLE IF NOT EXISTS inscricoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_cliente INTEGER NOT NULL,
+            id_evento INTEGER NOT NULL
+        )
+""")
 
+    conn.commit()
     conn.close()
-
-    return inscricao
 
 def ja_inscrito(id_cliente, id_evento):
     conn = conectar()
@@ -129,20 +115,20 @@ def inscrever_cliente_evento(id_cliente, id_evento):
   
     conn.commit()
     conn.close()
-  
 
-def excluir_inscricao(id):
+def buscar_inscricao_por_id(id):
 
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "DELETE FROM inscricoes WHERE id = ?",
-        (id,) #isso vai baseado na linha em que o botão foi pressionado marcado vom seu respectivo id
-    )
+    cursor.execute("""SELECT * FROM inscricoes
+                      WHERE id = ?""",(id,))
+    
+    inscricao = cursor.fetchone()
 
-    conn.commit()
     conn.close()
+
+    return inscricao
 
 def editar_inscricao(id, id_evento):
 
@@ -157,10 +143,23 @@ def editar_inscricao(id, id_evento):
 
     conn.commit()
     conn.close()
-  
+
+def excluir_inscricao(id):
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM inscricoes WHERE id = ?",
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
 # ----- FILTROS E BUSCAS INSCRIÇÕES  -----
 
-def pesquisar_inscricao_id(busca):
+def filtrar_inscricao_id(busca):
 
     conn = conectar()
     cursor = conn.cursor()
@@ -310,8 +309,6 @@ def buscar_data_evento(id_evento): # Para o load
 
     return data
 
-
-
 def buscar_vagas_evento(id_evento): # Para o load
 
     conn = conectar()
@@ -329,7 +326,7 @@ def buscar_vagas_evento(id_evento): # Para o load
 
     return vagas
 
-def vagas_disponiveis(id_evento):
+def vagas_disponiveis(id_evento): #multiuso
 
     vagas_totais = buscar_vagas_evento(id_evento)
     inscritos = contar_inscricoes(id_evento)
