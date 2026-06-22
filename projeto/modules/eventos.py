@@ -19,6 +19,7 @@ def adicionar_status_eventos(lista):
         )
         vagasOcupadas = evento[4] - vagas
         evento = list(evento)
+        evento[3] = formatar_data(evento[3])
         evento.append(vagasOcupadas)
         evento.append(status)
 
@@ -172,6 +173,14 @@ def filtrar_eventos_jogo(tipo):
 
 # ----- Vagas e Datas -----
 
+from datetime import datetime
+
+def formatar_data(data):
+    return datetime.strptime(
+        data,
+        "%Y-%m-%dT%H:%M"
+    ).strftime("%d/%m/%Y %H:%M")
+
 def obter_status_evento(data_evento, vagas_disponiveis):
 
     data_evento = datetime.strptime( data_evento, "%Y-%m-%dT%H:%M" ) #tranforma de: "2026-06-13T18:00" para:  (2026, 6, 13, 18, 0)
@@ -195,6 +204,7 @@ def verificar_data(data):
         return True
 
     return False
+
 
 # ----- Fim Vagas e Data  -----
 
