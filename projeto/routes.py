@@ -18,7 +18,6 @@ from modules.eventos import (
     filtrar_eventos_jogo,
     adicionar_status_eventos,
     verificar_data,
-    total_eventos_com_vagas,
 )
 
 from modules.clientes import (
@@ -47,6 +46,7 @@ from modules.inscricoes import (
     filtrar_eventos_tipo_insc,
     carregar_inscricoes,
     adicionar_nomes,
+    total_eventos_com_vagas,
 )
 from modules.produtos import(
     criar_tabela_produtos,

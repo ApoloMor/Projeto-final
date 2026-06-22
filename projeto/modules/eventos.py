@@ -17,9 +17,9 @@ def adicionar_status_eventos(lista):
             evento[3],
             vagas
         )
-
+        vagasOcupadas = evento[4] - vagas
         evento = list(evento)
-        evento.append(vagas)
+        evento.append(vagasOcupadas)
         evento.append(status)
 
         eventos_com_status.append(evento)
@@ -195,19 +195,6 @@ def verificar_data(data):
         return True
 
     return False
-
-def total_eventos_com_vagas():
-
-    eventos = carregar_eventos()
-
-    total = 0
-
-    for evento in eventos:
-
-        if evento[6] == "Aberto" and vagas_disponiveis(evento[0]) > 0:
-            total += 1
-
-    return total
 
 # ----- Fim Vagas e Data  -----
 

@@ -129,8 +129,7 @@
             <th>Evento</th>
             <th>Jogo</th>
             <th>Data</th>
-            <th>Capacidade Total</th>
-            <th>Vagas Disponíveis</th>
+            <th>Vagas</th>
             <th>Status</th>
             <th>Ações</th>
           </tr>
@@ -143,8 +142,7 @@
             <td>{{ evento[1] }}</td>
             <td>{{ evento[2] }}</td>
             <td>{{ evento[3] }}</td>
-            <td>{{ evento[4] }}</td>
-            <td>{{ evento[5] }}</td>
+            <td>{{ evento[5] }}/{{ evento[4] }}</td>
             {% if evento[6] == "Encerrado" %}
             <td class="status"><i data-lucide="calendar-x" class="lucide-status" id="calendar-x"></i> {{ evento[6] }}
             </td>

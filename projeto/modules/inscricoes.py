@@ -298,4 +298,17 @@ def vagas_disponiveis(id_evento):
 def evento_lotado(id_evento):
 
     return vagas_disponiveis(id_evento) <= 0
+def total_eventos_com_vagas():
+    from modules.eventos import carregar_eventos
+
+    eventos = carregar_eventos()
+
+    total = 0
+
+    for evento in eventos:
+
+        if evento[6] == "Aberto" and vagas_disponiveis(evento[0]) > 0:
+            total += 1
+
+    return total
 
