@@ -45,6 +45,7 @@ from modules.inscricoes import (
     filtrar_cliente_nome,
     filtrar_eventos_nome_insc,
     filtrar_eventos_tipo_insc,
+    carregar_inscricoes,
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -107,7 +108,8 @@ def home():
 
     criar_tabela_inscricoes()
 
-    lista = listar_inscricoes()
+    lista = carregar_inscricoes()
+    print(lista)
 
     return render_template(
         "home.html",

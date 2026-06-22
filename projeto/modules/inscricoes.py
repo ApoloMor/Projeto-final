@@ -19,6 +19,60 @@ def criar_tabela_inscricoes():
     conn.commit()
     conn.close()
 
+def adicionar_nomes(lista):
+
+    inscricao_adicionada = []
+
+    for inscricao in lista:
+        nome_cliente = add_nome_cliente(inscricao[1])
+
+        nome_evento = add_nome_evento(inscricao[2])
+
+    inscricao = list(inscricao)
+    inscricao.append(nome_cliente)
+    inscricao.append(nome_evento)
+    inscricao_adicionada.append(inscricao)
+
+    return inscricao_adicionada
+
+def carregar_inscricoes():
+    lista = listar_inscricoes()
+    return adicionar_nomes(lista)
+
+def add_nome_cliente(id_cliente):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT nome
+        FROM clientes
+        WHERE id = ?
+    """, (id_cliente,))
+
+    resultado = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return resultado[0] if resultado else None
+
+def add_nome_evento(id_evento):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT nome
+        FROM eventos
+        WHERE id = ?
+    """, (id_evento,))
+
+    resultado = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return resultado[0] if resultado else None
+
 def listar_inscricoes():
 
     conn = conectar()
