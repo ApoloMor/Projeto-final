@@ -18,6 +18,7 @@ from modules.eventos import (
     filtrar_eventos_jogo,
     adicionar_status_eventos,
     verificar_data,
+    total_eventos_com_vagas,
 )
 
 from modules.clientes import (
@@ -37,15 +38,15 @@ from modules.inscricoes import (
     inscrever_cliente_evento,
     evento_lotado,
     excluir_inscricao,
-    buscar_inscricao1,
+    buscar_inscricao_por_id,
     editar_inscricao,
     total_clientes_inscritos,
-    total_eventos_com_vagas,
-    buscar_inscricao_id,
+    pesquisar_inscricao_id,
     filtrar_cliente_nome,
     filtrar_eventos_nome_insc,
     filtrar_eventos_tipo_insc,
     carregar_inscricoes,
+    adicionar_nomes,
 )
 from modules.produtos import(
     criar_tabela_produtos,
@@ -109,7 +110,6 @@ def home():
     criar_tabela_inscricoes()
 
     lista = carregar_inscricoes()
-    print(lista)
 
     return render_template(
         "home.html",
@@ -123,7 +123,7 @@ def home():
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
-    lista = listar_inscricoes()
+    lista = carregar_inscricoes()
 
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
@@ -183,8 +183,8 @@ def inscrever():
 @app.route("/inscricoes/editar/<int:id>", methods=["GET"])
 def edicao_inscricao(id):
 
-    inscricao = buscar_inscricao1(id)
-    lista = listar_inscricoes()
+    inscricao = buscar_inscricao_por_id(id)
+    lista = carregar_inscricoes()
 
     return render_template(
         "home.html",
@@ -201,7 +201,7 @@ def edicao_inscricao(id):
 @app.route("/inscricoes/atualizar/<int:id>", methods=["POST"]) #Receber id ↓Receber request.form ↓Chamar editar_evento(...) ↓redirect("/eventos")
 def atualizar_inscricao(id):
 
-    lista = listar_inscricoes()
+    lista = carregar_inscricoes()
 
     id_evento = request.form["id_evento"]
     
@@ -243,15 +243,16 @@ def buscar_inscricao():
     busca = request.form["busca"]
 
     if busca.isdigit():
-        inscricao = buscar_inscricao_id(busca)
+        inscricao = pesquisar_inscricao_id(busca)
         inscricoes = [inscricao] if inscricao else []
 
     else:
         inscricoes = filtrar_cliente_nome(busca)
-
         if not inscricoes:
             inscricoes = filtrar_eventos_nome_insc(busca)
-    print(inscricoes)
+
+    inscricoes = adicionar_nomes(inscricoes)
+
     return render_template(
         "home.html",
         inscricoes=inscricoes,

@@ -198,12 +198,13 @@ def verificar_data(data):
 
 def total_eventos_com_vagas():
 
-    eventos = listar_eventos()
+    eventos = carregar_eventos()
 
     total = 0
 
     for evento in eventos:
-        if vagas_disponiveis(evento[0]) > 0:
+
+        if evento[6] == "Aberto" and vagas_disponiveis(evento[0]) > 0:
             total += 1
 
     return total

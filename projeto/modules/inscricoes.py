@@ -25,13 +25,12 @@ def adicionar_nomes(lista):
 
     for inscricao in lista:
         nome_cliente = add_nome_cliente(inscricao[1])
-
         nome_evento = add_nome_evento(inscricao[2])
 
-    inscricao = list(inscricao)
-    inscricao.append(nome_cliente)
-    inscricao.append(nome_evento)
-    inscricao_adicionada.append(inscricao)
+        inscricao = list(inscricao)
+        inscricao.append(nome_cliente)
+        inscricao.append(nome_evento)
+        inscricao_adicionada.append(inscricao)
 
     return inscricao_adicionada
 
@@ -86,7 +85,7 @@ def listar_inscricoes():
 
     return inscricoes
 
-def buscar_inscricao1(id): # Receber um id ↓ SELECT * FROM eventos WHERE id = ? ↓ fetchone()↓ return evento
+def buscar_inscricao_por_id(id):
 
     conn = conectar()
     cursor = conn.cursor()
@@ -154,7 +153,7 @@ def editar_inscricao(id, id_evento):
   
 # ----- FILTROS E BUSCAS INSCRIÇÕES  -----
 
-def buscar_inscricao_id(busca):
+def pesquisar_inscricao_id(busca):
 
     conn = conectar()
     cursor = conn.cursor()
@@ -300,30 +299,3 @@ def evento_lotado(id_evento):
 
     return vagas_disponiveis(id_evento) <= 0
 
-def total_eventos_com_vagas():
-
-    conn = conectar()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT id, vagas
-        FROM eventos
-    """)
-
-    eventos = cursor.fetchall()
-
-    total = 0
-
-    for evento in eventos:
-
-        id_evento = evento[0]
-        vagas = evento[1]
-
-        inscritos = contar_inscricoes(id_evento)
-
-        if vagas > inscritos:
-            total += 1
-
-    conn.close()
-
-    return total
