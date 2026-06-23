@@ -166,15 +166,26 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% if not em_busca %}
+
             <div class="paginacao">
-                {% if not em_busca %}
-                <div class="paginacao">
-                    {% for p in range(1, total_paginas + 1) %}
-                    <a href="?pagina={{ p }}">{{ p }}</a>
-                    {% endfor %}
-                </div>
+
+                {% if pagina > 1 %}
+                <a href="?pagina={{ pagina - 1 }}">←</a>
                 {% endif %}
+
+                {% for p in range(1, total_paginas + 1) %}
+                <a href="?pagina={{ p }}" {% if p==pagina %}class="ativo" {% endif %}>
+                    {{ p }}
+                </a>
+                {% endfor %}
+
+                {% if pagina < total_paginas %} <a href="?pagina={{ pagina + 1 }}">→</a>
+                    {% endif %}
+
             </div>
+
+            {% endif %}
         </div>
     </div>
 
