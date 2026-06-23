@@ -1,13 +1,8 @@
-import os
-import functools
-from datetime import datetime
-from collections import Counter
-
-from modules.inscricoes import ja_inscrito
-from modules.vendas import criar_tabela_vendas, registrar_venda
-from modules.clientes import buscar_cliente_por_id
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect
 from flask_app import app
+from collections import Counter
+from datetime import datetime
+import os
 
 from modules.eventos import (
     carregar_eventos,
@@ -38,6 +33,7 @@ from modules.clientes import (
 from modules.inscricoes import (
     criar_tabela_inscricoes,
     listar_inscricoes,
+    ja_inscrito,
     inscrever_cliente_evento,
     evento_lotado,
     excluir_inscricao,
@@ -81,41 +77,17 @@ from modules.fornecedores import (
     buscar_fornecedor_cnpj,
 )
 
+from modules.vendas import (
+    criar_tabela_vendas,
+    registrar_venda
+)
+
+from modules.reutilizaveis import (
+    paginar,
+)
+
+
 print(os.getcwd())
-
-
-# ==================== LOGIN ====================
-
-def login_required(f):
-    @functools.wraps(f)
-    def decorated(*args, **kwargs):
-        if not session.get('logado'):
-            return redirect('/login')
-        return f(*args, **kwargs)
-    return decorated
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if session.get('logado'):
-        return redirect('/')
-    if request.method == 'POST':
-        usuario = request.form['usuario']
-        senha = request.form['senha']
-        if usuario == 'admin' and senha == '1234':
-            session['logado'] = True
-            return redirect('/')
-        return render_template('login.html', error='Usuário ou senha incorretos.')
-    return render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect('/login')
-
-
-# ==================== UTILITÁRIOS ====================
 
 def calcular_dados_produtos(lista):
     total_produtos = len(lista)
@@ -145,21 +117,29 @@ def calcular_dados_produtos(lista):
 def home():
     criar_tabela_inscricoes()
     lista = carregar_inscricoes()
+    dados = paginar(lista,5)
+
     return render_template(
         "home.html",
-        inscricoes=lista,
+        inscricoes=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         total_inscricoes=len(lista),
         total_clientes=total_clientes_inscritos(),
         eventos_abertos=total_eventos_com_vagas(),
+        eventos_existentes = len(listar_eventos()),
+        clientes_existentes = len(listar_clientes()),
         modo_insc="criar",
         modo_vnd="criar",
-    )
-
+        em_busca=False
+    ) 
 
 @app.route("/inscricoes", methods=["POST"])
 @login_required
 def inscrever():
     lista = carregar_inscricoes()
+    dados = paginar(lista,5)
+
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
 
@@ -167,50 +147,62 @@ def inscrever():
     if not cliente:
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Cliente não encontrado!"
+            error="Cliente não encontrado!",
+            em_busca=False
         )
 
     evento = filtrar_eventos_id(id_evento)
     if not evento:
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Evento não encontrado!"
+            error="Evento não encontrado!",
+            em_busca=False
         )
 
     if evento_lotado(id_evento):
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Evento lotado!"
+            error="Evento lotado!",
+            em_busca=False
         )
 
     if ja_inscrito(id_cliente, id_evento):
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Cliente já inscrito neste evento!"
+            error="Cliente já inscrito neste evento!",
+            em_busca=False
         )
 
     inscrever_cliente_evento(id_cliente, id_evento)
@@ -232,15 +224,20 @@ def inscrever():
 def edicao_inscricao(id):
     inscricao = buscar_inscricao_por_id(id)
     lista = carregar_inscricoes()
+    dados = paginar(lista,5)
+
     return render_template(
         "home.html",
-        inscricoes=lista,
+        inscricoes=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         inscricao=inscricao,
         total_inscricoes=len(lista),
         total_clientes=total_clientes_inscritos(),
         eventos_abertos=total_eventos_com_vagas(),
         modo_insc="editar",
-        modo_vnd="criar"
+        modo_vnd="criar",
+        em_busca=False
     )
 
 
@@ -248,30 +245,32 @@ def edicao_inscricao(id):
 @login_required
 def atualizar_inscricao(id):
     lista = carregar_inscricoes()
+    dados = paginar(lista,5)
+
     id_evento = request.form["id_evento"]
     evento = filtrar_eventos_id(id_evento)
 
     if not evento:
         return render_template(
             "home.html",
-            inscricoes=lista,
-            modo_insc="criar",
-            modo_vnd="criar",
-            total_inscricoes=len(lista),
-            total_clientes=total_clientes_inscritos(),
-            eventos_abertos=total_eventos_com_vagas(),
-            error="Evento não encontrado!",
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Evento não encontrado!",
+            em_busca=False
         )
     elif evento_lotado(id_evento):
         return render_template(
             "home.html",
-            inscricoes=lista,
-            modo_insc="criar",
-            modo_vnd="criar",
-            total_inscricoes=len(lista),
-            total_clientes=total_clientes_inscritos(),
-            eventos_abertos=total_eventos_com_vagas(),
-            error="Evento lotado!",
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
+            modo_insc = "criar",
+            modo_vnd = "criar",
+            error = "Evento lotado!",
+            em_busca = False
         )
 
     editar_inscricao(id, id_evento)
@@ -307,6 +306,7 @@ def buscar_inscricao():
         eventos_abertos=total_eventos_com_vagas(),
         modo_insc="criar",
         modo_vnd="criar",
+        em_busca=True
     )
 
 
@@ -324,6 +324,7 @@ def buscar_inscricao_tipo():
         eventos_abertos=total_eventos_com_vagas(),
         modo_insc="criar",
         modo_vnd="criar",
+        em_busca=True
     )
 
 
@@ -334,13 +335,24 @@ def buscar_inscricao_tipo():
 def eventos():
     criar_tabela_eventos()
     eventos = carregar_eventos()
-    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
+    dados = paginar(eventos, 5)
 
+    return render_template(
+        "eventos.html",
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
+        total_eventos = len(eventos),
+        modo = "criar",
+        em_busca=False
+)
 
 @app.route("/eventos/criar", methods=["POST"])
 @login_required
 def criar_evento():
     eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
+
     nome = request.form["nome"]
     jogo = request.form["jogo"]
     data = request.form["data"]
@@ -348,35 +360,60 @@ def criar_evento():
 
     if verificar_data(data):
         return render_template(
-            "eventos.html",
-            eventos=eventos,
-            total_eventos=len(eventos),
-            modo="criar",
-            error="Data inválida!"
+        "eventos.html",
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
+        total_eventos=len(eventos),
+        modo = "criar",
+        error = "Data inválida!"
+)
+    
+    else:
+        cadastrar_evento(
+            nome,
+            jogo,
+            data,
+            vagas
         )
 
     cadastrar_evento(nome, jogo, data, vagas)
     return render_template(
         "eventos.html",
-        eventos=carregar_eventos(),
-        total_eventos=len(carregar_eventos()),
-        modo="criar",
-        success="Evento cadastrado!"
-    )
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
+        total_eventos=len(eventos),
+        modo = "criar",
+        success = "Evento cadastrado!",
+        em_busca=False
+)
 
 
 @app.route("/eventos/editar/<int:id>", methods=["GET"])
 @login_required
 def mostrar_edicao(id):
     evento = buscar_evento(id)
-    lista = listar_eventos()
-    return render_template("eventos.html", eventos=lista, total_eventos=len(lista), evento_edicao=evento, modo="editar")
+    eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
 
+    return render_template(
+        "eventos.html", 
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"], 
+        total_eventos=len(eventos), 
+        evento_edicao=evento, 
+        modo="editar",
+        em_busca=False
+)
 
 @app.route("/eventos/atualizar/<int:id>", methods=["POST"])
 @login_required
 def atualizar_eventos(id):
     eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
+
     nome = request.form["nome"]
     jogo = request.form["jogo"]
     data = request.form["data"]
@@ -384,19 +421,25 @@ def atualizar_eventos(id):
 
     if verificar_data(data):
         return render_template(
-            "eventos.html",
-            eventos=eventos,
-            total_eventos=len(eventos),
-            modo="criar",
-            error="Data inválida!"
+        "eventos.html",
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"], 
+        total_eventos = len(eventos),
+        modo = "criar",
+        error ="Data inválida!",
+        em_busca=False
         )
     if int(vagas) < contar_inscricoes(id):
         return render_template(
-            "eventos.html",
-            eventos=eventos,
-            total_eventos=len(eventos),
-            modo="criar",
-            error="Não pode haver menos vagas que inscritos!"
+        "eventos.html",
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"], 
+        total_eventos = len(eventos),
+        modo = "criar",
+        error ="Não pode haver menos vagas que inscritos!",
+        em_busca=False
         )
 
     editar_evento(id, nome, jogo, data, vagas)
@@ -421,9 +464,16 @@ def buscar_eventos():
     else:
         eventos = filtrar_eventos_nome(busca)
 
-    eventos = adicionar_status_eventos(eventos)
-    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
-
+    eventos = adicionar_status_eventos(eventos)        
+    total_eventos = len(eventos)
+    
+    return render_template(
+        "eventos.html",
+        eventos=eventos,
+        total_eventos=total_eventos,
+        modo="criar",
+        em_busca=True
+    )
 
 @app.route("/eventos/busca-tipo", methods=["POST"])
 @login_required
@@ -431,7 +481,13 @@ def buscar_eventos_tipo():
     tipo = request.form["tipo"]
     eventos = filtrar_eventos_jogo(tipo)
     eventos = adicionar_status_eventos(eventos)
-    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
+    return render_template(
+        "eventos.html", 
+        eventos=eventos, 
+        total_eventos=len(eventos), 
+        modo="criar", 
+        em_busca=True
+)
 
 
 # ==================== CLIENTES ====================
@@ -441,8 +497,16 @@ def buscar_eventos_tipo():
 def clientes():
     criar_tabela_clientes()
     lista = listar_clientes()
-    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar")
-
+    dados = paginar(lista,5)
+    return render_template(
+        "clientes.html", 
+        clientes=dados["itens"], 
+        pagina=dados["pagina"], 
+        total_paginas=dados["total_paginas"], 
+        total_clientes=len(lista), 
+        modo="criar", 
+        em_busca=False
+)
 
 @app.route("/clientes/criar", methods=["POST"])
 @login_required
@@ -460,7 +524,8 @@ def criar_cliente():
 def mostrar_edicao_cliente(id):
     cliente = buscar_cliente_por_id(id)
     lista = listar_clientes()
-    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), cliente_edicao=cliente, modo="editar")
+    dados = paginar(lista,5)
+    return render_template("clientes.html", clientes=dados["itens"], pagina=dados["pagina"], total_paginas=dados["total_paginas"], total_clientes=len(lista), cliente_edicao=cliente, modo="editar", em_busca=False)
 
 
 @app.route("/clientes/atualizar/<int:id>", methods=["POST"])
@@ -498,7 +563,7 @@ def buscar_cliente_route():
     else:
         lista = listar_clientes()
 
-    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar")
+    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar", em_busca=True)
 
 
 # ==================== PRODUTOS ====================
