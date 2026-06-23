@@ -338,3 +338,23 @@ body {
   background: #e94560;
   color: white;
 }
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.paginacao a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #6d4aff;
+  color: white;
+}
+
+.paginacao a.ativo {
+  font-weight: bold;
+  border: 2px solid white;
+}
