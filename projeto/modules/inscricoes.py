@@ -157,7 +157,7 @@ def excluir_inscricao(id):
     conn.commit()
     conn.close()
 
-# ----- FILTROS E BUSCAS INSCRIÇÕES  -----
+# ----- FILTROS -----
 
 def filtrar_inscricao_id(busca):
 

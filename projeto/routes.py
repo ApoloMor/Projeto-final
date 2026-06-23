@@ -1,9 +1,8 @@
-from modules.inscricoes import ja_inscrito
-from modules.vendas import criar_tabela_vendas, registrar_venda
-from modules.clientes import buscar_cliente_por_id
 from flask import render_template, request, redirect
 from flask_app import app
 from collections import Counter
+from datetime import datetime
+import os
 
 from modules.eventos import (
     carregar_eventos,
@@ -34,6 +33,7 @@ from modules.clientes import (
 from modules.inscricoes import (
     criar_tabela_inscricoes,
     listar_inscricoes,
+    ja_inscrito,
     inscrever_cliente_evento,
     evento_lotado,
     excluir_inscricao,
@@ -76,11 +76,17 @@ from modules.fornecedores import (
     buscar_fornecedor_cnpj,
 )
 
-import os
-from datetime import datetime
+from modules.vendas import (
+    criar_tabela_vendas,
+    registrar_venda
+)
+
+from modules.reutilizaveis import (
+    paginar,
+)
+
 
 print(os.getcwd())
-
 
 def calcular_dados_produtos(lista):
     total_produtos = len(lista)
@@ -109,22 +115,28 @@ def calcular_dados_produtos(lista):
 def home():
 
     criar_tabela_inscricoes()
-
     lista = carregar_inscricoes()
+    dados = paginar(carregar_inscricoes(),2)
 
     return render_template(
         "home.html",
-        inscricoes=lista,
+        inscricoes=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         total_inscricoes=len(lista),
         total_clientes=total_clientes_inscritos(),
         eventos_abertos=total_eventos_com_vagas(),
+        eventos_existentes = len(listar_eventos()),
+        clientes_existentes = len(listar_clientes()),
         modo_insc="criar",
         modo_vnd="criar",
+        em_busca=False
     ) 
 
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
     lista = carregar_inscricoes()
+    dados = paginar(carregar_inscricoes(),2)
 
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
@@ -133,49 +145,61 @@ def inscrever():
     if not cliente:
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Cliente não encontrado!"
+            error="Cliente não encontrado!",
+            em_busca=False
         )
     evento = filtrar_eventos_id(id_evento)
     if not evento:
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Evento não encontrado!"
+            error="Evento não encontrado!",
+            em_busca=False
         )
 
     if evento_lotado(id_evento):
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Evento lotado!"
+            error="Evento lotado!",
+            em_busca=False
         )
 
     if ja_inscrito(id_cliente, id_evento):
         return render_template(
             "home.html",
-            inscricoes=lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             total_inscricoes=len(lista),
             total_clientes=total_clientes_inscritos(),
             eventos_abertos=total_eventos_com_vagas(),
             modo_insc="criar",
             modo_vnd="criar",
-            error="Cliente já inscrito neste evento!"
+            error="Cliente já inscrito neste evento!",
+            em_busca=False
         )
     inscrever_cliente_evento(id_cliente, id_evento)
 
@@ -186,16 +210,20 @@ def edicao_inscricao(id):
 
     inscricao = buscar_inscricao_por_id(id)
     lista = carregar_inscricoes()
+    dados = paginar(carregar_inscricoes(),2)
 
     return render_template(
         "home.html",
-        inscricoes=lista,
+        inscricoes=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         inscricao=inscricao,
         total_inscricoes=len(lista),
         total_clientes=total_clientes_inscritos(),
         eventos_abertos=total_eventos_com_vagas(),
         modo_insc="editar",
-        modo_vnd="criar"
+        modo_vnd="criar",
+        em_busca=False
     )
 
 
@@ -203,6 +231,7 @@ def edicao_inscricao(id):
 def atualizar_inscricao(id):
 
     lista = carregar_inscricoes()
+    dados = paginar(carregar_inscricoes(),2)
 
     id_evento = request.form["id_evento"]
     
@@ -211,19 +240,25 @@ def atualizar_inscricao(id):
     if not evento:
         return render_template(
             "home.html",
-            inscricoes = lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             modo_insc = "criar",
             modo_vnd = "criar",
             error = "Evento não encontrado!",
+            em_busca=False
         )
     
     elif evento_lotado(id_evento):
         return render_template(
             "home.html",
-            inscricoes = lista,
+            inscricoes=dados["itens"],
+            pagina=dados["pagina"],
+            total_paginas=dados["total_paginas"],
             modo_insc = "criar",
             modo_vnd = "criar",
             error = "Evento lotado!",
+            em_busca = False
         )
     
     editar_inscricao(
@@ -262,6 +297,7 @@ def buscar_inscricao():
         eventos_abertos=total_eventos_com_vagas(),
         modo_insc="criar",
         modo_vnd="criar",
+        em_busca=True
     )
 
 @app.route("/inscricoes/busca-tipo", methods=["POST"])
@@ -270,7 +306,7 @@ def buscar_inscricao_tipo():
     tipo = request.form["tipo"]
 
     inscricoes = filtrar_eventos_tipo_insc(tipo)
-
+    inscricoes = adicionar_nomes(inscricoes)
     return render_template(
         "home.html",
         inscricoes=inscricoes,
@@ -279,6 +315,7 @@ def buscar_inscricao_tipo():
         eventos_abertos=total_eventos_com_vagas(),
         modo_insc="criar",
         modo_vnd="criar",
+        em_busca=True
     )
 
 # ROTA DE EVENTOS E SUAS FUNÇÕES
@@ -335,12 +372,12 @@ def criar_evento():
 @app.route("/eventos/editar/<int:id>", methods=["GET"])
 def mostrar_edicao(id):
     evento = buscar_evento(id)
-    lista = listar_eventos()
+    eventos = carregar_eventos()
 
     return render_template(
         "eventos.html", 
-        eventos=lista, 
-        total_eventos=len(lista), 
+        eventos=eventos, 
+        total_eventos=len(eventos), 
         evento_edicao=evento, 
         modo="editar")
 
