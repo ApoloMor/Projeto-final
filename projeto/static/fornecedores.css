@@ -155,6 +155,8 @@ body {
   font-weight: 600;
 }
 
+/* ===== FORMULÁRIO ===== */
+
 .card-form {
   background: white;
   border-radius: 20px;
@@ -166,7 +168,8 @@ body {
   margin-bottom: 18px;
 }
 
-.card-form input {
+.card-form input,
+.card-form select {
   width: 100%;
   padding: 14px 16px;
   border: 1px solid #ddd;
@@ -174,9 +177,18 @@ body {
   margin-bottom: 15px;
   font-size: 14px;
   font-family: "Poppins", sans-serif;
+  background: white;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.card-form input:focus {
+.card-form input {
+  cursor: text;
+}
+
+.card-form input:focus,
+.card-form select:focus {
   outline: none;
   border-color: #6d4aff;
 }
@@ -197,6 +209,8 @@ body {
 .card-form button:hover {
   background: #5a39e6;
 }
+
+/* ===== FILTROS ===== */
 
 .filtros {
   display: flex;
@@ -259,6 +273,8 @@ body {
   height: 16px;
 }
 
+/* ===== TABELA ===== */
+
 .card-tabela {
   background: white;
   border-radius: 20px;
@@ -269,7 +285,7 @@ body {
 .tabela-fornecedores {
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px;
+  min-width: 700px;
 }
 
 .tabela-fornecedores th {
@@ -321,27 +337,4 @@ body {
 .btn-excluir:hover {
   background: #e94560;
   color: white;
-}
-
-/* ========================= MARGEM DE LUCRO ========================= */
-
-.margem {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 70px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.margem-alta {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.margem-media {
-  background-color: #fff8e1;
-  color: #f57f17;
 }

@@ -65,18 +65,18 @@
 
       <form action="/clientes/criar" method="POST">
         <input type="text" name="nome" placeholder="Nome completo" required />
-        <input type="text" name="cpf" id="cpf-criar" placeholder="000.000.000-00" maxlength="14" required />
-        <input type="text" name="telefone" id="tel-criar" placeholder="(00) 00000-0000" maxlength="15" required />
-        <input type="email" name="email" placeholder="E-mail" required />
+        <input type="text" name="cpf" id="cpf-criar" placeholder="CPF: 000.000.000-00" maxlength="14" required />
+        <input type="text" name="telefone" id="tel-criar" placeholder="Telefone: (00) 00000-0000" maxlength="15" required />
+        <input type="email" name="email" placeholder="E-mail do cliente" required />
         <button type="submit" class="btn-cadastrar">Cadastrar</button>
       </form>
       {% elif modo == "editar" %}
       <h3>Editar Cliente</h3>
       <form action="/clientes/atualizar/{{ cliente_edicao[0] }}" method="POST">
         <input type="text" name="nome" value="{{ cliente_edicao[1] }}" required />
-        <input type="text" name="cpf" id="cpf-editar" value="{{ cliente_edicao[2] }}" maxlength="14" required />
-        <input type="text" name="telefone" id="tel-editar" value="{{ cliente_edicao[3] }}" maxlength="15" required />
-        <input type="email" name="email" value="{{ cliente_edicao[4] }}" required />
+        <input type="text" name="cpf" id="cpf-editar" value="{{ cliente_edicao[2] }}" placeholder="CPF: 000.000.000-00" maxlength="14" required />
+        <input type="text" name="telefone" id="tel-editar" value="{{ cliente_edicao[3] }}" placeholder="Telefone: (00) 00000-0000" maxlength="15" required />
+        <input type="email" name="email" value="{{ cliente_edicao[4] }}" placeholder="E-mail do cliente" required />
         <button type="submit" class="btn-cadastrar">Salvar Alterações</button>
       </form>
       {% endif %}
