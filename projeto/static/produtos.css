@@ -169,7 +169,7 @@ body {
   font-size: 14px;
 }
 
-.card-form>form>button {
+.card-form > form > button {
   width: 100%;
   border: none;
   background: #6d4aff;
@@ -182,7 +182,7 @@ body {
   transition: 0.3s;
 }
 
-.card-form>form>button:hover {
+.card-form > form > button:hover {
   background: #5b3ae6;
 }
 
@@ -338,11 +338,11 @@ body {
 }
 
 .linha-baixo {
-  background-color: rgba(251, 191, 36, 0.10);
+  background-color: rgba(251, 191, 36, 0.1);
 }
 
 .linha-urgente {
-  background-color: rgba(239, 68, 68, 0.10);
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 /* ========================= FILTROS ========================= */
@@ -516,11 +516,11 @@ body {
 }
 
 .mov-entrada {
-  background-color: rgba(34, 197, 94, 0.10);
+  background-color: rgba(34, 197, 94, 0.1);
 }
 
 .mov-saida {
-  background-color: rgba(239, 68, 68, 0.10);
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 .mov-info {
@@ -557,11 +557,6 @@ body {
   color: #dc2626;
 }
 
-
-
-
-
-
 /* ========================= ALERTAS ========================= */
 
 .alerta-item {
@@ -574,12 +569,12 @@ body {
 }
 
 .alerta-urgente {
-  background-color: rgba(239, 68, 68, 0.10);
+  background-color: rgba(239, 68, 68, 0.1);
   border-left: 3px solid #ef4444;
 }
 
 .alerta-baixo {
-  background-color: rgba(251, 191, 36, 0.10);
+  background-color: rgba(251, 191, 36, 0.1);
   border-left: 3px solid #facc15;
 }
 
@@ -606,6 +601,29 @@ body {
   color: #b45309;
 }
 
+.texto-urgente {
+  color: #ff3636 !important;
+}
+.texto-baixo {
+  color: #ff9d52 !important;
+}
 
-.texto-urgente { color: #ff3636 !important; }
-.texto-baixo   { color: #ff9d52 !important; }
+.paginacao {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.paginacao a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #6d4aff;
+  color: white;
+}
+
+.paginacao a.ativo {
+  font-weight: bold;
+  border: 2px solid white;
+}

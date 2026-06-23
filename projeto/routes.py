@@ -606,13 +606,18 @@ def produtos():
     dados = calcular_dados_produtos(lista)
     historico = listar_todas_movimentacoes()
     mais_vendidos = produtos_mais_vendidos()
+    dadosPag = paginar(lista,5)
     return render_template(
         "produtos.html",
-        produtos=lista,
+        produtos=dadosPag["itens"],
+        pagina=dadosPag["pagina"],
+        total_paginas=dadosPag["total_paginas"],
         modo="criar",
         historico=historico,
         mais_vendidos=mais_vendidos,
+        em_busca=False,
         **dados
+        
     )
 
 
@@ -633,7 +638,16 @@ def edicao(id):
     produto = buscar_produtos(id)
     lista = listar_produtos()
     dados = calcular_dados_produtos(lista)
-    return render_template("produtos.html", produtos=lista, produto_edicao=produto, modo="editar", **dados)
+    dadosPag = paginar(lista,5)
+    return render_template(
+        "produtos.html",        
+        produtos=dadosPag["itens"],
+        pagina=dadosPag["pagina"],
+        total_paginas=dadosPag["total_paginas"],
+        produto_edicao=produto, 
+        modo="editar",
+        em_busca=False, 
+        **dados)
 
 
 @app.route("/produtos/atualizar/<int:id>", methods=["POST"])
@@ -664,7 +678,7 @@ def buscar_produtos_route():
     else:
         lista = buscar_produtos_nome(busca)
     dados = calcular_dados_produtos(lista)
-    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+    return render_template("produtos.html", produtos=lista, modo="criar",em_busca=True, **dados)
 
 
 @app.route("/produtos/busca-tipo", methods=["POST"])
@@ -673,7 +687,11 @@ def buscar_produtos_tipo():
     tipo = request.form["tipo"]
     lista = buscar_produtos_por_tipo(tipo)
     dados = calcular_dados_produtos(lista)
-    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+    return render_template(
+        "produtos.html",         
+        modo="criar",
+        em_busca=True, 
+        **dados)
 
 
 @app.route("/produtos/entrada/<int:id>", methods=["POST"])
