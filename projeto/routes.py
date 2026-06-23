@@ -1,11 +1,9 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 from flask_app import app
 from collections import Counter
 from datetime import datetime
-import os
-
 import functools
-from flask import render_template, request, redirect, session
+import os
 
 from modules.eventos import (
     carregar_eventos,
