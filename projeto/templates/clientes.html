@@ -85,15 +85,23 @@
 
     <div class="card-busca">
       <form action="/clientes/buscar" method="POST">
-        <select name="tipo_busca">
+        <select name="tipo_busca" id="tipo-busca">
           <option value="nome">Buscar por nome</option>
           <option value="cpf">Buscar por CPF</option>
           <option value="id">Buscar por ID</option>
         </select>
-        <input type="text" name="termo" placeholder="Digite sua busca..." required />
+      
+        <input
+          type="text"
+          name="termo"
+          id="campo-busca"
+          placeholder="Digite sua busca..."
+          required
+        />
+      
         <button type="submit" class="btn-buscar">Buscar</button>
         <a href="/clientes" class="btn-limpar">Limpar busca</a>
-      </form>
+</form>
     </div>
 
     <div class="card-tabela">
@@ -213,6 +221,28 @@
       if (cpfEditar) cpfEditar.addEventListener("input", function () { mascaraCPF(this); });
       if (telCriar) telCriar.addEventListener("input", function () { mascaraTelefone(this); });
       if (telEditar) telEditar.addEventListener("input", function () { mascaraTelefone(this); });
+
+      var campoBusca = document.getElementById("campo-busca");
+      var tipoBusca = document.getElementById("tipo-busca");
+
+      if (campoBusca && tipoBusca) {
+      
+        campoBusca.addEventListener("input", function () {
+        
+          if (tipoBusca.value === "cpf") {
+            mascaraCPF(this);
+          }
+        
+          if (tipoBusca.value === "id") {
+            this.value = this.value.replace(/\D/g, "");
+          }
+        
+        });
+      
+        tipoBusca.addEventListener("change", function () {
+          campoBusca.value = "";
+        });
+      }
     });
 
   </script>
