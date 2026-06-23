@@ -114,10 +114,15 @@ def excluir_evento(id):
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "DELETE FROM eventos WHERE id = ?",
-        (id,) #isso vai baseado na linha em que o botão foi pressionado marcado vom seu respectivo id
-    )
+    cursor.execute("""
+        DELETE FROM inscricoes
+        WHERE id_evento = ?
+    """, (id,))
+
+    cursor.execute("""
+        DELETE FROM eventos
+        WHERE id = ?
+    """, (id,))
 
     conn.commit()
     conn.close()

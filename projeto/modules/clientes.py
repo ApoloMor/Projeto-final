@@ -84,13 +84,27 @@ def buscar_cliente_nome(nome):
     return resultado
 
 def excluir_cliente(id):
-    conexao = conectar()       
+
+    conexao = conectar()
     cursor = conexao.cursor()
-    try:    
-        cursor.execute("""DELETE FROM clientes WHERE id = ? """, (id,))
+
+    try:
+
+        cursor.execute("""
+            DELETE FROM inscricoes
+            WHERE id_cliente = ?
+        """, (id,))
+
+        cursor.execute("""
+            DELETE FROM clientes
+            WHERE id = ?
+        """, (id,))
+
         if cursor.rowcount == 0:
             return False
+
         conexao.commit()
         return True
+
     finally:
         conexao.close()
