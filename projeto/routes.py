@@ -116,7 +116,7 @@ def home():
 
     criar_tabela_inscricoes()
     lista = carregar_inscricoes()
-    dados = paginar(carregar_inscricoes(),2)
+    dados = paginar(lista,5)
 
     return render_template(
         "home.html",
@@ -136,7 +136,7 @@ def home():
 @app.route("/inscricoes", methods=["POST"])
 def inscrever():
     lista = carregar_inscricoes()
-    dados = paginar(carregar_inscricoes(),2)
+    dados = paginar(lista,5)
 
     id_cliente = request.form["id_cliente"]
     id_evento = request.form["id_evento"]
@@ -210,7 +210,7 @@ def edicao_inscricao(id):
 
     inscricao = buscar_inscricao_por_id(id)
     lista = carregar_inscricoes()
-    dados = paginar(carregar_inscricoes(),2)
+    dados = paginar(lista,5)
 
     return render_template(
         "home.html",
@@ -231,7 +231,7 @@ def edicao_inscricao(id):
 def atualizar_inscricao(id):
 
     lista = carregar_inscricoes()
-    dados = paginar(carregar_inscricoes(),2)
+    dados = paginar(lista,5)
 
     id_evento = request.form["id_evento"]
     
@@ -325,18 +325,23 @@ def eventos():
     criar_tabela_eventos()
 
     eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
 
     return render_template(
         "eventos.html",
-        eventos=eventos,
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         total_eventos = len(eventos),
         modo = "criar",
+        em_busca=False
 )
 
 @app.route("/eventos/criar", methods=["POST"])
 def criar_evento():
 
     eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
 
     nome = request.form["nome"]
     jogo = request.form["jogo"]
@@ -346,7 +351,9 @@ def criar_evento():
     if verificar_data(data):
         return render_template(
         "eventos.html",
-        eventos=eventos,
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         total_eventos=len(eventos),
         modo = "criar",
         error = "Data inválida!"
@@ -362,10 +369,13 @@ def criar_evento():
 
     return render_template(
         "eventos.html",
-        eventos=eventos,
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
         total_eventos=len(eventos),
         modo = "criar",
-        success = "Evento cadastrado!"
+        success = "Evento cadastrado!",
+        em_busca=False
 )
 
 
@@ -373,19 +383,24 @@ def criar_evento():
 def mostrar_edicao(id):
     evento = buscar_evento(id)
     eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
 
     return render_template(
         "eventos.html", 
-        eventos=eventos, 
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"], 
         total_eventos=len(eventos), 
         evento_edicao=evento, 
-        modo="editar")
-
+        modo="editar",
+        em_busca=False
+)
 
 @app.route("/eventos/atualizar/<int:id>", methods=["POST"])
 def atualizar_eventos(id):
     
     eventos = carregar_eventos()
+    dados = paginar(eventos, 5)
 
     nome = request.form["nome"]
     jogo = request.form["jogo"]
@@ -395,18 +410,24 @@ def atualizar_eventos(id):
     if verificar_data(data):
         return render_template(
         "eventos.html",
-        eventos=eventos,
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"], 
         total_eventos = len(eventos),
         modo = "criar",
-        error ="Data inválida!"
+        error ="Data inválida!",
+        em_busca=False
         )
     if int(vagas) < contar_inscricoes(id):
         return render_template(
         "eventos.html",
-        eventos=eventos,
+        eventos=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"], 
         total_eventos = len(eventos),
         modo = "criar",
-        error ="Não pode haver menos vagas que inscritos!"
+        error ="Não pode haver menos vagas que inscritos!",
+        em_busca=False
         )
     else:
 
@@ -445,7 +466,8 @@ def buscar_eventos():
         "eventos.html",
         eventos=eventos,
         total_eventos=total_eventos,
-        modo="criar"
+        modo="criar",
+        em_busca=True
     )
 
 @app.route("/eventos/busca-tipo", methods=["POST"])
@@ -453,7 +475,13 @@ def buscar_eventos_tipo():
     tipo = request.form["tipo"]
     eventos = filtrar_eventos_jogo(tipo)
     eventos = adicionar_status_eventos(eventos)
-    return render_template("eventos.html", eventos=eventos, total_eventos=len(eventos), modo="criar")
+    return render_template(
+        "eventos.html", 
+        eventos=eventos, 
+        total_eventos=len(eventos), 
+        modo="criar", 
+        em_busca=True
+)
 
 
 # ROTA DE CLIENTES E SUAS FUNÇÕES
@@ -462,8 +490,16 @@ def buscar_eventos_tipo():
 def clientes():
     criar_tabela_clientes()
     lista = listar_clientes()
-    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar")
-
+    dados = paginar(lista,5)
+    return render_template(
+        "clientes.html", 
+        clientes=dados["itens"], 
+        pagina=dados["pagina"], 
+        total_paginas=dados["total_paginas"], 
+        total_clientes=len(lista), 
+        modo="criar", 
+        em_busca=False
+)
 
 @app.route("/clientes/criar", methods=["POST"])
 def criar_cliente():
@@ -479,7 +515,8 @@ def criar_cliente():
 def mostrar_edicao_cliente(id):
     cliente = buscar_cliente_por_id(id)
     lista = listar_clientes()
-    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), cliente_edicao=cliente, modo="editar")
+    dados = paginar(lista,5)
+    return render_template("clientes.html", clientes=dados["itens"], pagina=dados["pagina"], total_paginas=dados["total_paginas"], total_clientes=len(lista), cliente_edicao=cliente, modo="editar", em_busca=False)
 
 
 @app.route("/clientes/atualizar/<int:id>", methods=["POST"])
@@ -514,7 +551,7 @@ def buscar_cliente_route():
     else:
         lista = listar_clientes()
 
-    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar")
+    return render_template("clientes.html", clientes=lista, total_clientes=len(lista), modo="criar", em_busca=True)
 
 
 # ROTA DE PRODUTOS E SUAS FUNÇÕES
