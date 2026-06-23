@@ -4,6 +4,9 @@ from collections import Counter
 from datetime import datetime
 import os
 
+import functools
+from flask import render_template, request, redirect, session
+
 from modules.eventos import (
     carregar_eventos,
     criar_tabela_eventos,
@@ -88,6 +91,32 @@ from modules.reutilizaveis import (
 
 
 print(os.getcwd())
+
+def login_required(f):
+    @functools.wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get('logado'):
+            return redirect('/login')
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if session.get('logado'):
+        return redirect('/')
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        senha = request.form['senha']
+        if usuario == 'admin' and senha == '1234':
+            session['logado'] = True
+            return redirect('/')
+        return render_template('login.html', error='Usuário ou senha incorretos.')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/login')
 
 def calcular_dados_produtos(lista):
     total_produtos = len(lista)
