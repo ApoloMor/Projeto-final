@@ -688,7 +688,8 @@ def buscar_produtos_tipo():
     lista = buscar_produtos_por_tipo(tipo)
     dados = calcular_dados_produtos(lista)
     return render_template(
-        "produtos.html",         
+        "produtos.html",
+        produtos=lista,         
         modo="criar",
         em_busca=True, 
         **dados)
