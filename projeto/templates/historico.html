@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='historico.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Loja dos Games - Histórico de Vendas</title>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <h1>GAME STORE</h1>
+      <p>BOARD GAMES & CARD GAMES</p>
+    </div>
+    <div class="menu">
+      <a href="/">🏠 Início</a>
+      <a href="/produtos">📦 Produtos</a>
+      <a href="/clientes">👥 Clientes</a>
+      <a href="/fornecedores">🚚 Fornecedores</a>
+      <a href="/eventos">🏆 Eventos / Torneios</a>
+      <a href="/historico" class="active">🧾 Histórico</a>
+      <a href="/logout">⚙️ Sair</a>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="breadcrumb">
+      <a href="/">Início</a>
+      <span>></span>
+      <a href="/historico">Histórico de Vendas</a>
+    </div>
+
+    <section class="topo">
+      <div class="titulo-subt">
+        <h1><i data-lucide="receipt-text" class="lucide-historico"></i> Histórico de Vendas</h1>
+        <p>Acompanhe todas as vendas registradas na loja.</p>
+      </div>
+      <div class="data">
+        <i data-lucide="clock-3"></i>
+        <time id="data-hora" class="data-textos"></time>
+      </div>
+    </section>
+
+    <div class="card-resumo">
+      <div class="resumo-item">
+        <span class="resumo-label">Total de vendas</span>
+        <strong class="resumo-valor">{{ total_vendas }}</strong>
+      </div>
+      <div class="resumo-item">
+        <span class="resumo-label">Faturamento total</span>
+        <strong class="resumo-valor">R$ {{ "%.2f"|format(faturamento) }}</strong>
+      </div>
+    </div>
+
+    <div class="card-tabela">
+      <table class="tabela-historico">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th>Qtd</th>
+            <th>Preço Unit.</th>
+            <th>Total</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for venda in vendas %}
+          <tr>
+            <td>{{ venda[0] }}</td>
+            <td>{{ venda[1] }}</td>
+            <td>{{ venda[2] }}</td>
+            <td>{{ venda[3] }}</td>
+            <td>R$ {{ "%.2f"|format(venda[4]) }}</td>
+            <td><strong>R$ {{ "%.2f"|format(venda[3] * venda[4]) }}</strong></td>
+            <td>{{ venda[5] }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" style="text-align:center; color:#999; padding:30px;">
+              Nenhuma venda registrada ainda.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function atualizarDataHora() {
+      const agora = new Date();
+      const opcoes = { dateStyle: 'short', timeStyle: 'medium' };
+      document.getElementById('data-hora').textContent = agora.toLocaleString('pt-BR', opcoes);
+    }
+    setInterval(atualizarDataHora, 1000);
+    atualizarDataHora();
+    lucide.createIcons();
+  </script>
+</body>
+
+</html>

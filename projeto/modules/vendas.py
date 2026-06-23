@@ -46,7 +46,7 @@ def listar_vendas():
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT v.id, c.nome, p.produto, v.quantidade, v.data
+        SELECT v.id, c.nome, p.produto, v.quantidade, p.preco, v.data
         FROM vendas v
         JOIN clientes c ON v.id_cliente = c.id
         JOIN produtos p ON v.id_produto = p.id

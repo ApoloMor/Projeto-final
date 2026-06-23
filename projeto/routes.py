@@ -6,6 +6,9 @@ import os
 
 import functools
 from flask import render_template, request, redirect, session
+from modules.vendas import criar_tabela_vendas, registrar_venda, listar_vendas
+
+
 
 from modules.eventos import (
     carregar_eventos,
@@ -138,7 +141,13 @@ def calcular_dados_produtos(lista):
         "categorias_valores": categorias_valores,
     }
 
-
+@app.route("/historico")
+@login_required
+def historico():
+    criar_tabela_vendas()
+    vendas = listar_vendas()
+    faturamento = sum(v[3] * v[4] for v in vendas) if vendas else 0
+    return render_template("historico.html", vendas=vendas, total_vendas=len(vendas), faturamento=faturamento)
 # ==================== HOME / INSCRIÇÕES ====================
 
 @app.route("/")

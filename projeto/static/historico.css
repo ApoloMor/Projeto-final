@@ -1,0 +1,169 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f4f5f7;
+  display: flex;
+}
+
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #081120;
+  color: white;
+  padding: 30px 20px;
+  position: fixed;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo h1 {
+  font-size: 32px;
+}
+
+.logo p {
+  color: #facc15;
+  font-size: 12px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.menu a:hover,
+.menu a.active {
+  background: #6d4aff;
+}
+
+.main {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 25px 30px;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #666;
+}
+
+.breadcrumb span {
+  margin: 0 8px;
+  color: #999;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+}
+
+.titulo-subt {
+  flex: 1;
+}
+
+.titulo-subt h1 {
+  margin-bottom: 5px;
+}
+
+.titulo-subt p {
+  color: #666;
+}
+
+.lucide-historico {
+  color: #6d4aff;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f3f4f6;
+  padding: 15px 24px;
+  border-radius: 15px;
+}
+
+.card-resumo {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.resumo-item {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 220px;
+}
+
+.resumo-label {
+  font-size: 14px;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.resumo-valor {
+  font-size: 28px;
+  color: #6d4aff;
+  font-weight: 600;
+}
+
+.card-tabela {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.tabela-historico {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.tabela-historico th {
+  text-align: left;
+  color: #666;
+  font-weight: 600;
+  padding: 15px;
+}
+
+.tabela-historico td {
+  padding: 18px 15px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.tabela-historico tbody tr:hover {
+  background: #f8f8ff;
+}
+
+.tabela-historico td strong {
+  color: #6d4aff;
+}
