@@ -12,18 +12,30 @@ def adicionar_nomes(lista):
     inscricao_adicionada = []
 
     for inscricao in lista:
+
         inscricao = list(inscricao)
 
         nome_cliente = add_nome_cliente(inscricao[1])
         nome_evento = add_nome_evento(inscricao[2])
+
         data_evento = buscar_data_evento(inscricao[2])
-        data_evento = formatar_data(data_evento)
+
+        if nome_cliente is None:
+            nome_cliente = "Cliente removido"
+
+        if nome_evento is None:
+            nome_evento = "Evento removido"
+
+        if data_evento:
+            data_evento = formatar_data(data_evento)
+        else:
+            data_evento = "Evento removido"
 
         inscricao.append(nome_cliente)
         inscricao.append(nome_evento)
         inscricao.append(data_evento)
-        inscricao_adicionada.append(inscricao)
 
+        inscricao_adicionada.append(inscricao)
 
     return inscricao_adicionada
 
@@ -292,22 +304,25 @@ def contar_inscricoes(id_evento): #Verifica para editar evento
 
     return quantidade
 
-def buscar_data_evento(id_evento): # Para o load
-        
+def buscar_data_evento(id_evento):
+
     conn = conectar()
     cursor = conn.cursor()
 
     cursor.execute("""
         SELECT data
         FROM eventos
-        WHERE  id = ?""", (id_evento,))
+        WHERE id = ?
+    """, (id_evento,))
 
-    data = cursor.fetchone()[0]
+    resultado = cursor.fetchone()
 
-    conn.commit()
     conn.close()
 
-    return data
+    if resultado:
+        return resultado[0]
+
+    return None
 
 def buscar_vagas_evento(id_evento): # Para o load
 
