@@ -240,11 +240,8 @@ body {
   text-align: center;
 }
 
-.tabela-produtos td form button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
+.tabela-produtos tbody tr:hover {
+  background: #f8f8ff;
 }
 
 .tabela-produtos th:nth-child(1),
@@ -333,18 +330,6 @@ body {
   color: #c62828;
 }
 
-.linha-normal {
-  background-color: rgba(34, 197, 94, 0.08);
-}
-
-.linha-baixo {
-  background-color: rgba(251, 191, 36, 0.1);
-}
-
-.linha-urgente {
-  background-color: rgba(239, 68, 68, 0.1);
-}
-
 /* ========================= FILTROS ========================= */
 
 .filtros {
@@ -416,92 +401,65 @@ body {
 #graficoCategorias {
   width: 100% !important;
   height: 280px !important;
-  margin-top: 15px;
-}
+  max-width: 280px !important;
+  margin: 15px auto 0;
+}}
 
-/* ========================= AÇÕES / ESTOQUE ========================= */
+/* ========================= AÇÕES ========================= */
 
 .acoes {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   justify-content: center;
   width: 100%;
 }
 
-.grupo-estoque {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-
-.label-estoque {
-  font-size: 9px;
-  color: #666;
-  font-weight: 600;
-}
-
-.form-estoque {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-}
-
-.input-estoque {
-  width: 35px;
-  padding: 3px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 11px;
-  text-align: center;
-}
-
-.btn-entrada {
-  background: #22c55e !important;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.btn-saida {
-  background: #ef4444 !important;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.btn-entrada i,
-.btn-saida i {
-  width: 12px;
-  height: 12px;
-}
-
 .btn-editar {
   background: none;
-  border: none;
-  cursor: pointer;
+  border: 1px solid #6d4aff;
   color: #6d4aff;
-  font-size: 16px;
-  padding: 4px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+}
+
+.btn-editar:hover {
+  background: #6d4aff;
+  color: white;
 }
 
 .btn-excluir {
   background: none;
-  border: none;
+  border: 1px solid #e94560;
+  color: #e94560;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 13px;
   cursor: pointer;
-  color: #ef4444;
-  font-size: 16px;
-  padding: 4px;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+}
+
+.btn-excluir:hover {
+  background: #e94560;
+  color: white;
+}
+
+/* ========================= RODAPÉ CARDS ========================= */
+
+.rodape-cards {
+  display: flex;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.rodape-cards .card {
+  flex: 1;
+  margin-bottom: 0;
 }
 
 /* ========================= MOVIMENTAÇÕES ========================= */

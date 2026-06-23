@@ -134,52 +134,34 @@
           </thead>
           <tbody>
             {% for produto in produtos %}
-            {% if produto[4] <= 5 %} <tr class="linha-urgente">
-              {% elif produto[4] <= 20 %} <tr class="linha-baixo">
+            <tr>
+              <td>{{ produto[0] }}</td>
+              <td>{{ produto[1] }}</td>
+              <td>{{ produto[2] }}</td>
+              <td>R$ {{ "%.2f"|format(produto[3]) }}</td>
+              <td>{{ produto[4] }}</td>
+              <td>
+                {% if produto[4] <= 5 %}
+                <span class="status urgente"><i data-lucide="triangle-alert"></i> Urgente</span>
+                {% elif produto[4] <= 20 %}
+                <span class="status baixo"><i data-lucide="circle-alert"></i> Baixo</span>
                 {% else %}
-                <tr class="linha-normal">
-                  {% endif %}
-                  <td>{{ produto[0] }}</td>
-                  <td>{{ produto[1] }}</td>
-                  <td>{{ produto[2] }}</td>
-                  <td>R$ {{ "%.2f"|format(produto[3]) }}</td>
-                  <td>{{ produto[4] }}</td>
-                  <td>
-                    {% if produto[4] <= 5 %} <span class="status urgente"><i data-lucide="triangle-alert"></i>
-                      Urgente</span>
-                      {% elif produto[4] <= 20 %} <span class="status baixo"><i data-lucide="circle-alert"></i>
-                        Baixo</span>
-                        {% else %}
-                        <span class="status normal"><i data-lucide="check-circle-2"></i> Normal</span>
-                        {% endif %}
-                  </td>
-                  <td>R$ {{ "%.2f"|format(produto[3] * produto[4]) }}</td>
-                  <td>
-                    <div class="acoes">
-                      <form action="/produtos/editar/{{ produto[0] }}" method="GET">
-                        <button type="submit" class="btn-editar"><i data-lucide="pencil"></i></button>
-                      </form>
-                      <form action="/produtos/excluir/{{ produto[0] }}" method="POST">
-                        <button type="submit" class="btn-excluir"><i data-lucide="trash-2"></i></button>
-                      </form>
-                      <div class="grupo-estoque">
-                        <span class="label-estoque">Entrada</span>
-                        <form action="/produtos/entrada/{{ produto[0] }}" method="POST" class="form-estoque">
-                          <input type="number" name="quantidade" min="1" value="1" class="input-estoque">
-                          <button type="submit" class="btn-entrada"><i data-lucide="plus"></i></button>
-                        </form>
-                      </div>
-                      <div class="grupo-estoque">
-                        <span class="label-estoque">Saída</span>
-                        <form action="/produtos/saida/{{ produto[0] }}" method="POST" class="form-estoque">
-                          <input type="number" name="quantidade" min="1" value="1" class="input-estoque">
-                          <button type="submit" class="btn-saida"><i data-lucide="minus"></i></button>
-                        </form>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                {% endfor %}
+                <span class="status normal"><i data-lucide="check-circle-2"></i> Normal</span>
+                {% endif %}
+              </td>
+              <td>R$ {{ "%.2f"|format(produto[3] * produto[4]) }}</td>
+              <td>
+                <div class="acoes">
+                  <form action="/produtos/editar/{{ produto[0] }}" method="GET" style="display:inline;">
+                    <button type="submit" class="btn-editar">Editar</button>
+                  </form>
+                  <form action="/produtos/excluir/{{ produto[0] }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-excluir">Excluir</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
         {% if not em_busca %}
@@ -196,8 +178,9 @@
           </a>
           {% endfor %}
 
-          {% if pagina < total_paginas %} <a href="?pagina={{ pagina + 1 }}">→</a>
-            {% endif %}
+          {% if pagina < total_paginas %}
+          <a href="?pagina={{ pagina + 1 }}">→</a>
+          {% endif %}
 
         </div>
 
@@ -230,58 +213,63 @@
           <h3>⚠️ Reposição</h3>
           {% set tem_alerta = [] %}
           {% for p in produtos %}
-          {% if p[4] <= 20 %} {% set _=tem_alerta.append(p) %} <div class="info">
+          {% if p[4] <= 20 %} {% set _=tem_alerta.append(p) %}
+          <div class="info">
             <span class="{{ 'texto-urgente' if p[4] <= 5 else 'texto-baixo' }}">
               {{ p[1][:22] }}{% if p[1]|length > 22 %}…{% endif %}
             </span>
             <strong class="{{ 'texto-urgente' if p[4] <= 5 else 'texto-baixo' }}">{{ p[4] }} un.</strong>
-        </div>
-        {% endif %}
-        {% endfor %}
-        {% if tem_alerta | length == 0 %}
-        <p style="color:#999; font-size:13px; margin-top:10px;">Nenhum produto em alerta. ✅</p>
-        {% endif %}
-        </div>
-
-        <div class="card">
-          <h3>📊 Por Categoria</h3>
-          <canvas id="graficoCategorias"></canvas>
-        </div>
-
-        <div class="card">
-          <h3>🕓 Movimentações</h3>
-          {% if historico %}
-          {% for mov in historico %}
-          <div class="mov-item {{ 'mov-entrada' if mov[2] == 'Entrada' else 'mov-saida' }}">
-            <div class="mov-info">
-              <span class="mov-produto">{{ mov[1] }}</span>
-              <span class="mov-data">{{ mov[0] }}</span>
-            </div>
-            <span class="mov-badge">
-              {{ '+' if mov[2] == 'Entrada' else '-' }}{{ mov[3] }}
-            </span>
           </div>
-          {% endfor %}
-          {% else %}
-          <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma movimentação registrada.</p>
           {% endif %}
-        </div>
-
-        <div class="card">
-          <h3>🏆 Mais Vendidos</h3>
-          {% if mais_vendidos %}
-          {% for p in mais_vendidos %}
-          <div class="info">
-            <span>{{ loop.index }}. {{ p[0][:20] }}{% if p[0]|length > 20 %}…{% endif %}</span>
-            <strong>{{ p[2] }} un.</strong>
-          </div>
           {% endfor %}
-          {% else %}
-          <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma venda registrada.</p>
+          {% if tem_alerta | length == 0 %}
+          <p style="color:#999; font-size:13px; margin-top:10px;">Nenhum produto em alerta. ✅</p>
           {% endif %}
         </div>
 
       </aside>
+
+    </section>
+
+    <section class="rodape-cards">
+
+      <div class="card">
+        <h3>📊 Por Categoria</h3>
+        <canvas id="graficoCategorias"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>🕓 Movimentações</h3>
+        {% if historico %}
+        {% for mov in historico %}
+        <div class="mov-item {{ 'mov-entrada' if mov[2] == 'Entrada' else 'mov-saida' }}">
+          <div class="mov-info">
+            <span class="mov-produto">{{ mov[1] }}</span>
+            <span class="mov-data">{{ mov[0] }}</span>
+          </div>
+          <span class="mov-badge">
+            {{ '+' if mov[2] == 'Entrada' else '-' }}{{ mov[3] }}
+          </span>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma movimentação registrada.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>🏆 Mais Vendidos</h3>
+        {% if mais_vendidos %}
+        {% for p in mais_vendidos %}
+        <div class="info">
+          <span>{{ loop.index }}. {{ p[0][:20] }}{% if p[0]|length > 20 %}…{% endif %}</span>
+          <strong>{{ p[2] }} un.</strong>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="color:#999; font-size:13px; margin-top:10px;">Nenhuma venda registrada.</p>
+        {% endif %}
+      </div>
 
     </section>
   </main>

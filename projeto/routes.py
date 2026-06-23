@@ -556,7 +556,7 @@ def produtos():
     dados = calcular_dados_produtos(lista)
     historico = listar_todas_movimentacoes()
     mais_vendidos = produtos_mais_vendidos()
-    dadosPag = paginar(lista, 5)
+    dadosPag = paginar(lista, 10)
     return render_template(
         "produtos.html",
         produtos=dadosPag["itens"],
