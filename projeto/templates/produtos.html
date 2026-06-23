@@ -25,7 +25,7 @@
       <a href="/clientes">👥 Clientes</a>
       <a href="/fornecedores">🚚 Fornecedores</a>
       <a href="/eventos">🏆 Eventos / Torneios</a>
-      <a href="#">⚙️ Sair</a>
+      <a href="/logout">⚙️ Sair</a>
     </div>
   </div>
 
@@ -101,10 +101,10 @@
           <form action="/produtos/busca-tipo" method="POST" class="form-busca">
             <select name="tipo" class="tipos-select" required>
               <option value="" disabled selected>Selecione o jogo / tipo</option>
-              <option value="pokemon">Pokémon TCG</option>
-              <option value="magic">Magic: The Gathering</option>
-              <option value="yugioh">Yu-Gi-Oh!</option>
-              <option value="board">Board Game</option>
+              <option value="Pokémon TCG">Pokémon TCG</option>
+              <option value="Magic: The Gathering">Magic: The Gathering</option>
+              <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+              <option value="Board Game">Board Game</option>
             </select>
             <button type="submit" class="btn-filter">
               <i data-lucide="search" class="lucide-btn"></i> Buscar
@@ -181,6 +181,26 @@
                 {% endfor %}
           </tbody>
         </table>
+        {% if not em_busca %}
+
+        <div class="paginacao">
+
+          {% if pagina > 1 %}
+          <a href="?pagina={{ pagina - 1 }}">←</a>
+          {% endif %}
+
+          {% for p in range(1, total_paginas + 1) %}
+          <a href="?pagina={{ p }}" {% if p==pagina %}class="ativo" {% endif %}>
+            {{ p }}
+          </a>
+          {% endfor %}
+
+          {% if pagina < total_paginas %} <a href="?pagina={{ pagina + 1 }}">→</a>
+            {% endif %}
+
+        </div>
+
+        {% endif %}
       </div>
 
       <aside class="barra-direita">

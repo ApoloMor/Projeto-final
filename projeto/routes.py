@@ -1,11 +1,9 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 from flask_app import app
 from collections import Counter
 from datetime import datetime
-import os
-
 import functools
-from flask import render_template, request, redirect, session
+import os
 
 from modules.eventos import (
     carregar_eventos,
@@ -606,13 +604,18 @@ def produtos():
     dados = calcular_dados_produtos(lista)
     historico = listar_todas_movimentacoes()
     mais_vendidos = produtos_mais_vendidos()
+    dadosPag = paginar(lista,5)
     return render_template(
         "produtos.html",
-        produtos=lista,
+        produtos=dadosPag["itens"],
+        pagina=dadosPag["pagina"],
+        total_paginas=dadosPag["total_paginas"],
         modo="criar",
         historico=historico,
         mais_vendidos=mais_vendidos,
+        em_busca=False,
         **dados
+        
     )
 
 
@@ -633,7 +636,16 @@ def edicao(id):
     produto = buscar_produtos(id)
     lista = listar_produtos()
     dados = calcular_dados_produtos(lista)
-    return render_template("produtos.html", produtos=lista, produto_edicao=produto, modo="editar", **dados)
+    dadosPag = paginar(lista,5)
+    return render_template(
+        "produtos.html",        
+        produtos=dadosPag["itens"],
+        pagina=dadosPag["pagina"],
+        total_paginas=dadosPag["total_paginas"],
+        produto_edicao=produto, 
+        modo="editar",
+        em_busca=False, 
+        **dados)
 
 
 @app.route("/produtos/atualizar/<int:id>", methods=["POST"])
@@ -664,7 +676,7 @@ def buscar_produtos_route():
     else:
         lista = buscar_produtos_nome(busca)
     dados = calcular_dados_produtos(lista)
-    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+    return render_template("produtos.html", produtos=lista, modo="criar",em_busca=True, **dados)
 
 
 @app.route("/produtos/busca-tipo", methods=["POST"])
@@ -673,7 +685,12 @@ def buscar_produtos_tipo():
     tipo = request.form["tipo"]
     lista = buscar_produtos_por_tipo(tipo)
     dados = calcular_dados_produtos(lista)
-    return render_template("produtos.html", produtos=lista, modo="criar", **dados)
+    return render_template(
+        "produtos.html",
+        produtos = lista,         
+        modo="criar",
+        em_busca=True, 
+        **dados)
 
 
 @app.route("/produtos/entrada/<int:id>", methods=["POST"])
@@ -698,10 +715,19 @@ def saida_produto(id):
 @login_required
 def fornecedores():
     criar_tabela_fornecedores()
-    lista = listar_fornecedores()
-    dados = paginar(lista,5)
-    return render_template("fornecedores.html", fornecedores=dados["itens"], pagina=dados["pagina"], total_paginas=dados["total_paginas"], total_fornecedores=len(lista), modo="criar", em_busca=False)
 
+    lista = listar_fornecedores()
+    dados = paginar(lista, 5)
+
+    return render_template(
+        "fornecedores.html",
+        fornecedores=dados["itens"],
+        pagina=dados["pagina"],
+        total_paginas=dados["total_paginas"],
+        total_fornecedores=len(lista),
+        modo="criar",
+        em_busca=False
+    )
 
 @app.route("/fornecedores/criar", methods=["POST"])
 @login_required
@@ -721,11 +747,11 @@ def editar_fornecedor_route(id):
     criar_tabela_fornecedores()
     fornecedor = buscar_fornecedor(id)
     lista = listar_fornecedores()
-    dados = paginar(lista,5)
+    dados = paginar(lista, 5)
     return render_template(
         "fornecedores.html",
-        fornecedores=dados["itens"], 
-        pagina=dados["pagina"], 
+        fornecedores=dados["itens"],
+        pagina=dados["pagina"],
         total_paginas=dados["total_paginas"],
         total_fornecedores=len(lista),
         fornecedor_edicao=fornecedor,
@@ -762,7 +788,7 @@ def buscar_fornecedor_route():
         lista = [fornecedor] if fornecedor else []
     else:
         lista = buscar_fornecedor_nome(busca)
-    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar", em_busca=True)
+    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar",em_busca=True)
 
 
 @app.route("/fornecedores/busca-cnpj", methods=["POST"])
@@ -770,7 +796,7 @@ def buscar_fornecedor_route():
 def buscar_fornecedor_cnpj_route():
     cnpj = request.form["cnpj"]
     lista = buscar_fornecedor_cnpj(cnpj)
-    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar", em_busca=True)
+    return render_template("fornecedores.html", fornecedores=lista, total_fornecedores=len(lista), modo="criar",em_busca=True)
 
 
 # ==================== VENDAS ====================
