@@ -69,7 +69,8 @@
           <option value="Board Game">Board Game</option>
         </select>
         <input type="text" name="cnpj" id="cnpj-criar" placeholder="CNPJ: 00.000.000/0000-00" maxlength="18" required />
-        <input type="text" name="telefone" id="tel-criar" placeholder="Telefone: (00) 00000-0000" maxlength="15" required />
+        <input type="text" name="telefone" id="tel-criar" placeholder="Telefone: (00) 00000-0000" maxlength="15"
+          required />
         <input type="email" name="email" placeholder="E-mail do fornecedor" required />
         <button type="submit">Cadastrar</button>
       </form>
@@ -79,14 +80,19 @@
       <form action="/fornecedores/atualizar/{{ fornecedor_edicao[0] }}" method="POST">
         <input type="text" name="nome" value="{{ fornecedor_edicao[1] }}" placeholder="Nome do fornecedor" required />
         <select name="tipo" required>
-          <option value="Pokémon TCG" {% if fornecedor_edicao[2]=="Pokémon TCG" %}selected{% endif %}>Pokémon TCG</option>
-          <option value="Magic: The Gathering" {% if fornecedor_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>Magic: The Gathering</option>
+          <option value="Pokémon TCG" {% if fornecedor_edicao[2]=="Pokémon TCG" %}selected{% endif %}>Pokémon TCG
+          </option>
+          <option value="Magic: The Gathering" {% if fornecedor_edicao[2]=="Magic: The Gathering" %}selected{% endif %}>
+            Magic: The Gathering</option>
           <option value="Yu-Gi-Oh!" {% if fornecedor_edicao[2]=="Yu-Gi-Oh!" %}selected{% endif %}>Yu-Gi-Oh!</option>
           <option value="Board Game" {% if fornecedor_edicao[2]=="Board Game" %}selected{% endif %}>Board Game</option>
         </select>
-        <input type="text" name="cnpj" id="cnpj-editar" value="{{ fornecedor_edicao[3] }}" placeholder="CNPJ: 00.000.000/0000-00" maxlength="18" required />
-        <input type="text" name="telefone" id="tel-editar" value="{{ fornecedor_edicao[4] }}" placeholder="Telefone: (00) 00000-0000" maxlength="15" required />
-        <input type="email" name="email" value="{{ fornecedor_edicao[5] }}" placeholder="E-mail do fornecedor" required />
+        <input type="text" name="cnpj" id="cnpj-editar" value="{{ fornecedor_edicao[3] }}"
+          placeholder="CNPJ: 00.000.000/0000-00" maxlength="18" required />
+        <input type="text" name="telefone" id="tel-editar" value="{{ fornecedor_edicao[4] }}"
+          placeholder="Telefone: (00) 00000-0000" maxlength="15" required />
+        <input type="email" name="email" value="{{ fornecedor_edicao[5] }}" placeholder="E-mail do fornecedor"
+          required />
         <button type="submit">Salvar Alterações</button>
       </form>
       {% endif %}
@@ -148,6 +154,26 @@
           {% endfor %}
         </tbody>
       </table>
+      {% if not em_busca %}
+
+      <div class="paginacao">
+
+        {% if pagina > 1 %}
+        <a href="?pagina={{ pagina - 1 }}">←</a>
+        {% endif %}
+
+        {% for p in range(1, total_paginas + 1) %}
+        <a href="?pagina={{ p }}" {% if p==pagina %}class="ativo" {% endif %}>
+          {{ p }}
+        </a>
+        {% endfor %}
+
+        {% if pagina < total_paginas %} <a href="?pagina={{ pagina + 1 }}">→</a>
+          {% endif %}
+
+      </div>
+
+      {% endif %}
     </div>
   </main>
 
